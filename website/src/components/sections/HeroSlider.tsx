@@ -31,7 +31,7 @@ export default function HeroSlider({ slides = [] }) {
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative h-screen overflow-hidden group">
+    <section className="relative h-svh overflow-hidden group">
       {/* Image slides */}
       {slides.map((slide, index) => (
         <div
@@ -58,13 +58,16 @@ export default function HeroSlider({ slides = [] }) {
           {/* Content */}
           <div
             className={cn(
-              "absolute tracking-widest bottom-1/5 right-[12rem] pr-[2rem] group cursor-default z-10",
+              "absolute tracking-widest z-10 cursor-default",
+              "bottom-1/5 right-4 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
+              "sm:bottom-1/4",
               index === currentSlide ? "fadeIn" : ""
             )}
           >
             <h1
               className={cn(
-                "font-semibold text-xl mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                "font-semibold mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                "text-lg sm:text-xl md:text-2xl lg:text-xl",
                 logoColor === "light" ? "text-black" : "text-white"
               )}
             >
@@ -73,7 +76,8 @@ export default function HeroSlider({ slides = [] }) {
 
             <p
               className={cn(
-                "text-sm mb-3 group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                "mb-3 group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                "text-xs sm:text-sm md:text-base lg:text-sm",
                 logoColor === "light" ? "text-black/80" : "text-white/80"
               )}
             >
@@ -83,18 +87,19 @@ export default function HeroSlider({ slides = [] }) {
             <Link
               href={"/"}
               className={cn(
-                "text-sm py-3 font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
+                "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
+                "py-2 sm:py-3 text-xs sm:text-sm",
                 logoColor === "light" ? "text-black" : "text-white"
               )}
             >
-              <span className="relative z-10 text-sm group-hover/link:tracking-wider transition-all duration-300">
+              <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300">
                 VIEW WORK
               </span>
 
               <Lucide
                 icon="ChevronRight"
                 size={4}
-                className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10"
+                className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10 w-3 h-3 sm:w-4 sm:h-4"
               />
 
               {/* Animated underline */}
@@ -113,16 +118,16 @@ export default function HeroSlider({ slides = [] }) {
       ))}
 
       {/* Navigation */}
-      <div className="absolute right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500">
-        <div className="backdrop-blur-md flex items-center justify-center bg-black/30 hover:bg-black/50 w-20 h-20 rounded-full transition-all duration-300 hover:scale-110 border border-white/20">
+      <div className="absolute top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 right-4 sm:right-6 md:right-8">
+        <div className="backdrop-blur-md flex items-center justify-center bg-black/30 hover:bg-black/50 transition-all duration-300 hover:scale-110 border border-white/20 rounded-full w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20">
           <Lucide
             icon="ChevronLeft"
-            className="h-8 w-8 cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80"
+            className="cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80 w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8"
             onClick={prevSlide}
           />
           <Lucide
             icon="ChevronRight"
-            className="h-8 w-8 cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80"
+            className="cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80 w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8"
             onClick={nextSlide}
           />
         </div>

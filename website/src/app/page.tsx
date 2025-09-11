@@ -9,9 +9,9 @@ export default function Home() {
   return (
     <main className="font-dosis">
       <Navigation links={links} theme="dark" />
-      {/* <HeroSlider slides={slides} /> */}
+      <HeroSlider slides={slides} />
 
-      {/* <HomeFooter  /> */}
+      <HomeFooter theme="dark" />
     </main>
   );
 }

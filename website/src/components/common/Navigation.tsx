@@ -143,7 +143,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-50 md:hidden">
           <div
             className={cn(
               "absolute inset-0 backdrop-blur-sm transition-opacity duration-300",
