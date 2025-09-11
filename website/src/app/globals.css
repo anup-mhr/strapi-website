@@ -34,14 +34,15 @@ body {
   content: "";
   display: block;
   height: 1px;
-  background-color: white;
   margin: 0.25rem auto 0 auto;
   width: 0;
+  background-color: currentColor;
   transition: width 0.3s ease;
+  margin-top: 8px;
 }
 
 .header-nav:hover::after {
-  width: 50%;
+  width: 40%;
 }
 
 .header-nav.active {
@@ -49,5 +50,5 @@ body {
 }
 
 .header-nav.active::after {
-  width: 50%;
+  width: 40%;
 }

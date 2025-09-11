@@ -1,4 +1,4 @@
-import Navigation from "@/components/common/Navigation";
+import Navigation from "@/components/sections/Navigation";
 import HeroSlider from "@/components/sections/HeroSlider";
 import Link from "next/link";
 import { links } from "@/constants/constants";
@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <main className="font-dosis">
-      <Navigation links={links} />
+      <Navigation textColor="text-white" background="bg-transparent" />
       <HeroSlider slides={slides} />
       <footer className="absolute px-[12rem] text-sm tracking-widest py-4 bottom-0 w-full border border-t-1 border-white flex gap-10 items-center justify-between">
         <div className="flex gap-8">

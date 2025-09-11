@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-[#f6fafd] px-[12rem] py-18 flex justify-between items-end text-gray-600 h-[18rem]">
+    <div className="bg-[#f6fafd] tracking-widest px-[12rem] py-18 flex justify-between items-end text-gray-600 h-[18rem]">
       <p>FOLLOW US ON <span className="text-black font-semibold">INSTAGRAM</span></p>
 
       <div className="flex flex-col items-center">

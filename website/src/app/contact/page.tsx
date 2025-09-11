@@ -1,5 +1,5 @@
-import Footer from "@/components/common/Footer";
-import Navigation from "@/components/common/Navigation";
+import Footer from "@/components/sections/Footer";
+import Navigation from "@/components/sections/Navigation";
 import React from "react";
 import { contactPageLinks } from "@/constants/constants";
 import Image from "next/image";
@@ -13,7 +13,7 @@ export const metadata = {
 function page() {
   return (
     <div>
-      <Navigation links={contactPageLinks} />
+      <Navigation links={contactPageLinks} background="bg-transparent" />
       <div>
         <div className="w-full lg:h-screen">
           <Image src="/furniture.jpg" fill alt={"Aku Zeliang contact"} />
