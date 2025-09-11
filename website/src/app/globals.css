@@ -3,11 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --secondary: #f6fafd;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
   --font-dosis: var(--font-geist-dosis);
 }
 
@@ -15,6 +17,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --secondary: #f6fafd;
   }
 }
 
