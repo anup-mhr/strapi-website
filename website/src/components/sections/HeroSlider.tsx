@@ -9,6 +9,8 @@ import Lucide from "../ui/Lucide";
 export default function HeroSlider({ slides = [] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [logoColor, setLogoColor] = useState("dark");
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
   useEffect(() => {
     if (slides.length === 0) return;
@@ -28,10 +30,42 @@ export default function HeroSlider({ slides = [] }) {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  // Swipe handling
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+
+    const distance = touchStartX - touchEndX;
+
+    if (distance > 50) {
+      // swipe left → next
+      nextSlide();
+    }
+    if (distance < -50) {
+      // swipe right → prev
+      prevSlide();
+    }
+
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative h-svh overflow-hidden group">
+    <section
+      className="relative h-svh overflow-hidden group"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Image slides */}
       {slides.map((slide, index) => (
         <div
