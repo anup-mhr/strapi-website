@@ -8,7 +8,8 @@ export const links = [
 ];
 
 export const contactPageLinks = [
-  { href: "/", label: "HOME" },
-  { href: "/studio", label: "URRA DESIGN STUDIO" },
-  { href: "/contact", label: "CONTACT" },
+    { href: "/", label: "AKU ZELIANG" },
+    { href: "/", label: "HOME" },
+    { href: "/studio", label: "URRA DESIGN STUDIO" },
+    { href: "/contact", label: "CONTACT" },
 ];
