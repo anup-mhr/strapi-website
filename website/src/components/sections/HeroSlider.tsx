@@ -26,9 +26,8 @@ export default function HeroSlider({ slides = [] }) {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
         >
           <Image
             src={`/furniture.jpg`}
@@ -43,7 +42,7 @@ export default function HeroSlider({ slides = [] }) {
           />
 
           {/* Slide Content */}
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+          {/* <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
             <div className="text-center text-white max-w-4xl px-4">
               <h1 className="text-6xl font-light uppercase tracking-wide mb-4">
                 This is title
@@ -58,15 +57,35 @@ export default function HeroSlider({ slides = [] }) {
                 View Project
               </Link>
             </div>
+          </div> */}
+
+          <div className="absolute tracking-widest bottom-1/4 right-[12rem] pr-[2rem]">
+            <h1 className="font-semibold">MOLOK CHAIR</h1>
+            <p className="text-xs">AKU ZELIANG</p>
+
+            <Link
+              href={"/"}
+              className="text-xs py-3 font-light items-center flex gap-2"
+            >
+              <p>VIEW WORK</p>
+            
+              <Lucide
+                icon="ChevronRight"
+                size={4}
+         
+              />
+
+            </Link>
+
           </div>
         </div>
       ))}
 
       {/* Navigation */}
-      <div className="absolute right-8 top-1/2 transform -translate-x-1/2 flex">
+      <div className="absolute right-8 top-1/2 transform -translate-x-1/2 flex items-center justify-center bg-black/20 w-24 h-24 rounded-full ">
         <Lucide
           icon="ChevronLeft"
-          className="font-bold h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
+          className="font-bold translate-x-1.5 h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
           onClick={() =>
             setCurrentSlide(
               (prev) => (prev - 1 + slides.length) % slides.length
@@ -75,7 +94,7 @@ export default function HeroSlider({ slides = [] }) {
         />
         <Lucide
           icon="ChevronRight"
-          className="font-bold h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
+          className="font-bold -translate-x-1.5 h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
           onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
         />
       </div>

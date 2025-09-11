@@ -6,6 +6,7 @@ export const { icons } = lucideIcons;
 interface LucideProps extends React.ComponentPropsWithoutRef<"svg"> {
   icon: keyof typeof icons;
   title?: string;
+  size?: number;
 }
 
 function Lucide(props: LucideProps) {
