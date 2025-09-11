@@ -2,12 +2,14 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-secondary px-[12rem] pt-24 pb-18 flex justify-between items-end text-gray-600 h-[18rem] text-sm uppercase tracking-widest">
-      <p>
+    <div className="bg-secondary px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48 pt-16 pb-12 flex flex-col md:flex-row md:justify-between md:items-end text-gray-600 text-xs sm:text-sm uppercase tracking-widest space-y-8 md:space-y-0 md:space-x-8">
+      {/* Left Section */}
+      <p className="text-center md:text-left">
         FOLLOW US ON <span className="text-black font-medium">INSTAGRAM</span>
       </p>
 
-      <div className="flex flex-col items-center">
+      {/* Middle Section */}
+      <div className="flex flex-col items-center text-center">
         <p>HEIRLOON NAGA</p>
         <p>URRA DESIGN STUDIO</p>
         <p>CANE CONCEPT</p>
@@ -16,7 +18,8 @@ function Footer() {
         <p>INFO@AKUZELIANG.COM</p>
       </div>
 
-      <p>TERMS & CONDITIONS</p>
+      {/* Right Section */}
+      <p className="text-center md:text-right">TERMS & CONDITIONS</p>
     </div>
   );
 }

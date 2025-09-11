@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
 import { ContactFrom, contactSchema } from "./schema";
-function ContactForn() {
+import { cn } from "@/lib/utils";
+
+function ContactForm({ className }: { className?: string }) {
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ function ContactForn() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-7 text-lg font-semibold"
+      className={cn("flex flex-col gap-7 text-lg font-semibold", className)}
     >
       <input
         type="text"
@@ -94,4 +94,4 @@ function ContactForn() {
   );
 }
 
-export default ContactForn;
+export default ContactForm;

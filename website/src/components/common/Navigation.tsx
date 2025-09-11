@@ -161,7 +161,14 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
           >
             <div className="flex flex-col h-full">
               {/* Menu Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-200/20">
+              <div
+                className={cn(
+                  "flex items-center justify-between p-6 border-b",
+                  theme === "light"
+                    ? "border-black-200/20"
+                    : "border-gray-200/20"
+                )}
+              >
                 <span
                   className={cn(
                     "font-semibold text-lg",

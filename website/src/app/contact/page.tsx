@@ -15,17 +15,26 @@ function Contact() {
   return (
     <div className="font-dosis">
       <Navigation links={contactPageLinks} theme="dark" />
+
       <div>
-        <div className="w-full lg:h-screen">
-          <Image src="/furniture.jpg" fill alt={"Aku Zeliang contact"} />
+        <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-screen">
+          <Image
+            src="/furniture.jpg"
+            alt="Aku Zeliang contact"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-12 px-[12rem] py-24 bg-white ">
-          {/* Left Section */}
-          <div className=" text-gray-900 tracking-widest">
-            <h2 className="font-semibold text-black mb-6">ABOUT ME</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-48 py-16 lg:py-24 bg-white">
+          {/* About Section */}
+          <div className="text-gray-900 tracking-widest">
+            <h2 className="font-semibold text-black mb-6 text-lg sm:text-xl md:text-2xl">
+              ABOUT ME
+            </h2>
 
-            <div className="pl-1 font-dosis ">
+            <div className="pl-1 font-dosis text-sm sm:text-base leading-relaxed">
               <div className="mb-12">
                 <p className="mb-6">
                   I founded URRA in 2014 as a Nagaland-based design studio,
@@ -43,19 +52,20 @@ function Contact() {
                 </p>
               </div>
 
-              <div className="flex flex-col ">
-                <div className="mb-12">
-                  <p>Email</p>
+              {/* Contact Info */}
+              <div className="flex flex-col space-y-8">
+                <div>
+                  <p className="font-medium">Email</p>
                   <p>info@akuzeliang.com</p>
                 </div>
 
-                <div className="mb-12">
-                  <p>Call</p>
+                <div>
+                  <p className="font-medium">Call</p>
                   <p>+919436003336, +918787401050</p>
                 </div>
 
-                <div className="mb-12">
-                  <p>Visit</p>
+                <div>
+                  <p className="font-medium">Visit</p>
                   <p>
                     Heirloom Naga Centre, Razha Khel,
                     <br />
@@ -68,10 +78,11 @@ function Contact() {
             </div>
           </div>
 
-          {/* Right Section - Contact Form */}
-          <ContactForm />
+          {/* Contact Form */}
+          <ContactForm className="w-full" />
         </div>
       </div>
+
       <Footer />
     </div>
   );
