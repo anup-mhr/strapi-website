@@ -12,7 +12,7 @@ function Navigation({ links }: { links: LinkType[] }) {
   const pathname = usePathname();
 
   return (
-    <div className="fixed z-50 w-full px-[12rem] py-8 flex items-center justify-between tracking-widest text-white text-lg">
+    <div className="fixed z-50 w-full px-[12rem] py-8 flex items-center justify-between tracking-widest text-white text-base">
       <Link href="/" className={`header-nav ${pathname === "/" ? "active" : ""}`}>
         AKU ZELIANG
       </Link>
