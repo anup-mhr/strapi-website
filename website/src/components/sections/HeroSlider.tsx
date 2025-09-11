@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Lucide from "../ui/Lucide";
 
 export default function HeroSlider({ slides = [] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [logoColor, setLogoColor] = useState("black");
+  const [logoColor, setLogoColor] = useState("dark");
 
   useEffect(() => {
     if (slides.length === 0) return;
@@ -19,84 +20,112 @@ export default function HeroSlider({ slides = [] }) {
     return () => clearInterval(interval);
   }, [slides.length]);
 
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1 + slides.length) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-screen overflow-hidden group">
+      {/* Image slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
+          className={cn(
+            "absolute inset-0 transition-all duration-1000 ease-in-out",
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          )}
         >
           <Image
+            key={index}
             src={`/furniture.jpg`}
             alt={"alt"}
             fill
-            className="object-cover"
+            className={cn(
+              "object-cover object-center transition-transform duration-[7000ms] ease-out"
+            )}
             priority={index === 0}
             onLoad={() => {
-              // Logic to determine logo color based on image brightness
-              setLogoColor(index === currentSlide ? "white" : "black");
+              setLogoColor(index === currentSlide ? "light" : "dark");
             }}
           />
 
-          {/* Slide Content */}
-          {/* <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-            <div className="text-center text-white max-w-4xl px-4">
-              <h1 className="text-6xl font-light uppercase tracking-wide mb-4">
-                This is title
-              </h1>
-              <div className="text-xl mb-8 font-light">
-                This is Discriptions
-              </div>
-              <Link
-                href={"/"}
-                className="inline-block border border-white px-8 py-3 uppercase tracking-wide font-light hover:bg-white hover:text-black transition-colors duration-300"
-              >
-                View Project
-              </Link>
-            </div>
-          </div> */}
+          {/* Content */}
+          <div
+            className={cn(
+              "absolute tracking-widest bottom-1/5 right-[12rem] pr-[2rem] group cursor-default z-10",
+              index === currentSlide ? "fadeIn" : ""
+            )}
+          >
+            <h1
+              className={cn(
+                "font-semibold text-xl mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                logoColor === "light" ? "text-black" : "text-white"
+              )}
+            >
+              MOLOK CHAIR
+            </h1>
 
-          <div className="absolute tracking-widest bottom-1/4 right-[12rem] pr-[2rem]">
-            <h1 className="font-semibold">MOLOK CHAIR</h1>
-            <p className="text-xs">AKU ZELIANG</p>
+            <p
+              className={cn(
+                "text-sm mb-3 group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                logoColor === "light" ? "text-black/80" : "text-white/80"
+              )}
+            >
+              AKU ZELIANG
+            </p>
 
             <Link
               href={"/"}
-              className="text-xs py-3 font-light items-center flex gap-2"
+              className={cn(
+                "text-sm py-3 font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
+                logoColor === "light" ? "text-black" : "text-white"
+              )}
             >
-              <p>VIEW WORK</p>
-            
+              <span className="relative z-10 text-sm group-hover/link:tracking-wider transition-all duration-300">
+                VIEW WORK
+              </span>
+
               <Lucide
                 icon="ChevronRight"
                 size={4}
-         
+                className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10"
               />
 
+              {/* Animated underline */}
+              <div
+                className={cn(
+                  "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out",
+                  logoColor === "light" ? "bg-black" : "bg-white"
+                )}
+              />
             </Link>
-
           </div>
+
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
         </div>
       ))}
 
       {/* Navigation */}
-      <div className="absolute right-8 top-1/2 transform -translate-x-1/2 flex items-center justify-center bg-black/20 w-24 h-24 rounded-full ">
-        <Lucide
-          icon="ChevronLeft"
-          className="font-bold translate-x-1.5 h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
-          onClick={() =>
-            setCurrentSlide(
-              (prev) => (prev - 1 + slides.length) % slides.length
-            )
-          }
-        />
-        <Lucide
-          icon="ChevronRight"
-          className="font-bold -translate-x-1.5 h-10 w-10 cursor-pointer hover:scale-120 transition-transform duration-300"
-          onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        />
+      <div className="absolute right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="backdrop-blur-md flex items-center justify-center bg-black/30 hover:bg-black/50 w-20 h-20 rounded-full transition-all duration-300 hover:scale-110 border border-white/20">
+          <Lucide
+            icon="ChevronLeft"
+            className="h-8 w-8 cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80"
+            onClick={prevSlide}
+          />
+          <Lucide
+            icon="ChevronRight"
+            className="h-8 w-8 cursor-pointer hover:scale-125 transition-all duration-300 text-white hover:text-white/80"
+            onClick={nextSlide}
+          />
+        </div>
       </div>
     </section>
   );

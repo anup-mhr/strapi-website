@@ -57,3 +57,20 @@ body {
 .header-nav.active::after {
   width: 50%;
 }
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
