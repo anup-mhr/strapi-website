@@ -1,5 +1,4 @@
 export const links = [
-  { href: "/", label: "AKU ZELIANG" },
   { href: "/urra", label: "URRA DESIGN STUDIO" },
   { href: "/objects", label: "OBJECTS" },
   { href: "/collaborations", label: "COLLABORATIONS" },
@@ -8,7 +7,6 @@ export const links = [
 ];
 
 export const contactPageLinks = [
-  { href: "/", label: "AKU ZELIANG" },
   { href: "/", label: "HOME" },
   { href: "/urra", label: "URRA DESIGN STUDIO" },
   { href: "/contact", label: "CONTACT" },

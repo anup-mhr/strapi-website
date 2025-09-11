@@ -8,10 +8,10 @@ export default function Home() {
 
   return (
     <main className="font-dosis">
-      <Navigation links={links} />
-      <HeroSlider slides={slides} />
+      <Navigation links={links} theme="dark" />
+      {/* <HeroSlider slides={slides} /> */}
 
-      <HomeFooter />
+      {/* <HomeFooter  /> */}
     </main>
   );
 }
