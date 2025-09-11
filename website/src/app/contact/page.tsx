@@ -1,6 +1,7 @@
 import Footer from "@/components/common/Footer";
 import Navigation from "@/components/common/Navigation";
 import React from "react";
+import { contactPageLinks } from "@/constants/constants";
 
 export const metadata = {
   title: "Aku Zeliang - Contact",
@@ -11,7 +12,7 @@ export const metadata = {
 function page() {
   return (
     <div>
-      <Navigation />
+      <Navigation links={contactPageLinks} />
       <div>page</div>
       <Footer />
     </div>
