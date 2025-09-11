@@ -23,3 +23,31 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.header-nav {
+  position: relative;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.header-nav::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background-color: white;
+  margin: 0.25rem auto 0 auto;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.header-nav:hover::after {
+  width: 50%;
+}
+
+.header-nav.active {
+  font-weight: 500;
+}
+
+.header-nav.active::after {
+  width: 50%;
+}
