@@ -7,7 +7,6 @@ function Footer() {
       <p className="text-center md:text-left">
         FOLLOW US ON <span className="text-black font-medium">INSTAGRAM</span>
       </p>
-
       {/* Middle Section */}
       <div className="flex flex-col items-center text-center">
         <p>HEIRLOON NAGA</p>
@@ -17,7 +16,6 @@ function Footer() {
         <p className="mt-6">AKU ZELIANG &copy; 2025</p>
         <p>INFO@AKUZELIANG.COM</p>
       </div>
-
       {/* Right Section */}
       <p className="text-center md:text-right">TERMS & CONDITIONS</p>
     </div>

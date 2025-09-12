@@ -1,6 +1,6 @@
-import Navigation from "@/components/common/Navigation";
 import HeroSlider from "@/components/sections/HeroSlider";
-import HomeFooter from "@/components/sections/HomeFooter";
+import HomeFooter from "@/components/theme/HomeFooter";
+import Navigation from "@/components/theme/Navigation";
 import { links } from "@/constants/constants";
 
 export default function Home() {

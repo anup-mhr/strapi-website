@@ -1,9 +1,8 @@
-import Footer from "@/components/common/Footer";
-import Navigation from "@/components/common/Navigation";
-import React from "react";
+import ContactForm from "@/components/sections/contactForm/ContactForm";
+import Footer from "@/components/theme/Footer";
+import Navigation from "@/components/theme/Navigation";
 import { contactPageLinks } from "@/constants/constants";
 import Image from "next/image";
-import ContactForm from "@/components/sections/contactForm/ContactForm";
 
 export const metadata = {
   title: "Aku Zeliang - Contact",

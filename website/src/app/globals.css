@@ -47,7 +47,7 @@ body {
 }
 
 .header-nav:hover::after {
-  width: 50%;
+  width: 40%;
 }
 
 .header-nav.active {
@@ -55,7 +55,7 @@ body {
 }
 
 .header-nav.active::after {
-  width: 50%;
+  width: 40%;
 }
 
 .fadeIn {
