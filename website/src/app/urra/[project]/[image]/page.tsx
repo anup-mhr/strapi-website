@@ -3,6 +3,7 @@ import Lucide from "@/components/ui/Lucide";
 import { projects } from "@/constants/constants";
 import Image from "next/image";
 import Link from "next/link";
+import ImageSlider from "./component/ImageSlider";
 
 async function page({ params }: { params: Promise<{ image: string }> }) {
   const slug = (await params).image;
@@ -13,36 +14,13 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
 
   return (
     <div className="text-black tracking-[3px]">
-      <div className="relative aspect-video">
-        <Image
-          src={data?.image}
-          alt={data?.title}
-          fill
-          className="object-cover"
-        />
-      </div>
 
-      <div className="flex items-center py-4  justify-end text-xs gap-10">
-        <Link href={"/urra"} className="">
-          BACK TO PROJECT
-        </Link>
+      <ImageSlider images={Array(4).fill(data)} />
 
-        <div className="inline-flex gap-6">
-          <button className="inline-flex items-center">
-            <Lucide icon={"ChevronLeft"} size={6} />
-            PREVIOUS
-          </button>
-
-          <button className="inline-flex items-center">
-            NEXT
-            <Lucide icon={"ChevronRight"} size={6} />
-          </button>
-        </div>
-      </div>
 
       <div className="text-sm text-gray-800 mb-16">
-        <h1 className="text-black text-xl uppercase">{data.title}</h1>
-        <h1 className="text-[16px]">URRA DESIGN STUDIO</h1>
+        <h1 className="text-black text-base sm:text-lg lg:text-xl uppercase">{data.title}</h1>
+        <h1 className="text-xs sm:text-sm lg:text-base py-2 lg:py-0">URRA DESIGN STUDIO</h1>
 
         <p className="py-8 tracking-[2px]">{data.description}</p>
 

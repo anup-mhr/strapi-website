@@ -23,7 +23,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
       <p className="text-black text-sm mb-8 tracking-widest leading-7">
         {images?.description}
       </p>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
         {images?.images?.map((img) => (
           <div
             key={img.id}
