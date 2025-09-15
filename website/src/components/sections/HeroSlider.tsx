@@ -67,7 +67,7 @@ export default function HeroSlider({ slides = [] }) {
       onTouchEnd={handleTouchEnd}
     >
       {/* Image slides */}
-      {slides.map((slide, index) => (
+      {slides.map((slide:any, index) => (
         <div
           key={index}
           className={cn(
@@ -77,7 +77,7 @@ export default function HeroSlider({ slides = [] }) {
         >
           <Image
             key={index}
-            src={`/furniture.jpg`}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.backgroundImage.url}`}
             alt={"alt"}
             fill
             className={cn(
@@ -105,7 +105,7 @@ export default function HeroSlider({ slides = [] }) {
                 logoColor === "light" ? "text-black" : "text-white"
               )}
             >
-              MOLOK CHAIR
+              {slide.title}
             </h1>
 
             <p
@@ -115,11 +115,11 @@ export default function HeroSlider({ slides = [] }) {
                 logoColor === "light" ? "text-black/80" : "text-white/80"
               )}
             >
-              AKU ZELIANG
+              {slide.subTitle}
             </p>
 
             <Link
-              href={"/"}
+              href={slide.CTA.href}
               className={cn(
                 "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
                 "py-2 sm:py-3 text-xs sm:text-sm",
@@ -127,7 +127,7 @@ export default function HeroSlider({ slides = [] }) {
               )}
             >
               <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300">
-                VIEW WORK
+                {slide.CTA.label}
               </span>
 
               <Lucide

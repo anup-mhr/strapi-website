@@ -6,15 +6,20 @@ import Lucide from "@/components/ui/Lucide";
 import Link from "next/link";
 
 type ImageData = {
-  id: string;
-  title: string;
-  image: string;
+  name: string;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    small?: { url: string };
+    medium?: { url: string };
+    large?: { url: string };
+  };
 };
 
 export default function ImageSlider({ images }: { images: ImageData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const interval = 5000; 
+  const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const nextImage = () =>
@@ -45,7 +50,7 @@ export default function ImageSlider({ images }: { images: ImageData[] }) {
     if (touchStart !== null && touchEnd !== null) {
       const distance = touchStart - touchEnd;
       if (distance > 50) nextImage();
-      else if (distance < -50) prevImage(); 
+      else if (distance < -50) prevImage();
     }
     setTouchStart(null);
     setTouchEnd(null);
@@ -67,11 +72,14 @@ export default function ImageSlider({ images }: { images: ImageData[] }) {
           {images.map((img, index) => (
             <div key={index} className="relative min-w-full aspect-video">
               <Image
-                src={img.image}
-                alt={img.title}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${img.formats?.large?.url }`}
+                alt={img.name}
                 fill
+                sizes="(max-width: 640px) 100vw, 
+         (max-width: 1024px) 50vw, 
+         33vw" 
                 className="object-cover"
-                priority={index === 0} 
+                priority={index === 0}
               />
             </div>
           ))}
