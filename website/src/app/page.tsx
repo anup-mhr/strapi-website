@@ -4,13 +4,15 @@ import Navigation from "@/components/theme/Navigation";
 import { links } from "@/constants/constants";
 
 export default async function Home() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hero-slides?populate=*`);
-  const  slides = await response.json();
-  
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hero-slides?populate=*`
+  );
+  const slides = await response.json();
+
   return (
     <main className="font-dosis">
       <Navigation links={links} theme="dark" />
-      <HeroSlider slides={slides.data} />
+      <HeroSlider slides={slides.data || []} />
 
       <HomeFooter theme="dark" />
     </main>

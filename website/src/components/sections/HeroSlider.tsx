@@ -6,9 +6,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Lucide from "../ui/Lucide";
 
-export default function HeroSlider({ slides = [] }) {
+interface HeroSliderProps {
+  slides: any[];
+}
+
+export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [logoColor, setLogoColor] = useState("dark");
+  const [logoColor, setLogoColor] = useState("light");
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
@@ -20,7 +24,7 @@ export default function HeroSlider({ slides = [] }) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [slides?.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1 + slides.length) % slides.length);
@@ -67,7 +71,7 @@ export default function HeroSlider({ slides = [] }) {
       onTouchEnd={handleTouchEnd}
     >
       {/* Image slides */}
-      {slides.map((slide:any, index) => (
+      {slides.map((slide: any, index) => (
         <div
           key={index}
           className={cn(
