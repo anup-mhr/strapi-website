@@ -11,6 +11,17 @@ import Image from "next/image";
 //   //     id: slug,
 //   //   }));
 // }
+export async function generateStaticParams() {
+  const response = await fetchStrapi("/api/projects", {
+    fields: ["slug"],
+  });
+
+  const projects = response.data || [];
+
+  return projects.map((project: any) => ({
+    project: project.slug,
+  }));
+}
 
 async function getProjects(slug: string) {
   console.log("slug", slug)
