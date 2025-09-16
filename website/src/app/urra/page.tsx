@@ -1,25 +1,11 @@
 import Button from "@/components/common/LinkButton";
-import { fetchStrapi } from "@/lib/strapi";
+import { fetchProjectsByCategory } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
-async function getProjects() {
-  const response = await fetchStrapi("/api/projects", {
-    fields: ["id", "title", "category","slug"],
-    populate: {
-      thumbnail: {
-        fields: ["*"], 
-      },
-    },
-  });
-  console.log(response.data)
-
-  return response.data;
-}
-
 async function Page() {
-  const projects = await getProjects();
+  const projects = await fetchProjectsByCategory("Urra Design Studio");
 
-  if (!projects) return <div>Loading</div>
+  if (!projects) return <div>Loading</div>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">

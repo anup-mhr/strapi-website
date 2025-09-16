@@ -1,14 +1,10 @@
 "use client";
+import { ProjectTitleList } from "@/types/project";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type projectData = {
-  slug: string;
-  title: string;
-};
-
-function Sidebar({ projects }: { projects: projectData[] }) {
+function Sidebar({ projects }: { projects: ProjectTitleList[] }) {
   const pathname = usePathname();
 
   const segment = pathname.split("/").filter(Boolean);

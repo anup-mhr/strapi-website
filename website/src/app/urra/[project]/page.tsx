@@ -1,5 +1,6 @@
 import LinkButton from "@/components/common/LinkButton";
 import { fetchStrapi } from "@/lib/strapi";
+import { fetchProjectListByCategory } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
 // export async function generateStaticParams() {
@@ -11,13 +12,9 @@ import Image from "next/image";
 //   //   }));
 // }
 export async function generateStaticParams() {
-  const response = await fetchStrapi("/api/projects", {
-    fields: ["slug"],
-  });
+  const projects = await fetchProjectListByCategory("Urra Design Studio");
 
-  const projects = response.data || [];
-
-  return projects.map((project: any) => ({
+  return projects.map((project) => ({
     project: project.slug,
   }));
 }
