@@ -24,6 +24,7 @@ export default function ImageSlider({ images }: { images: File[] }) {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
   // Swipe handling

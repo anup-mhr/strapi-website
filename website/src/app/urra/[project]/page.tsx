@@ -6,6 +6,8 @@ import {
 } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Urra Design Studio");
 

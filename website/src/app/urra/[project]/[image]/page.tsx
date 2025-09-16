@@ -1,6 +1,6 @@
 import LinkButton from "@/components/common/LinkButton";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
-import ImageSlider from "./component/ImageSlider";
+import ImageSlider from "../../../../components/sections/product/ImageSlider";
 import { getImageUrl } from "@/lib/helper";
 
 export const revalidate = 86400;
