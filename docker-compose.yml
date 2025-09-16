@@ -9,20 +9,20 @@ services:
       - "1337:1337"
     env_file:
       - ./strapi-backend/.env
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     volumes:
       - ./strapi-backend/public/uploads:/App/public/uploads
 
-  db:
-    image: postgres:17-alpine
-    container_name: pg-container
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: aku_zeliang
-    restart: unless-stopped
-    ports:
-      - 5432:5432
-    volumes:
-      - /var/lib/postgresql/data:/var/lib/postgresql/data
+  # db:
+  #   image: postgres:17-alpine
+  #   container_name: pg-container
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: aku_zeliang
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - /var/lib/postgresql/data:/var/lib/postgresql/data

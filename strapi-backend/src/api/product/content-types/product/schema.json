@@ -25,7 +25,7 @@
     "dimension": {
       "type": "string",
       "required": false,
-      "regex": "^\\d+'\\s*x\\s*\\d+'$"
+      "regex": "^\\d+(\\.\\d+)?(\"?|\\s*)\\s?[xX]\\s?\\d+(\\.\\d+)?(\"?|\\s*)$"
     },
     "CTA": {
       "type": "component",

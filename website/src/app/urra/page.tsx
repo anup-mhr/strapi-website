@@ -2,10 +2,9 @@ import Button from "@/components/common/LinkButton";
 import { fetchStrapi } from "@/lib/strapi";
 import Image from "next/image";
 
-
 async function getProjects() {
   const response = await fetchStrapi("/api/projects", {
-    fields: ["id", "title", "category"],
+    fields: ["id", "title", "category","slug"],
     populate: {
       thumbnail: {
         fields: ["*"], 
@@ -16,6 +15,7 @@ async function getProjects() {
 
   return response.data;
 }
+
 async function Page() {
   const projects = await getProjects();
 
@@ -25,18 +25,18 @@ async function Page() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
       {projects.map((project: any) => (
         <div
-          key={project.documentId}
+          key={project.slug}
           className="group relative w-full aspect-square overflow-hidden shadow-lg flex items-center justify-center"
         >
           <div className="absolute top-1/2 left-1/2 z-10 w-full h-full group-hover:w-[82%] group-hover:h-[82%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
             <h1 className="uppercase font-semibold text-lg text-white translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
               {project.title}
             </h1>
-            <h1 className="text-white/80 translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
+            <h1 className="text-white/80 uppercase translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
               {project.category}
             </h1>
             <Button
-              href={`/urra/${project.documentId}`}
+              href={`/urra/${project.slug}`}
               className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300"
             >
               VIEW IMAGE

@@ -7,11 +7,12 @@ import ImageSlider from "./component/ImageSlider";
 import { fetchStrapi } from "@/lib/strapi";
 
 async function getProjects(slug: string) {
-  const response = await fetchStrapi(`/api/products/${slug}`, {
+  const response = await fetchStrapi(`/api/products`, {
+    filters: { slug: { $eq: slug } },
     populate: "*"
   });
 
-  return response.data;
+  return response.data[0];
 }
 
 async function page({ params }: { params: Promise<{ image: string }> }) {

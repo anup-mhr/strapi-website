@@ -18,10 +18,10 @@ function Contact() {
       <div>
         <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-screen">
           <Image
-            src="/furniture.jpg"
+            src="/contact.jpg"
             alt="Aku Zeliang contact"
             fill
-            className="object-cover"
+            className="object-cover "
             priority
           />
         </div>
