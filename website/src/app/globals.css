@@ -11,6 +11,9 @@
   --color-foreground: var(--foreground);
   --color-secondary: var(--secondary);
   --font-dosis: var(--font-geist-dosis);
+
+  --breakpoint-custom-lg: 1080px;
+  --breakpoint-custom-md:820px;
 }
 
 @media (prefers-color-scheme: dark) {

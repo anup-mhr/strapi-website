@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type projectData = {
-  documentId: string;
+  slug: string;
   title: string;
 };
 
@@ -15,7 +15,6 @@ function Sidebar({ projects }: { projects: projectData[] }) {
 
   const allWorks = segment.length === 1;
   const slug = segment[1];
-  console.log(segment);
 
   return (
     <div className="text-black z-25 bg-white top-[5rem] md:top-[12rem] hidden md:block sticky self-start uppercase">
@@ -26,11 +25,11 @@ function Sidebar({ projects }: { projects: projectData[] }) {
         ALL WORKS
       </Link>
       <ul className="mt-2 flex flex-col gap-2 text-gray-700 text-sm">
-        {projects?.map((project) => (
-          <li key={project.documentId}>
+        {projects.map((project) => (
+          <li key={project.slug}>
             <Link
-              href={`/urra/${project.documentId}`}
-              className={clsx(slug === project.documentId && "font-semibold")}
+              href={`/urra/${project.slug}`}
+              className={clsx(slug === project.slug && "font-semibold")}
             >
               {project.title}
             </Link>

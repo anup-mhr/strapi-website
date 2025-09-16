@@ -104,7 +104,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
           >
             <h1
               className={cn(
-                "font-semibold mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                "font-semibold capitalize mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
                 "text-lg sm:text-xl md:text-2xl lg:text-xl",
                 logoColor === "light" ? "text-black" : "text-white"
               )}
@@ -114,7 +114,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
             <p
               className={cn(
-                "mb-3 group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                "mb-3 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
                 "text-xs sm:text-sm md:text-base lg:text-sm",
                 logoColor === "light" ? "text-black/80" : "text-white/80"
               )}

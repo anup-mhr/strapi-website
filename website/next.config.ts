@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         port: "1337",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "a23afd4a29da.ngrok-free.app",
+        pathname: "/uploads/**",
+      }
     ],
   },
 };
