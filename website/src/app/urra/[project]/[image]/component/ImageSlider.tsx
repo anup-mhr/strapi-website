@@ -1,29 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Lucide from "@/components/ui/Lucide";
+import { getImageUrl } from "@/lib/helper";
+import { File } from "@/types/heroslide";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
-type ImageData = {
-  name: string;
-  url: string;
-  formats?: {
-    thumbnail?: { url: string };
-    small?: { url: string };
-    medium?: { url: string };
-    large?: { url: string };
-  };
-};
-
-export default function ImageSlider({ images }: { images: ImageData[] }) {
+export default function ImageSlider({ images }: { images: File[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const nextImage = () =>
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length);
   const prevImage = () =>
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
@@ -72,12 +62,12 @@ export default function ImageSlider({ images }: { images: ImageData[] }) {
           {images.map((img, index) => (
             <div key={index} className="relative min-w-full aspect-video">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${img.formats?.large?.url }`}
+                src={getImageUrl(img)}
                 alt={img.name}
                 fill
                 sizes="(max-width: 640px) 100vw, 
          (max-width: 1024px) 50vw, 
-         33vw" 
+         33vw"
                 className="object-cover"
                 priority={index === 0}
               />

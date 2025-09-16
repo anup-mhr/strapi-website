@@ -13,7 +13,7 @@ interface HeroSliderProps {
 
 export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [logoColor, setLogoColor] = useState("light");
+  const [logoColor, setLogoColor] = useState("dark");
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
 

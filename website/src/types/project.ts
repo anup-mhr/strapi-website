@@ -1,4 +1,4 @@
-import { Meta } from "./heroslide";
+import { File, Meta } from "./heroslide";
 
 interface ProjectTitleList {
   id: number;
@@ -12,9 +12,25 @@ interface ProjectList extends ProjectTitleList {
   thumbnail: File;
 }
 
+interface ProjectDetails extends ProjectList {
+  description: string;
+  products: {
+    id: number;
+    documentId: string;
+    name: string;
+    slug: string;
+    thumbnail: File;
+  }[];
+}
+
 interface ProjectListResponse {
   data: ProjectList[];
   meta: Meta;
 }
 
-export type { ProjectList, ProjectListResponse, ProjectTitleList };
+export type {
+  ProjectList,
+  ProjectListResponse,
+  ProjectTitleList,
+  ProjectDetails,
+};

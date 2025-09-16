@@ -1,49 +1,92 @@
 import LinkButton from "@/components/common/LinkButton";
-import { fetchStrapi } from "@/lib/strapi";
-import { fetchProjectListByCategory } from "@/lib/strapiApiCall";
+import { getImageUrl } from "@/lib/helper";
+import {
+  fetchProjectBySlug,
+  fetchProjectListByCategory,
+} from "@/lib/strapiApiCall";
 import Image from "next/image";
 
-// export async function generateStaticParams() {
-//   // TODO: FUTURE
-//   //* RETURN ALL PROJECTS FROM THIS FUNCTION FOR SSG *//
-//   //   const blogSlugs = await getAllBlogSlugs();
-//   //   return blogSlugs.map((slug) => ({
-//   //     id: slug,
-//   //   }));
-// }
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Urra Design Studio");
 
-  return projects.map((project) => ({
+  return projects.slice(0, 5).map((project) => ({
     project: project.slug,
   }));
 }
 
-async function getProjects(slug: string) {
-  console.log("slug", slug);
-  const response = await fetchStrapi(`/api/projects`, {
-    filters: { slug: { $eq: slug } },
-    fields: ["title", "description", "category"],
-    populate: {
-      products: {
-        fields: ["slug", "name"],
-        populate: {
-          images: {
-            fields: ["*"],
-          },
-        },
-      },
-    },
-  });
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ project: string }>;
+}) {
+  try {
+    const slug = (await params).project;
+    const project = await fetchProjectBySlug(slug);
 
-  return response.data[0];
+    const title = project?.title || "Our Projects";
+    const description = project?.description || "Checkout our latest projects";
+    // Get the best image for meta tags
+    const metaImageUrl = project?.thumbnail
+      ? getImageUrl(project.thumbnail)
+      : "";
+
+    const metadata: any = {
+      title,
+      description,
+      robots: "index, follow",
+    };
+
+    // OpenGraph metadata
+    if (project) {
+      metadata.openGraph = {
+        title: title,
+        description: description,
+        images: [
+          {
+            url: metaImageUrl,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      };
+    }
+
+    // Twitter metadata
+    metadata.twitter = {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: [metaImageUrl],
+    };
+
+    // Remove undefined values
+    Object.keys(metadata).forEach((key) => {
+      if (metadata[key] === undefined) {
+        delete metadata[key];
+      }
+    });
+
+    return metadata;
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Projects | Urra Design Studio",
+      description: "Checkout our latest projects",
+    };
+  }
 }
 
 async function page({ params }: { params: Promise<{ project: string }> }) {
   const slug = (await params).project;
 
-  const project = await getProjects(slug);
-  console.log(project);
+  const project = await fetchProjectBySlug(slug);
+  if (!project)
+    return (
+      <div>
+        <h1 className="text-black font-semibold">We will be updating soon.</h1>
+      </div>
+    );
 
   return (
     <div>
@@ -54,9 +97,9 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
         <h1 className="text-black font-semibold">We will be updating soon.</h1>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
-          {project.products.map((product: any, index: number) => (
+          {project.products.map((product) => (
             <div
-              key={index}
+              key={product.documentId}
               className="group relative w-full aspect-square overflow-hidden shadow-lg flex items-center justify-center"
             >
               <div className="absolute top-1/2 left-1/2 z-10 w-full h-full group-hover:w-[82%] group-hover:h-[82%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
@@ -75,7 +118,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
               </div>
 
               <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.images[0].url}`}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.thumbnail.url}`}
                 alt={product.name}
                 fill
                 className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"

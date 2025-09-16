@@ -5,7 +5,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export interface IQueryOptions {
   filters?: Record<string, any>;
   fields?: string[];
-  populate?: string[] | Record<string, any>;
+  populate?: string | string[] | Record<string, any>;
   pagination?: {
     page?: number;
     pageSize?: number;

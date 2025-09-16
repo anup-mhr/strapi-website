@@ -1,35 +1,95 @@
 import LinkButton from "@/components/common/LinkButton";
-import Lucide from "@/components/ui/Lucide";
-import { projects } from "@/constants/constants";
-import Image from "next/image";
-import Link from "next/link";
+import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "./component/ImageSlider";
-import { fetchStrapi } from "@/lib/strapi";
+import { getImageUrl } from "@/lib/helper";
 
-async function getProjects(slug: string) {
-  const response = await fetchStrapi(`/api/products`, {
-    filters: { slug: { $eq: slug } },
-    populate: "*"
-  });
+export const revalidate = 86400;
 
-  return response.data[0];
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ image: string }>;
+}) {
+  try {
+    const slug = (await params).image;
+    const project = await fetchProductBySlug(slug);
+
+    const title = project?.title || "Projects | Urra Design Studio";
+    const description = project?.description || "Checkout our latest products";
+    // Get the best image for meta tags
+    const metaImageUrl = project?.thumbnail
+      ? getImageUrl(project.thumbnail)
+      : "";
+
+    const metadata: any = {
+      title,
+      description,
+      robots: "index, follow",
+    };
+
+    // OpenGraph metadata
+    if (project) {
+      metadata.openGraph = {
+        title: title,
+        description: description,
+        images: [
+          {
+            url: metaImageUrl,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      };
+    }
+
+    // Twitter metadata
+    metadata.twitter = {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: [metaImageUrl],
+    };
+
+    // Remove undefined values
+    Object.keys(metadata).forEach((key) => {
+      if (metadata[key] === undefined) {
+        delete metadata[key];
+      }
+    });
+
+    return metadata;
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Projects | Urra Design Studio",
+      description: "Checkout our latest products",
+    };
+  }
 }
 
 async function page({ params }: { params: Promise<{ image: string }> }) {
   const slug = (await params).image;
-  const data = await getProjects(slug);
-  console.log(data);
-  if (!data) return <div>Loading</div>;
+  const data = await fetchProductBySlug(slug);
+
+  if (!data)
+    return (
+      <div>
+        <h1 className="text-black font-semibold">We will be updating soon.</h1>
+      </div>
+    );
 
   return (
     <div className="text-black tracking-[3px]">
-
-      <ImageSlider images={Array(4).fill(data.images[0])} />
-
+      <ImageSlider images={data.images} />
 
       <div className="text-sm text-gray-800 mb-16">
-        <h1 className="text-black text-base sm:text-lg lg:text-xl uppercase">{data.name}</h1>
-        <h1 className="text-xs sm:text-sm lg:text-base py-2 lg:py-0">URRA DESIGN STUDIO</h1>
+        <h1 className="text-black text-base sm:text-lg lg:text-xl uppercase">
+          {data.name}
+        </h1>
+        <h1 className="text-xs sm:text-sm lg:text-base py-2 lg:py-0">
+          URRA DESIGN STUDIO
+        </h1>
 
         <p className="py-8 tracking-[2px]">{data.description}</p>
 

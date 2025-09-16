@@ -1,10 +1,12 @@
 import { ApiResponse, HeroSlide } from "@/types/heroslide";
 import { fetchStrapi } from "./strapi";
 import {
+  ProjectDetails,
   ProjectList,
   ProjectListResponse,
   ProjectTitleList,
 } from "@/types/project";
+import { ProductDetails } from "@/types/product";
 
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {
@@ -39,7 +41,7 @@ async function fetchProjectListByCategory(
       "/api/projects",
       queryOptions,
       {
-        cache: "force-cache",
+        // cache: "force-cache",
         revalidate: 60 * 30,
       }
     );
@@ -73,9 +75,61 @@ async function fetchProjectsByCategory(
     );
     return data.data;
   } catch (error) {
-    console.error("Error fetching project lists", error);
+    console.error("Error fetching project  lists", error);
     return [];
   }
 }
 
-export { fetchHeroSlides, fetchProjectListByCategory, fetchProjectsByCategory };
+async function fetchProjectBySlug(
+  slug: string
+): Promise<ProjectDetails | null> {
+  try {
+    const queryOptions = {
+      filters: { slug: { $eq: slug } },
+      fields: ["title", "description", "category"],
+      populate: {
+        products: {
+          fields: ["slug", "name"],
+          populate: {
+            thumbnail: {
+              fields: ["*"],
+            },
+          },
+        },
+      },
+    };
+    const data = await fetchStrapi("/api/projects", queryOptions, {
+      revalidate: 60 * 60,
+    });
+    return data.data[0];
+  } catch (error) {
+    console.error("Error fetching project details ", error);
+    return null;
+  }
+}
+
+async function fetchProductBySlug(
+  slug: string
+): Promise<ProductDetails | null> {
+  try {
+    const queryOptions = {
+      filters: { slug: { $eq: slug } },
+      populate: "*",
+    };
+    const data = await fetchStrapi("/api/products", queryOptions, {
+      revalidate: 60 * 30,
+    });
+    return data.data[0];
+  } catch (error) {
+    console.error("Error fetching project details ", error);
+    return null;
+  }
+}
+
+export {
+  fetchHeroSlides,
+  fetchProjectListByCategory,
+  fetchProjectsByCategory,
+  fetchProjectBySlug,
+  fetchProductBySlug,
+};
