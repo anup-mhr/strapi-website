@@ -1,37 +1,18 @@
 import type { NextConfig } from "next";
 
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:1337";
+const url = new URL(backendUrl);
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname:
-          process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/^https?:\/\//, "") ||
-          "",
-        port: "",
+        protocol: url.protocol.replace(":", "") as "http" | "https", // ensure literal type
+        hostname: url.hostname,
+        port: url.port || undefined, // undefined if no port
         pathname: "/uploads/**",
-        search: "",
       },
-      {
-        protocol: "http",
-        hostname:
-          process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/^http?:\/\//, "") || "",
-        port: "",
-        pathname: "/uploads/**",
-        search: "",
-      },
-
-      // Optional: Keep localhost for development
-      ...(process.env.NODE_ENV === "development"
-        ? [
-            {
-              protocol: "http" as const,
-              hostname: "localhost",
-              port: "1337",
-              pathname: "/uploads/**",
-            },
-          ]
-        : []),
     ],
   },
 };
