@@ -34,7 +34,7 @@ export async function fetchStrapi(
     },
     cache: options.cache,
     next: {
-      revalidate: 60 * 1,
+      revalidate: options.revalidate,
     },
   });
 
