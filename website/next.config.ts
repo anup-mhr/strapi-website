@@ -4,16 +4,34 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "1337",
+        protocol: "https",
+        hostname:
+          process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/^https?:\/\//, "") ||
+          "",
+        port: "",
         pathname: "/uploads/**",
+        search: "",
       },
       {
-        protocol: "https",
-        hostname: "a23afd4a29da.ngrok-free.app",
+        protocol: "http",
+        hostname:
+          process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/^http?:\/\//, "") || "",
+        port: "",
         pathname: "/uploads/**",
-      }
+        search: "",
+      },
+
+      // Optional: Keep localhost for development
+      ...(process.env.NODE_ENV === "development"
+        ? [
+            {
+              protocol: "http" as const,
+              hostname: "localhost",
+              port: "1337",
+              pathname: "/uploads/**",
+            },
+          ]
+        : []),
     ],
   },
 };

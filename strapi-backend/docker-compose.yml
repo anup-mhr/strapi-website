@@ -2,28 +2,17 @@ version: "3.9"
 
 services:
   backend:
-    build: ./strapi-backend
+    build: .
     container_name: strapi-backend
     restart: always
     ports:
       - "1337:1337"
     env_file:
-      - ./strapi-backend/.env
+      - ./.env
     depends_on:
       - db
     volumes:
-      - ./strapi-backend/public/uploads:/App/public/uploads
-
-  frontend:
-    build: ./website
-    container_name: aku_zeliang
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    volumes:
-      - ./website/public/:/app/public/
+      - ./public/uploads:/app/public/uploads
 
   db:
     image: postgres:17-alpine
