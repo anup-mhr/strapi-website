@@ -1,12 +1,8 @@
 import LinkButton from "@/components/common/LinkButton";
-import Lucide from "@/components/ui/Lucide";
-import { projects } from "@/constants/constants";
-import Image from "next/image";
-import Link from "next/link";
-import ImageSlider from "./component/ImageSlider";
+import ImageSlider from "../../../../components/common/ImageSlider";
 import { fetchStrapi } from "@/lib/strapi";
 
-async function getProjects(slug: string) {
+async function getProduct(slug: string) {
   const response = await fetchStrapi(`/api/products`, {
     filters: { slug: { $eq: slug } },
     populate: "*"
@@ -17,7 +13,7 @@ async function getProjects(slug: string) {
 
 async function page({ params }: { params: Promise<{ image: string }> }) {
   const slug = (await params).image;
-  const data = await getProjects(slug);
+  const data = await getProduct(slug);
   console.log(data);
   if (!data) return <div>Loading</div>;
 

@@ -13,7 +13,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "a23afd4a29da.ngrok-free.app",
         pathname: "/uploads/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
     ],
   },
 };

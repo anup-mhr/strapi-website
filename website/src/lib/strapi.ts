@@ -7,3 +7,15 @@ export async function fetchStrapi(endpoint: string, options: any = {}) {
     return res.json();
 }
 
+export async function getProjectTitle(category:string) {
+  const response = await fetchStrapi("/api/projects", {
+    fields: ["slug", "title"],
+    filters: {
+      category: {
+        $eq: category, 
+      },
+    },
+  });
+
+  return response.data;
+}
