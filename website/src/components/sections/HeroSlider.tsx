@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Lucide from "../ui/Lucide";
+import { HeroSlide } from "@/types/heroslide";
 
 interface HeroSliderProps {
-  slides: any[];
+  slides: HeroSlide[];
 }
 
 export default function HeroSlider({ slides = [] }: HeroSliderProps) {
@@ -61,8 +62,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
     setTouchEndX(null);
   };
 
-  if (slides.length === 0) return null;
-
   return (
     <section
       className="relative h-svh overflow-hidden group"
@@ -71,89 +70,91 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
       onTouchEnd={handleTouchEnd}
     >
       {/* Image slides */}
-      {slides.map((slide: any, index) => (
-        <div
-          key={index}
-          className={cn(
-            "absolute inset-0 transition-all duration-1000 ease-in-out",
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          )}
-        >
-          <Image
-            key={index}
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.backgroundImage.url}`}
-            alt={"alt"}
-            fill
-            className={cn(
-              "object-cover object-center transition-transform duration-[7000ms] ease-out"
-            )}
-            priority={index === 0}
-            onLoad={() => {
-              setLogoColor(index === currentSlide ? "light" : "dark");
-            }}
-          />
-
-          {/* Content */}
+      {slides &&
+        slides.length > 0 &&
+        slides.map((slide, index) => (
           <div
+            key={index}
             className={cn(
-              "absolute tracking-widest z-10 cursor-default",
-              "bottom-1/5 right-4 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
-              "sm:bottom-1/4",
-              index === currentSlide ? "fadeIn" : ""
+              "absolute inset-0 transition-all duration-1000 ease-in-out",
+              index === currentSlide ? "opacity-100" : "opacity-0"
             )}
           >
-            <h1
+            <Image
+              key={index}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.backgroundImage.url}`}
+              alt={"alt"}
+              fill
               className={cn(
-                "font-semibold capitalize mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
-                "text-lg sm:text-xl md:text-2xl lg:text-xl",
-                logoColor === "light" ? "text-black" : "text-white"
+                "object-cover object-center transition-transform duration-[7000ms] ease-out"
+              )}
+              priority={index === 0}
+              onLoad={() => {
+                setLogoColor(index === currentSlide ? "light" : "dark");
+              }}
+            />
+
+            {/* Content */}
+            <div
+              className={cn(
+                "absolute tracking-widest z-10 cursor-default",
+                "bottom-1/5 right-4 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
+                "sm:bottom-1/4",
+                index === currentSlide ? "fadeIn" : ""
               )}
             >
-              {slide.title}
-            </h1>
-
-            <p
-              className={cn(
-                "mb-3 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
-                "text-xs sm:text-sm md:text-base lg:text-sm",
-                logoColor === "light" ? "text-black/80" : "text-white/80"
-              )}
-            >
-              {slide.subTitle}
-            </p>
-
-            <Link
-              href={slide.CTA.href}
-              className={cn(
-                "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
-                "py-2 sm:py-3 text-xs sm:text-sm",
-                logoColor === "light" ? "text-black" : "text-white"
-              )}
-            >
-              <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300">
-                {slide.CTA.label}
-              </span>
-
-              <Lucide
-                icon="ChevronRight"
-                size={4}
-                className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10 w-3 h-3 sm:w-4 sm:h-4"
-              />
-
-              {/* Animated underline */}
-              <div
+              <h1
                 className={cn(
-                  "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out",
-                  logoColor === "light" ? "bg-black" : "bg-white"
+                  "font-semibold capitalize mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                  "text-lg sm:text-xl md:text-2xl lg:text-xl",
+                  logoColor === "light" ? "text-black" : "text-white"
                 )}
-              />
-            </Link>
-          </div>
+              >
+                {slide.title}
+              </h1>
 
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
-        </div>
-      ))}
+              <p
+                className={cn(
+                  "mb-3 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                  "text-xs sm:text-sm md:text-base lg:text-sm",
+                  logoColor === "light" ? "text-black/80" : "text-white/80"
+                )}
+              >
+                {slide.subTitle}
+              </p>
+
+              <Link
+                href={slide.CTA.href}
+                className={cn(
+                  "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
+                  "py-2 sm:py-3 text-xs sm:text-sm",
+                  logoColor === "light" ? "text-black" : "text-white"
+                )}
+              >
+                <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300">
+                  {slide.CTA.label}
+                </span>
+
+                <Lucide
+                  icon="ChevronRight"
+                  size={4}
+                  className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10 w-3 h-3 sm:w-4 sm:h-4"
+                />
+
+                {/* Animated underline */}
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out",
+                    logoColor === "light" ? "bg-black" : "bg-white"
+                  )}
+                />
+              </Link>
+            </div>
+
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40" />
+          </div>
+        ))}
 
       {/* Navigation */}
       <div className="absolute top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 right-4 sm:right-6 md:right-8">
