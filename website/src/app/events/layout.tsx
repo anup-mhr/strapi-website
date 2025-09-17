@@ -13,9 +13,9 @@ export default async function Layout({ children }: { children: ReactNode }) {
       <Navigation links={links} />
 
       <div className="px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-48 py-28 md:py-44 grid grid-flow-row md:grid-cols-[1fr_3fr] gap-10 tracking-[3px]">
-        <Sidebar projects={projects} />
+        <Sidebar projects={projects} all={"ALL EVENTS"} />
 
-        <main>{children}</main>
+        <main className="min-h-[70vh]">{children}</main>
       </div>
 
       <Footer />

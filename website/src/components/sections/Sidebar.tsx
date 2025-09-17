@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function Sidebar({ projects }: { projects: ProjectTitleList[] }) {
+function Sidebar({ projects , all="ALL WORKS" }: { projects: ProjectTitleList[] , all?:string}) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
@@ -24,7 +24,7 @@ function Sidebar({ projects }: { projects: ProjectTitleList[] }) {
         href={`/${segment[0]}`}
         className={clsx("text-sm", allWorks && !slug && "font-semibold")}
       >
-        ALL WORKS
+        {all}
       </Link>
       <ul className="mt-2 flex flex-col gap-2 text-gray-700 text-sm">
         {projects.map((project) => (

@@ -9,6 +9,9 @@ async function Page() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+      {
+        projects.length === 0 && <div className="text-black">We will be updating soon.</div>
+      }
       {projects.map((project: any) => (
         <div
           key={project.slug}

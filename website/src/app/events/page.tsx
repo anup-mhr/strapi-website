@@ -9,6 +9,9 @@ async function Page() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
+      {
+        projects.length === 0 && <div className="text-black">We will be updating soon.</div>
+      }
       {projects.map((project: any) => (
         <div
           key={project.slug}
@@ -22,7 +25,7 @@ async function Page() {
               {project.category}
             </h1>
             <Button
-              href={`/urra/${project.slug}`}
+              href={`/events/${project.slug}`}
               className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300"
             >
               VIEW IMAGE
