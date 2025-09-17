@@ -18,4 +18,10 @@ export interface ProductEdge {
   node: ProductNode;
 }
 
-
+export interface Collection {
+  node: {
+    id: string;
+    title: string;
+    handle: string;
+  };
+}

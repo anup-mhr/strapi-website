@@ -1,4 +1,4 @@
-import { File, Meta } from "./heroslide";
+import { File, Meta } from "./heroslide.dt";
 
 interface ProjectTitleList {
   id: number;

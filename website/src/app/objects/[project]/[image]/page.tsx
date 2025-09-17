@@ -2,6 +2,8 @@ import ImageSlider from "@/components/common/ImageSlider";
 import ShopifyBuyButton from "@/components/common/ShopifyBuyButton";
 import { mapShopifyImages, shopifyClient } from "@/lib/shopify";
 
+export const revalidate = 300;
+
 export const getProduct = async (handle: string) => {
   const query = `
     {
@@ -75,7 +77,6 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimensions.value}</p>
       </div>
 
-      {/* <LinkButton href={data.CTA.href}>{data.CTA.label}</LinkButton> */}
       <ShopifyBuyButton productId={parseInt(data.id.split("/").pop()!)} />
     </div>
   );

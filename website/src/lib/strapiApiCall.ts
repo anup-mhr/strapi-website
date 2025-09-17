@@ -1,12 +1,12 @@
-import { ApiResponse, HeroSlide } from "@/types/heroslide";
+import { ApiResponse, HeroSlide } from "@/types/heroslide.dt";
 import { fetchStrapi } from "./strapi";
 import {
   ProjectDetails,
   ProjectList,
   ProjectListResponse,
   ProjectTitleList,
-} from "@/types/project";
-import { ProductDetails } from "@/types/product";
+} from "@/types/project.dt";
+import { ProductDetails } from "@/types/product.dt";
 
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {

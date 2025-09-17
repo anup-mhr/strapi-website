@@ -1,12 +1,18 @@
 "use client";
-import { ProjectTitleList } from "@/types/project";
+import { ProjectTitleList } from "@/types/project.dt";
 
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function Sidebar({ projects , all="ALL WORKS" }: { projects: ProjectTitleList[] , all?:string}) {
+function Sidebar({
+  projects,
+  all = "ALL WORKS",
+}: {
+  projects: ProjectTitleList[];
+  all?: string;
+}) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 

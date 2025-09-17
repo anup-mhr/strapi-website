@@ -1,21 +1,7 @@
+import { IOptions, IQueryOptions } from "@/types/strapi.dt";
 import qs from "qs";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-export interface IQueryOptions {
-  filters?: Record<string, any>;
-  fields?: string[];
-  populate?: string | string[] | Record<string, any>;
-  pagination?: {
-    page?: number;
-    pageSize?: number;
-  };
-}
-
-interface IOptions {
-  cache?: RequestCache;
-  revalidate?: number;
-}
 
 export async function fetchStrapi(
   endpoint: string,

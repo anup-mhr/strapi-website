@@ -1,4 +1,4 @@
-import type { ProductImage, ProductNode } from "@/types/shopify";
+import { ProductImage, ProductNode } from "@/types/shopify.dt";
 import { GraphQLClient } from "graphql-request";
 
 export type ImageData = {

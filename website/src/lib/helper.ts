@@ -1,4 +1,4 @@
-import { File } from "@/types/heroslide";
+import { File } from "@/types/heroslide.dt";
 import { ImageData } from "./shopify";
 
 export function getImageUrl(image: File | ImageData): string {

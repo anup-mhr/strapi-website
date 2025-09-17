@@ -1,5 +1,5 @@
-import { CTA, File } from "./heroslide";
-import { ProjectTitleList } from "./project";
+import { CTA, File } from "./heroslide.dt";
+import { ProjectTitleList } from "./project.dt";
 
 interface ProductDetails extends ProjectTitleList {
   description: string;

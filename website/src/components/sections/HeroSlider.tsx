@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Lucide from "../ui/Lucide";
-import { HeroSlide } from "@/types/heroslide";
+import { HeroSlide } from "@/types/heroslide.dt";
 
 interface HeroSliderProps {
   slides: HeroSlide[];

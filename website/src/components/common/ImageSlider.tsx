@@ -3,7 +3,7 @@
 import Lucide from "@/components/ui/Lucide";
 import { getImageUrl } from "@/lib/helper";
 import { ImageData } from "@/lib/shopify";
-import { File } from "@/types/heroslide";
+import { File } from "@/types/heroslide.dt";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";

@@ -8,17 +8,22 @@ declare global {
   }
 }
 
-type ShopifyBuyButtonProps = {
+interface ShopifyBuyButtonProps {
   productId: number;
   storeDomain?: string;
   storefrontAccessToken?: string;
   moneyFormat?: string;
-};
+}
+
+const SHOPIFY_STORE_DOMAIN = process.env
+  .NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN as string;
+const SHOPIFY_STOREFRONT_TOKEN = process.env
+  .NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN as string;
 
 export default function ShopifyBuyButton({
   productId,
-  storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN as string,
-  storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN as string,
+  storeDomain = SHOPIFY_STORE_DOMAIN,
+  storefrontAccessToken = SHOPIFY_STOREFRONT_TOKEN,
   moneyFormat = "Rs{{amount}}",
 }: ShopifyBuyButtonProps) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -28,7 +33,8 @@ export default function ShopifyBuyButton({
     if (initialized.current) return;
     initialized.current = true;
 
-    const scriptURL = "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
+    const scriptURL =
+      "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
 
     const loadScript = (callback: () => void) => {
       if (document.querySelector(`script[src="${scriptURL}"]`)) {
@@ -64,10 +70,15 @@ export default function ShopifyBuyButton({
             options: {
               product: {
                 styles: {
-                  product: { display:"flex", "justify-content":"centre", "align-items":"flex-start" ,margin: "0" },
+                  product: {
+                    display: "flex",
+                    "justify-content": "centre",
+                    "align-items": "flex-start",
+                    margin: "0",
+                  },
                   button: {
                     "border-radius": "0px",
-                    "padding": "20px 40px",
+                    padding: "20px 40px",
                     "text-transform": "uppercase",
                     "font-family": "Geist Dosis, sans-serif",
                     "letter-spacing": "2px",
@@ -95,7 +106,7 @@ export default function ShopifyBuyButton({
                   },
                 },
                 text: { total: "Subtotal", button: "Checkout" },
-                popup: false
+                popup: false,
               },
               toggle: {
                 styles: {
@@ -123,5 +134,10 @@ export default function ShopifyBuyButton({
     }
   }, [productId, storeDomain, storefrontAccessToken, moneyFormat]);
 
-  return <div ref={divRef} className="w-full flex justify-start -translate-y-10"></div>;
+  return (
+    <div
+      ref={divRef}
+      className="w-full flex justify-start -translate-y-10"
+    ></div>
+  );
 }
