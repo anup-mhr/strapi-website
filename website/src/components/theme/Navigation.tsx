@@ -94,7 +94,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex text-base lg:text-lg gap-6 lg:gap-8 xl:gap-10">
+        <ul className="hidden md:flex text-base lg:text-lg gap-4 lg:gap-8 xl:gap-10">
           {links.map((link) => (
             <li key={link.href}>
               <Link
@@ -146,96 +146,103 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div
-            className={cn(
-              "absolute inset-0 backdrop-blur-sm transition-opacity duration-300",
-              theme === "light" ? "bg-white/80" : "bg-black/80"
-            )}
-          />
+      <div
+        className={cn(
+          "fixed inset-0 z-50 md:hidden",
+          isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+        )}
+      >
+        <div
+          className={cn(
+            "absolute inset-0 backdrop-blur-sm transition-opacity duration-300",
+            theme === "light" ? "bg-white/80" : "bg-black/80",
+            isMobileMenuOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={toggleMobileMenu}
+        />
 
-          <div
-            className={cn(
-              "mobile-menu absolute top-0 right-0 h-full w-80 max-w-[80vw] transform transition-transform duration-300 ease-in-out shadow-2xl",
-              theme === "light"
-                ? "bg-white border-l border-gray-200"
-                : "bg-black border-l border-white/10"
-            )}
-          >
-            <div className="flex flex-col h-full">
-              {/* Menu Header */}
-              <div
+        <div
+          className={cn(
+            "mobile-menu absolute top-0 right-0 h-full w-80 max-w-[80vw] transform transition-transform duration-300 ease-in-out shadow-2xl",
+            theme === "light"
+              ? "bg-white border-l border-gray-200"
+              : "bg-black border-l border-white/10",
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          <div className="flex flex-col h-full">
+            {/* Menu Header */}
+            <div
+              className={cn(
+                "flex items-center justify-between p-6 border-b",
+                theme === "light"
+                  ? "border-black-200/20"
+                  : "border-gray-200/20"
+              )}
+            >
+              <span
                 className={cn(
-                  "flex items-center justify-between p-6 border-b",
-                  theme === "light"
-                    ? "border-black-200/20"
-                    : "border-gray-200/20"
+                  "font-semibold text-lg",
+                  theme === "light" ? "text-black" : "text-white"
                 )}
               >
-                <span
-                  className={cn(
-                    "font-semibold text-lg",
-                    theme === "light" ? "text-black" : "text-white"
-                  )}
+                Menu
+              </span>
+              <button
+                onClick={toggleMobileMenu}
+                className={cn(
+                  "w-8 h-8 flex items-center justify-center rounded-full transition-colors",
+                  theme === "light"
+                    ? "hover:bg-gray-100 text-black"
+                    : "hover:bg-white/10 text-white"
+                )}
+                aria-label="Close mobile menu"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Menu
-                </span>
-                <button
-                  onClick={toggleMobileMenu}
-                  className={cn(
-                    "w-8 h-8 flex items-center justify-center rounded-full transition-colors",
-                    theme === "light"
-                      ? "hover:bg-gray-100 text-black"
-                      : "hover:bg-white/10 text-white"
-                  )}
-                  aria-label="Close mobile menu"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Menu Items */}
-              <nav className="flex-1 p-6">
-                <ul className="space-y-6">
-                  {links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className={cn(
-                          "block text-xl font-medium transition-all duration-300 py-2",
-                          theme === "light"
-                            ? "text-gray-800 hover:text-black"
-                            : "text-gray-200 hover:text-white",
-                          pathname === link.href &&
-                          (theme === "light"
-                            ? "text-black border-l-4 border-black pl-4"
-                            : "text-white border-l-4 border-white pl-4")
-                        )}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
+
+            {/* Menu Items */}
+            <nav className="flex-1 p-6">
+              <ul className="space-y-6">
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "block text-xl font-medium transition-all duration-300 py-2",
+                        theme === "light"
+                          ? "text-gray-800 hover:text-black"
+                          : "text-gray-200 hover:text-white",
+                        pathname === link.href &&
+                        (theme === "light"
+                          ? "text-black border-l-4 border-black pl-4"
+                          : "text-white border-l-4 border-white pl-4")
+                      )}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
-      )}
+      </div>
+
     </>
   );
 }

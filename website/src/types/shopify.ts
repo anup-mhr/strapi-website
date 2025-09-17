@@ -17,3 +17,5 @@ export interface ProductNode {
 export interface ProductEdge {
   node: ProductNode;
 }
+
+
