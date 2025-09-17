@@ -6,7 +6,7 @@ import { fetchProjectListByCategory } from "@/lib/strapiApiCall";
 import type { ReactNode } from "react";
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const projects = await fetchProjectListByCategory("Urra Design Studio");
+  const projects = await fetchProjectListByCategory("Events");
 
   return (
     <div className="bg-white h-full w-full font-dosis">
