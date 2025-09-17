@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         port: url.port || undefined, // undefined if no port
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
     ],
   },
 };

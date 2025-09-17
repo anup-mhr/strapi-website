@@ -1,6 +1,7 @@
 import { File } from "@/types/heroslide";
+import { ImageData } from "./shopify";
 
-export function getImageUrl(image: File): string {
+export function getImageUrl(image: File | ImageData): string {
   if (!image?.url) return "/images/placeholder.webp";
 
   const url = image.url;

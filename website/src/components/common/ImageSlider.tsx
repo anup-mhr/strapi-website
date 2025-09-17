@@ -2,12 +2,17 @@
 
 import Lucide from "@/components/ui/Lucide";
 import { getImageUrl } from "@/lib/helper";
+import { ImageData } from "@/lib/shopify";
 import { File } from "@/types/heroslide";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function ImageSlider({ images }: { images: File[] }) {
+export default function ImageSlider({
+  images,
+}: {
+  images: File[] | ImageData[];
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const interval = 5000;
