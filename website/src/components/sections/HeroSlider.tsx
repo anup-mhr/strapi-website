@@ -124,15 +124,15 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               </p>
 
               <Link
-                href={slide.CTA.href}
+                href={slide?.CTA?.href ?? "#"}
                 className={cn(
                   "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
                   "py-2 sm:py-3 text-xs sm:text-sm",
                   logoColor === "light" ? "text-black" : "text-white"
                 )}
               >
-                <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300">
-                  {slide.CTA.label}
+                <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300 capitalize">
+                  {slide?.CTA?.label ?? "view work"}
                 </span>
 
                 <Lucide
