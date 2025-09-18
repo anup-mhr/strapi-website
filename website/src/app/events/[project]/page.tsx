@@ -73,7 +73,7 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "Projects | Urra Design Studio",
+      title: "Projects | Events",
       description: "Checkout our latest projects",
     };
   }

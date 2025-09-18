@@ -14,7 +14,7 @@ export async function generateMetadata({
     const slug = (await params).image;
     const project = await fetchProductBySlug(slug);
 
-    const title = project?.title || "Projects | Urra Design Studio";
+    const title = project?.title || "Projects | Events";
     const description = project?.description || "Checkout our latest products";
     // Get the best image for meta tags
     const metaImageUrl = project?.thumbnail
@@ -62,7 +62,7 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "Projects | Urra Design Studio",
+      title: "Projects | Events",
       description: "Checkout our latest products",
     };
   }
@@ -87,8 +87,8 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <h1 className="text-black text-base sm:text-lg lg:text-xl uppercase">
           {data.name}
         </h1>
-        <h1 className="text-xs sm:text-sm lg:text-base py-2 lg:py-0">
-          URRA DESIGN STUDIO
+        <h1 className="text-xs sm:text-sm lg:text-base py-2 lg:py-0 uppercase">
+          Events
         </h1>
 
         <p className="py-8 tracking-[2px]">{data.description}</p>
@@ -97,7 +97,9 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimension}</p>
       </div>
 
-      <LinkButton href={data.CTA.href}>{data.CTA.label}</LinkButton>
+      <LinkButton href={data?.CTA?.href}>
+        {data?.CTA?.label ?? "Contact us"}
+      </LinkButton>
     </div>
   );
 }
