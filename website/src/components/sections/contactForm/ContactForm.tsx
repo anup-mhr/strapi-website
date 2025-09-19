@@ -106,9 +106,9 @@ function ContactForm({ className }: { className?: string }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-black text-white py-4 px-10 mt-2 w-max uppercase font-light tracking-widest text-sm cursor-pointer"
+        className="bg-black text-white py-4 px-10 mt-2 min-w-48 w-max uppercase font-light tracking-widest text-sm cursor-pointer disabled:opacity-80 disabled:cursor-auto"
       >
-        Send Message
+        {isSubmitting ? "sending..." : "Send Message"}
       </button>
 
       {toast && <Toast message={toast.message} type={toast.type} />}
