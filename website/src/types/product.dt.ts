@@ -8,7 +8,7 @@ interface ProductDetails extends ProjectTitleList {
   thumbnail: File;
   images: File[];
   name: string;
-  CTA: CTA;
+  CTA?: CTA;
 }
 
 export type { ProductDetails };

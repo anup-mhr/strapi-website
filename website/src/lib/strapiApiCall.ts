@@ -20,7 +20,7 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
       queryOptions,
-      { cache: "force-cache", revalidate: 60 * 30 }
+      { revalidate: 60 * 30 }
     );
     return data.data;
   } catch (error) {

@@ -4,16 +4,20 @@ import { ReactNode } from "react";
 
 interface LinkButtonProps {
   children: ReactNode;
-  href: string;
+  href?: string;
   className?: string;
 }
 
-const LinkButton = ({ children, href, className }: LinkButtonProps) => {
+const LinkButton = ({
+  children,
+  href = "/contact",
+  className,
+}: LinkButtonProps) => {
   return (
     <Link
       href={href}
       className={cn(
-        "bg-black text-white py-5 px-10 mt-2 w-max uppercase font-light tracking-widest text-sm",
+        "bg-black text-white py-5 px-10 mt-2 w-max uppercase font-light tracking-widest text-sm group",
         className
       )}
     >

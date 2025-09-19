@@ -7,7 +7,7 @@ import Image from "next/image";
 export const metadata = {
   title: "Aku Zeliang - Contact",
   description:
-    "Creative portfolio showcasing design work across multiple disciplines",
+    "Contact us for collaborations, projects, or just to say hi! We'd love to hear from you.",
 };
 
 function Contact() {

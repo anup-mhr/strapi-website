@@ -73,7 +73,7 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "Projects | Urra Design Studio",
+      title: "Projects | Collaborations",
       description: "Checkout our latest projects",
     };
   }
@@ -112,7 +112,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
                   {project.category}
                 </h1>
                 <LinkButton
-                  href={`/urra/${slug}/${product.slug}`}
+                  href={`/collaborations/${slug}/${product.slug}`}
                   className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300"
                 >
                   VIEW IMAGE

@@ -5,6 +5,12 @@ import { links } from "@/constants/constants";
 import { fetchProjectListByCategory } from "@/lib/strapiApiCall";
 import type { ReactNode } from "react";
 
+export const metadata = {
+  title: "Aku Zeliang - Collaborations",
+  description:
+    "Collaborations portfolio showcasing design work across multiple disciplines",
+};
+
 export default async function Layout({ children }: { children: ReactNode }) {
   const projects = await fetchProjectListByCategory("Collaborations");
 

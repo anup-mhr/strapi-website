@@ -97,7 +97,9 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimension}</p>
       </div>
 
-      <LinkButton href={data.CTA.href}>{data.CTA.label}</LinkButton>
+      <LinkButton href={data?.CTA?.href}>
+        {data?.CTA?.label ?? "Contact us"}
+      </LinkButton>
     </div>
   );
 }
