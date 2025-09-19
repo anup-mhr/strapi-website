@@ -1,10 +1,17 @@
 "use client";
+import Toast from "@/components/common/Toast";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactFrom, contactSchema } from "./schema";
-import { cn } from "@/lib/utils";
 
 function ContactForm({ className }: { className?: string }) {
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -14,13 +21,26 @@ function ContactForm({ className }: { className?: string }) {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = (data: ContactFrom) => {
+  const onSubmit = async (formData: ContactFrom) => {
     try {
-      console.log(data);
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error occured");
+      }
+
+      setToast({ message: "Email sent successfully!", type: "success" });
     } catch (error) {
-      console.log(error);
+      console.log("error occured", error);
+      setToast({ message: "Failed to send email.", type: "error" });
     } finally {
       reset();
+      //clearing toast after 3 sec.
+      setTimeout(() => setToast(null), 3000);
     }
   };
   return (
@@ -90,6 +110,8 @@ function ContactForm({ className }: { className?: string }) {
       >
         Send Message
       </button>
+
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </form>
   );
 }
