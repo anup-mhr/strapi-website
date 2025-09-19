@@ -6,7 +6,7 @@ import {
 } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Collaborations");
@@ -113,14 +113,14 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
                 </h1>
                 <LinkButton
                   href={`/collaborations/${slug}/${product.slug}`}
-                  className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300"
+                  className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300 uppercase"
                 >
                   VIEW IMAGE
                 </LinkButton>
               </div>
 
               <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.thumbnail.url}`}
+                src={getImageUrl(product.thumbnail)}
                 alt={product.name}
                 fill
                 className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"

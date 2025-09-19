@@ -1,4 +1,5 @@
-import Button from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/LinkButton";
+import { getImageUrl } from "@/lib/helper";
 import { fetchProjectsByCategory } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
@@ -9,10 +10,10 @@ async function Page() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
-      {
-        projects.length === 0 && <div className="text-black">We will be updating soon.</div>
-      }
-      {projects.map((project: any) => (
+      {projects.length === 0 && (
+        <div className="text-black">We will be updating soon.</div>
+      )}
+      {projects.map((project) => (
         <div
           key={project.slug}
           className="group relative w-full aspect-square overflow-hidden shadow-lg flex items-center justify-center"
@@ -24,16 +25,16 @@ async function Page() {
             <h1 className="text-white/80 uppercase translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
               {project.category}
             </h1>
-            <Button
+            <LinkButton
               href={`/collaborations/${project.slug}`}
-              className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300"
+              className="scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 delay-300 uppercase"
             >
               VIEW IMAGE
-            </Button>
+            </LinkButton>
           </div>
 
           <Image
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${project.thumbnail.url}`}
+            src={getImageUrl(project.thumbnail)}
             alt={project.title}
             fill
             className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"

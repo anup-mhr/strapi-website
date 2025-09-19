@@ -3,7 +3,7 @@ import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "../../../../components/sections/product/ImageSlider";
 import { getImageUrl } from "@/lib/helper";
 
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -97,7 +97,7 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimension}</p>
       </div>
 
-      <LinkButton href={data?.CTA?.href}>
+      <LinkButton href={data?.CTA?.href} newTab={data?.CTA?.newTab}>
         {data?.CTA?.label ?? "Contact us"}
       </LinkButton>
     </div>

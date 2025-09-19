@@ -6,7 +6,7 @@ import {
 } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Urra Design Studio");
@@ -120,7 +120,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
               </div>
 
               <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.thumbnail.url}`}
+                src={getImageUrl(product.thumbnail)}
                 alt={product.name}
                 fill
                 className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"

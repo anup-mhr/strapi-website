@@ -20,7 +20,7 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
       queryOptions,
-      { revalidate: 60 * 30 }
+      { revalidate: 60 * 5 }
     );
     return data.data;
   } catch (error) {
@@ -42,7 +42,7 @@ async function fetchProjectListByCategory(
       queryOptions,
       {
         // cache: "force-cache",
-        revalidate: 60 * 30,
+        revalidate: 60 * 5,
       }
     );
     return data.data;
@@ -70,7 +70,7 @@ async function fetchProjectsByCategory(
       queryOptions,
       {
         cache: "force-cache",
-        revalidate: 60 * 30,
+        revalidate: 60 * 5,
       }
     );
     return data.data;
@@ -117,7 +117,7 @@ async function fetchProductBySlug(
       populate: "*",
     };
     const data = await fetchStrapi("/api/products", queryOptions, {
-      revalidate: 60 * 30,
+      revalidate: 60 * 5,
     });
     return data.data[0];
   } catch (error) {
