@@ -18,20 +18,20 @@ export const journal = [
         image: "/images/journal.jpeg",
         title: "Travel+Leisure India | April 2025",
         subtitle: "Legacy of Loom",
-        description: "IN a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
+        description: "In a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
     },
     {
         image: "/images/hero.jpeg",
         title: "Travel+Leisure India | April 2025",
-        subtitle: "Legacy of Loom",
-        description: "IN a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
+        subtitle: "Second Sub title",
+        description: "In a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
     }
     ,
     {
         image: "/images/product.png",
         title: "Travel+Leisure India | April 2025",
-        subtitle: "Legacy of Loom",
-        description: "IN a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
+        subtitle: "Third subtitle",
+        description: "In a world chasing convenience and speed, Jesmina Zeliang is a cultural entrepreneur the quiet power of tradition--reviving Nagaland's textile legacy witha modern sensibility , while creating livelihoods that honour heritage, home, and hand.",
     }
     ,
 ]
