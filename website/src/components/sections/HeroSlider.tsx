@@ -1,27 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import LinkButton from "../components/LinkButton";
+import LinkButton from "../LinkButton";
 import { useEffect, useRef, useState } from "react";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 type ImageData = {
-  image: string;
-  title: string;
-  subtitle: string;
-  description: string;
+  url: string;
 };
 
-export default function JournalImageSlider({ images }: { images: ImageData[] }) {
+export default function HeroSlider({ images }: { images: ImageData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const nextImage = () =>
+    setCurrentIndex((prev) => (prev + 1) % images.length);
   const prevImage = () =>
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
-  // Auto-slide
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(nextImage, interval);
@@ -48,11 +45,9 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
     setTouchEnd(null);
   };
 
-  if (images.length === 0) return null;
-
   return (
     <div
-      className="relative w-full min-h-[80vh] overflow-hidden"
+      className="w-full h-screen relative overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -62,49 +57,39 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentIndex ? "opacity-100 z-20" : "opacity-0 z-10"
-          } flex items-center justify-center`}
+          }`}
         >
-          <div className="mx-auto max-w-[55rem] grid grid-cols-2 gap-12">
-            <div className="relative w-full h-[60vh]">
-              <Image
-                src={img.image}
-                alt={img.title}
-                fill
-                className="object-contain w-full h-full"
-                priority={index === 0}
-              />
-            </div>
+          <Image
+            src={img.url}
+            alt="hero"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority={index === 0}
+          />
 
-            <div className="flex flex-col gap-4 justify-center">
-              <h1 className="font-semibold text-2xl">{img.title}</h1>
-
-              <div>
-                <h2 className="font-semibold text-lg">{img.subtitle}</h2>
-                <p>{img.description}</p>
-              </div>
-
-              <LinkButton className="bg-white text-primary-brown outline-1 outline-primary-brown/20">
-                READ STORY
-              </LinkButton>
-            </div>
-          </div>
+          <LinkButton className="absolute bottom-1/4 -translate-y-1 left-1/2 -translate-x-1/2 z-30 bg-primary-brown-dark/50">
+            SHOP ALL
+          </LinkButton>
         </div>
       ))}
 
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-50 absolute top-1/2 left-4 -translate-y-1/2 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="z-50 absolute bottom-1/4 left-6 sm:left-12 md:left-24 lg:left-32 xl:left-48  bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
-        <ChevronsLeft size={32} strokeWidth={0.8} />
+        <ChevronsLeft size={32} strokeWidth={0.8}  />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute top-1/2 right-4 -translate-y-1/2 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="z-50 absolute bottom-1/4  right-6 sm:right-12 md:right-24 lg:right-32 xl:right-48 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
-        <ChevronsRight size={32} strokeWidth={0.8} />
+        <ChevronsRight size={32} strokeWidth={0.8}  />
       </button>
+
+      <div className="bg-black h-screen w-full absolute -z-10"></div>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import Image from "next/image";
-import HeroSlider from "@/sections/HeroSlider";
+import HeroSlider from "@/components/sections/HeroSlider";
 import { heroImages, journal, trending } from "@/constants/constants";
-import Header from "@/sections/Header";
+import Header from "@/components/sections/Header";
 import LinkButton from "@/components/LinkButton";
-import Footer from "@/sections/Footer";
-import JournalImageSlider from "@/sections/JournalImageSlider";
+import Footer from "@/components/sections/Footer";
+import JournalImageSlider from "@/components/sections/JournalImageSlider";
 
 export default function Home() {
   return (
