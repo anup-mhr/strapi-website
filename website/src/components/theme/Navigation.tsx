@@ -70,7 +70,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
     <>
       <div
         className={cn(
-          "fixed z-50 w-full font-dosis px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-48  py-4 md:py-8 flex items-center justify-between tracking-widest text-base md:text-lg transition-all border-transparent duration-300 ease-in-out",
+          "fixed z-50 w-full font-dosis px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44  py-4 md:py-8 flex items-center justify-between tracking-widest text-base md:text-lg transition-all border-transparent duration-300 ease-in-out",
           className,
           theme === "light" ? "text-black" : "text-white",
           isScrolled && [
@@ -94,7 +94,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex text-sm lg:text-base gap-5 lg:gap-7 xl:gap-9">
+        <ul className="hidden md:flex text-sm lg:text-base gap-5 lg:gap-6">
           {links.map((link) => (
             <li key={link.href}>
               <Link
