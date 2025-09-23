@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-09-16T09:12:22.418Z"
+    "x-generation-date": "2025-09-23T09:29:12.984Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -3995,7 +3995,7 @@
             "required": [
               "name",
               "description",
-              "CTA",
+              "images",
               "thumbnail",
               "slug"
             ],
@@ -4116,7 +4116,7 @@
         "required": [
           "name",
           "description",
-          "CTA",
+          "images",
           "thumbnail",
           "slug"
         ],
@@ -5379,7 +5379,8 @@
                 "enum": [
                   "Urra Design Studio",
                   "Collaborations",
-                  "Events"
+                  "Events",
+                  "Objects"
                 ]
               },
               "slug": {
@@ -5554,7 +5555,8 @@
                 "enum": [
                   "Urra Design Studio",
                   "Collaborations",
-                  "Events"
+                  "Events",
+                  "Objects"
                 ]
               },
               "slug": {
@@ -6554,7 +6556,8 @@
                       "enum": [
                         "Urra Design Studio",
                         "Collaborations",
-                        "Events"
+                        "Events",
+                        "Objects"
                       ]
                     },
                     "slug": {
@@ -6807,7 +6810,8 @@
             "enum": [
               "Urra Design Studio",
               "Collaborations",
-              "Events"
+              "Events",
+              "Objects"
             ]
           },
           "slug": {

@@ -420,11 +420,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    CTA: Schema.Attribute.Component<'utilities.link', false> &
-      Schema.Attribute.Required;
+    CTA: Schema.Attribute.Component<'utilities.link', false>;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     dimension: Schema.Attribute.String;
-    images: Schema.Attribute.Media<'images', true>;
+    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -455,7 +454,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
   attributes: {
     category: Schema.Attribute.Enumeration<
-      ['Urra Design Studio', 'Collaborations', 'Events']
+      ['Urra Design Studio', 'Collaborations', 'Events', 'Objects']
     > &
       Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;

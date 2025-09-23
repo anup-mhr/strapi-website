@@ -20,7 +20,8 @@
       "required": true
     },
     "materials": {
-      "type": "string"
+      "type": "string",
+      "required": false
     },
     "dimension": {
       "type": "string",
@@ -31,12 +32,12 @@
       "type": "component",
       "component": "utilities.link",
       "repeatable": false,
-      "required": true
+      "required": false
     },
     "images": {
       "type": "media",
       "multiple": true,
-      "required": false,
+      "required": true,
       "allowedTypes": [
         "images"
       ]
