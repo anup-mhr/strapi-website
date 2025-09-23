@@ -5,10 +5,14 @@ import { getImageUrl } from "@/lib/helper";
 import { File } from "@/types/heroslide";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function ImageSlider({ images }: { images: File[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const pathname = usePathname();
+
+  const parentPath = pathname.split("/").slice(0, -1).join("/") || "/";
 
   const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -49,7 +53,6 @@ export default function ImageSlider({ images }: { images: File[] }) {
 
   return (
     <div className="w-full relative">
-      {/* Image container */}
       <div
         className="relative aspect-video overflow-hidden"
         onTouchStart={handleTouchStart}
@@ -89,7 +92,7 @@ export default function ImageSlider({ images }: { images: File[] }) {
 
       {/* Controls */}
       <div className="flex items-center py-6 lg:py-4 justify-end text-xs gap-6 lg:gap-10">
-        <Link className="hover:opacity-70 transition-opacity" href={"/urra"}>
+        <Link className="hover:opacity-70 transition-opacity" href={parentPath}>
           BACK TO PROJECT
         </Link>
 
