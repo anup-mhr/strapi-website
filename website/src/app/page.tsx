@@ -14,7 +14,7 @@ export default async function Home() {
       <Navigation links={links} theme="dark" />
       <HeroSlider slides={slides} />
 
-      <HomeFooter theme="dark" />
+      <HomeFooter theme="dark" className="hidden md:block" />
     </main>
   );
 }

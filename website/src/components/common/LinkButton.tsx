@@ -20,7 +20,7 @@ const LinkButton = ({
       href={href}
       target={newTab ? "_blank" : "_self"}
       className={cn(
-        "bg-black text-white py-5 px-10 mt-2 w-max uppercase font-light tracking-widest text-sm group",
+        "bg-black text-white py-4 px-10 mt-2 w-max uppercase font-light tracking-widest text-xs group",
         className
       )}
     >

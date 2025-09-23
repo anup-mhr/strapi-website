@@ -22,7 +22,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [slides?.length]);
@@ -86,7 +86,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               alt={"alt"}
               fill
               className={cn(
-                "object-cover object-center transition-transform duration-[7000ms] ease-out"
+                "object-contain scale-120 md:scale-100 md:object-cover object-center transition-transform duration-[7000ms] ease-out"
               )}
               priority={index === 0}
               onLoad={() => {
@@ -98,15 +98,15 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
             <div
               className={cn(
                 "absolute tracking-widest z-10 cursor-default",
-                "bottom-1/5 right-4 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
+                "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
                 "sm:bottom-1/4",
                 index === currentSlide ? "fadeIn" : ""
               )}
             >
               <h1
                 className={cn(
-                  "font-semibold capitalize mb-2 group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
-                  "text-lg sm:text-xl md:text-2xl lg:text-xl",
+                  "font-semibold capitalize group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
+                  "text-sm sm:text-lg",
                   logoColor === "light" ? "text-black" : "text-white"
                 )}
               >
@@ -115,8 +115,8 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
               <p
                 className={cn(
-                  "mb-3 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
-                  "text-xs sm:text-sm md:text-base lg:text-sm",
+                  "mb-2 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
+                  "text-xs sm:text-sm",
                   logoColor === "light" ? "text-black/80" : "text-white/80"
                 )}
               >
@@ -127,11 +127,11 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                 href={slide?.CTA?.href ?? "#"}
                 className={cn(
                   "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
-                  "py-2 sm:py-3 text-xs sm:text-sm",
+                  "py-1 md:py-2 text-xs sm:text-sm",
                   logoColor === "light" ? "text-black" : "text-white"
                 )}
               >
-                <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300 capitalize">
+                <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300 uppercase">
                   {slide?.CTA?.label ?? "view work"}
                 </span>
 

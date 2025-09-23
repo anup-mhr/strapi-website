@@ -11,16 +11,17 @@ interface ProjectList extends ProjectTitleList {
   category: string;
   thumbnail: File;
 }
+interface ProductDetails {
+  id: number;
+  documentId: string;
+  name: string;
+  thumbnail: File;
+  slug: string;
+}
 
 interface ProjectDetails extends ProjectList {
   description: string;
-  products: {
-    id: number;
-    documentId: string;
-    name: string;
-    slug: string;
-    thumbnail: File;
-  }[];
+  products: ProductDetails[];
 }
 
 interface ProjectListResponse {
@@ -29,6 +30,7 @@ interface ProjectListResponse {
 }
 
 export type {
+  ProductDetails,
   ProjectList,
   ProjectListResponse,
   ProjectTitleList,

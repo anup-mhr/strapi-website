@@ -85,7 +85,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         <Link
           href="/"
           className={cn(
-            "header-nav !font-semibold transition-all duration-300 text-sm sm:text-base lg:text-lg",
+            "header-nav !font-semibold transition-all duration-300 text-sm lg:text-base",
             theme === "light" ? "nav-light" : "nav-dark",
             pathname === "/" && "active"
           )}
@@ -94,7 +94,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex text-base lg:text-lg gap-6 lg:gap-8 xl:gap-10">
+        <ul className="hidden md:flex text-sm lg:text-base gap-5 lg:gap-7 xl:gap-9">
           {links.map((link) => (
             <li key={link.href}>
               <Link
@@ -105,8 +105,8 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
                   link.href === "/"
                     ? pathname === "/"
                     : pathname.startsWith(link.href)
-                      ? "active"
-                      : ""
+                    ? "active"
+                    : ""
                 )}
               >
                 {link.label}
@@ -175,7 +175,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
               >
                 <span
                   className={cn(
-                    "font-semibold text-lg",
+                    "font-semibold text-sm lg:text-base uppercase",
                     theme === "light" ? "text-black" : "text-white"
                   )}
                 >
@@ -209,20 +209,20 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
 
               {/* Menu Items */}
               <nav className="flex-1 p-6">
-                <ul className="space-y-6">
+                <ul className="space-y-2">
                   {links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
                         className={cn(
-                          "block text-xl font-medium transition-all duration-300 py-2",
+                          "block text-sm lg:text-base font-medium transition-all duration-300 py-2",
                           theme === "light"
                             ? "text-gray-800 hover:text-black"
                             : "text-gray-200 hover:text-white",
                           pathname === link.href &&
-                          (theme === "light"
-                            ? "text-black border-l-4 border-black pl-4"
-                            : "text-white border-l-4 border-white pl-4")
+                            (theme === "light"
+                              ? "text-black border-l-4 border-black pl-4"
+                              : "text-white border-l-4 border-white pl-4")
                         )}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
