@@ -46,7 +46,7 @@ function ContactForm({ className }: { className?: string }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={cn("flex flex-col gap-7 text-lg font-semibold", className)}
+      className={cn("flex flex-col gap-6 text-sm font-semibold", className)}
     >
       <input
         type="text"
@@ -106,7 +106,7 @@ function ContactForm({ className }: { className?: string }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-black text-white py-4 px-10 mt-2 min-w-48 w-max uppercase font-light tracking-widest text-sm cursor-pointer disabled:opacity-80 disabled:cursor-auto"
+        className="bg-black text-white py-4 px-10 mt-2 min-w-48 w-max uppercase font-light tracking-widest text-xs cursor-pointer disabled:opacity-80 disabled:cursor-auto"
       >
         {isSubmitting ? "sending..." : "Send Message"}
       </button>

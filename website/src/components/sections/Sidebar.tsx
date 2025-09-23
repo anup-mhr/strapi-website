@@ -19,7 +19,7 @@ function Sidebar({
   const slug = segment[1];
 
   return (
-    <div className="text-black z-25 bg-white top-[5rem] md:top-[10rem]  md:block md:sticky self-start uppercase ">
+    <div className="text-black z-25 bg-white top-[5rem] md:top-[10rem] hidden md:block md:sticky self-start uppercase ">
       <div className="hover:font-semibold transition-transform duration-500 ease-in-out hover:transform hover:translate-x-2">
         <Link
           href={`/${segment[0]}`}

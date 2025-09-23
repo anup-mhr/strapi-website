@@ -123,21 +123,21 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         >
           <span
             className={cn(
-              "block w-6 h-0.5 transition-all duration-300",
+              "block w-5 h-0.5 transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "rotate-45 translate-y-2"
             )}
           />
           <span
             className={cn(
-              "block w-6 h-0.5 transition-all duration-300",
+              "block w-5 h-0.5 transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "opacity-0"
             )}
           />
           <span
             className={cn(
-              "block w-6 h-0.5 transition-all duration-300",
+              "block w-5 h-0.5 transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "-rotate-45 -translate-y-2"
             )}

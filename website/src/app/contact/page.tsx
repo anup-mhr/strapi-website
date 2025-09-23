@@ -29,13 +29,11 @@ function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-48 py-16 lg:py-24 bg-white">
           {/* About Section */}
           <div className="text-gray-900 tracking-widest">
-            <h2 className="font-semibold text-black mb-6 text-lg sm:text-xl md:text-2xl">
-              ABOUT ME
-            </h2>
+            <h2 className="font-semibold text-black mb-5 text-lg">ABOUT ME</h2>
 
-            <div className="pl-1 font-dosis text-sm sm:text-base leading-relaxed">
-              <div className="mb-12">
-                <p className="mb-6">
+            <div className="pl-1 font-dosis text-xs sm:text-sm leading-relaxed">
+              <div className="mb-10">
+                <p className="mb-5">
                   I founded URRA in 2014 as a Nagaland-based design studio,
                   working with a small team to bring traditional skills and
                   materials into contemporary furniture, lighting, interiors,

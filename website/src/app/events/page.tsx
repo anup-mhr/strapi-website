@@ -15,6 +15,7 @@ async function Page() {
         <ModifiedImage
           key={project.slug}
           project={project}
+          ctaLabel="VIEW EVENT"
           href={`/events/${project.slug}`}
         />
       ))}
