@@ -105,8 +105,8 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
                   link.href === "/"
                     ? pathname === "/"
                     : pathname.startsWith(link.href)
-                      ? "active"
-                      : ""
+                    ? "active"
+                    : ""
                 )}
               >
                 {link.label}
@@ -221,9 +221,9 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
                           ? "text-gray-800 hover:text-black"
                           : "text-gray-200 hover:text-white",
                         pathname === link.href &&
-                        (theme === "light"
-                          ? "text-black border-r-4 border-black pr-4"
-                          : "text-white border-r-4 border-white pr-4")
+                          (theme === "light"
+                            ? "text-black border-l-4 border-black pl-4"
+                            : "text-white border-l-4 border-white pl-4")
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -236,7 +236,6 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
           </div>
         </div>
       </div>
-
     </>
   );
 }
