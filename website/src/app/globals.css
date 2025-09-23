@@ -3,77 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --secondary: #f6fafd;
+  --primary-brown: #5f3f24;
+  --primary-brown-dark: #411d01;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-secondary: var(--secondary);
-  --font-dosis: var(--font-geist-dosis);
-
-  --breakpoint-custom-lg: 1080px;
-  --breakpoint-custom-md: 820px;
+  --color-primary-brown: var(--primary-brown);
+  --color-primary-brown-dark: var(--primary-brown-dark);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --secondary: #f6fafd;
-  }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-dosis);
-}
 
-.header-nav {
-  @apply relative uppercase font-normal;
-}
-
-.header-nav::after {
-  content: "";
-  display: block;
-  height: 1px;
-  margin: 0.25rem auto 0 auto;
-  width: 0;
-  transition: width 0.3s ease-in;
-}
-.nav-light::after {
-  background-color: black;
-}
-.nav-dark::after {
-  background-color: white;
-}
-
-.header-nav:hover::after {
-  width: 40%;
-}
-
-.header-nav.active {
-  @apply font-medium;
-}
-
-.header-nav.active::after {
-  width: 40%;
-}
-
-.fadeIn {
-  animation-name: fadeIn;
-  animation-duration: 2s;
-  animation-timing-function: ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0px);
-  }
+.padding{
+  @apply px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48
 }
