@@ -91,17 +91,20 @@ export default function ImageSlider({ images }: { images: File[] }) {
       </div>
 
       {/* Controls */}
-      <div className="flex items-center py-6 lg:py-4 justify-end text-xs gap-6 lg:gap-10">
-        <Link className="hover:opacity-70 transition-opacity" href={parentPath}>
+      <div className="flex items-center py-6 lg:py-4 justify-end gap-6 lg:gap-10 px-5 md:px-0">
+        <Link
+          className="hover:opacity-70 transition-opacity text-[10px]"
+          href={parentPath}
+        >
           BACK TO PROJECT
         </Link>
 
-        <div className="inline-flex gap-4 md:gap-6">
+        <div className="inline-flex gap-4 md:gap-6 text-[10px]">
           <button
             onClick={prevImage}
             className="inline-flex items-center uppercase cursor-pointer hover:opacity-70 transition-opacity"
           >
-            <Lucide icon={"ChevronLeft"} size={6} />
+            <Lucide icon={"ChevronLeft"} size={4} />
             <p className="hidden sm:block">PREVIOUS</p>
           </button>
 
@@ -110,7 +113,7 @@ export default function ImageSlider({ images }: { images: File[] }) {
             className="inline-flex items-center  uppercase cursor-pointer hover:opacity-70 transition-opacity"
           >
             <p className="hidden sm:block">NEXT</p>
-            <Lucide icon={"ChevronRight"} size={6} />
+            <Lucide icon={"ChevronRight"} size={4} />
           </button>
         </div>
       </div>
