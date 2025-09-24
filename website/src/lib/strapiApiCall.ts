@@ -1,6 +1,7 @@
 import { ApiResponse, HeroSlide } from "@/types/heroslide";
 import { fetchStrapi } from "./strapi";
 import {
+  AllProjectsAndProducts,
   ProjectDetails,
   ProjectList,
   ProjectListResponse,
@@ -126,10 +127,36 @@ async function fetchProductBySlug(
   }
 }
 
+async function fetchAllProjectsAndProduct(): Promise<
+  AllProjectsAndProducts[] | null
+> {
+  try {
+    const queryOptions = {
+      fields: ["category", "slug"],
+      populate: {
+        products: {
+          fields: ["slug"],
+        },
+      },
+      pagination: {
+        pageSize: 1000,
+      },
+    };
+    const data = await fetchStrapi("/api/projects", queryOptions, {
+      revalidate: 60 * 60,
+    });
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching all project and products ", error);
+    return null;
+  }
+}
+
 export {
   fetchHeroSlides,
   fetchProjectListByCategory,
   fetchProjectsByCategory,
   fetchProjectBySlug,
   fetchProductBySlug,
+  fetchAllProjectsAndProduct,
 };

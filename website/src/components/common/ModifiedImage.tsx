@@ -27,8 +27,6 @@ function ModifiedImage({
     setTimeout(() => setIsTouched(false), 2000);
   };
 
-  console.log("project in modified image", project);
-
   return (
     <div
       className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center"

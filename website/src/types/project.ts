@@ -29,10 +29,19 @@ interface ProjectListResponse {
   meta: Meta;
 }
 
+interface AllProjectsAndProducts {
+  slug: string;
+  category: string;
+  products: {
+    slug: string;
+  }[];
+}
+
 export type {
   ProductDetails,
   ProjectList,
   ProjectListResponse,
   ProjectTitleList,
   ProjectDetails,
+  AllProjectsAndProducts,
 };
