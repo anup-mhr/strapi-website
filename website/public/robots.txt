@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aku-zeliang.com/sitemap.xml
+Sitemap: https://akuzeliang.com/sitemap.xml

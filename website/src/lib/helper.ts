@@ -14,3 +14,10 @@ export function getImageUrl(image: File): string {
 
   return `${baseUrl}${url}`;
 }
+
+export function capitalize(string: string) {
+  return string
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}

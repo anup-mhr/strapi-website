@@ -1,7 +1,7 @@
 import LinkButton from "@/components/common/LinkButton";
+import { capitalize, getImageUrl } from "@/lib/helper";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "../../../../components/sections/product/ImageSlider";
-import { getImageUrl } from "@/lib/helper";
 
 export const revalidate = 300;
 
@@ -14,7 +14,10 @@ export async function generateMetadata({
     const slug = (await params).image;
     const project = await fetchProductBySlug(slug);
 
-    const title = project?.title || "Projects | Events";
+    const title = project?.name
+      ? `Events - ${capitalize(project.name)}`
+      : "Aku Zeliang - Our Projects";
+
     const description = project?.description || "Checkout our latest products";
     // Get the best image for meta tags
     const metaImageUrl = project?.thumbnail

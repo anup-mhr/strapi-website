@@ -1,5 +1,5 @@
 import ModifiedImage from "@/components/common/ModifiedImage";
-import { getImageUrl } from "@/lib/helper";
+import { capitalize, getImageUrl } from "@/lib/helper";
 import {
   fetchProjectBySlug,
   fetchProjectListByCategory,
@@ -24,7 +24,9 @@ export async function generateMetadata({
     const slug = (await params).project;
     const project = await fetchProjectBySlug(slug);
 
-    const title = project?.title || "Our Projects";
+    const title = project?.title
+      ? `Aku Zeliang - ${capitalize(project.title)}`
+      : "Aku Zeliang - Our Projects";
     const description = project?.description || "Checkout our latest projects";
     // Get the best image for meta tags
     const metaImageUrl = project?.thumbnail
