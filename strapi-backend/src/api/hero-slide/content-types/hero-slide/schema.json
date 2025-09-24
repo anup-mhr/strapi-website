@@ -21,21 +21,21 @@
       "repeatable": false
     },
     "subTitle": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "backgroundImage": {
       "type": "media",
       "multiple": false,
+      "required": true,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "mobileViewImage": {
       "type": "media",
       "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images"
       ]

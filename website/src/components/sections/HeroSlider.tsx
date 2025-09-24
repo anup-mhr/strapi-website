@@ -1,11 +1,12 @@
 "use client";
 
+import { getImageUrl } from "@/lib/helper";
 import { cn } from "@/lib/utils";
+import { HeroSlide } from "@/types/heroslide";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Lucide from "../ui/Lucide";
-import { HeroSlide } from "@/types/heroslide";
 
 interface HeroSliderProps {
   slides: HeroSlide[];
@@ -16,16 +17,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [logoColor, setLogoColor] = useState("dark");
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-
-    check();
-    window.addEventListener("resize", check);
-
-    return () => window.removeEventListener("resize", check);
-  }, []);
 
   useEffect(() => {
     if (slides.length === 0) return;
@@ -90,31 +81,44 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               index === currentSlide ? "opacity-100" : "opacity-0"
             )}
           >
+            {/* Desktop Image */}
             <Image
-              key={index}
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${isMobile ? slide.mobileViewImage.url : slide.backgroundImage.url}`}
-              alt="alt"
+              src={getImageUrl(slide.backgroundImage)}
+              alt={slide.title}
               fill
-              className={cn(
-                "scale-120 md:scale-100 object-cover object-center transition-transform duration-[7000ms] ease-out"
-              )}
+              className="hidden custom-md:block object-cover object-center transition-transform duration-[7000ms] ease-out"
               priority={index === 0}
-              onLoad={() => setLogoColor(index === currentSlide ? "light" : "dark")}
+              onLoad={() =>
+                setLogoColor(index === currentSlide ? "light" : "dark")
+              }
+            />
+
+            {/* Mobile Image */}
+            <Image
+              src={getImageUrl(slide.mobileViewImage)}
+              alt={slide.title}
+              fill
+              className="block custom-md:hidden object-cover object-center transition-transform duration-[7000ms] ease-out"
+              priority={index === 0}
+              onLoad={() =>
+                setLogoColor(index === currentSlide ? "light" : "dark")
+              }
             />
 
             {/* Content */}
             <div
               className={cn(
-                "absolute tracking-widest z-10 cursor-default",
-                "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-[12rem] pr-4 md:pr-8 lg:pr-[2rem]",
+                "absolute tracking-widest min-w-36 z-10 cursor-default",
+                "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-[12rem] pr-0 md:pr-8 lg:pr-[2rem]",
                 "sm:bottom-1/4",
                 index === currentSlide ? "fadeIn" : ""
               )}
             >
               <h1
                 className={cn(
-                  "font-semibold capitalize group-hover:scale-110 group-hover:tracking-wider transition-all duration-500 ease-out transform hover:translate-x-2",
-                  "text-sm sm:text-lg",
+                  "font-semibold uppercase transition-all duration-500 ease-out",
+                  "text-xs sm:text-sm",
+                  "hover:translate-x-2",
                   logoColor === "light" ? "text-black" : "text-white"
                 )}
               >
@@ -123,8 +127,9 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
               <p
                 className={cn(
-                  "mb-2 uppercase group-hover:scale-105 group-hover:tracking-widest transition-all duration-500 ease-out delay-75 transform hover:translate-x-1",
-                  "text-xs sm:text-sm",
+                  "mb-2 uppercase transition-all duration-500 ease-out delay-75",
+                  "text-2xs sm:text-xs",
+                  "hover:translate-x-1",
                   logoColor === "light" ? "text-black/80" : "text-white/80"
                 )}
               >
@@ -135,7 +140,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                 href={slide?.CTA?.href ?? "#"}
                 className={cn(
                   "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out delay-150 relative overflow-hidden",
-                  "py-1 md:py-2 text-xs sm:text-sm",
+                  "py-1 md:py-2 text-2xs sm:text-xs",
                   logoColor === "light" ? "text-black" : "text-white"
                 )}
               >
