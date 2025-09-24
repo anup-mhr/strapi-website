@@ -14,6 +14,7 @@ async function Page() {
       {projects.map((project) => (
         <ModifiedImage
           key={project.slug}
+          ctaLabel="VIEW WORK"
           project={project}
           href={`/objects/${project.slug}`}
         />
