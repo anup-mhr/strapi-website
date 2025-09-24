@@ -23,7 +23,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 100);
+      setIsScrolled(scrollTop > 60);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -70,7 +70,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
     <>
       <div
         className={cn(
-          "fixed z-50 w-full font-dosis px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44  py-4 md:py-8 flex items-center justify-between tracking-widest text-base md:text-lg transition-all border-transparent duration-300 ease-in-out",
+          "fixed z-50 w-full font-dosis px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44  py-4 md:py-8 flex items-center justify-between tracking-widest transition-all border-transparent duration-300 ease-in-out",
           className,
           theme === "light" ? "text-black" : "text-white",
           isScrolled && [
@@ -94,7 +94,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex text-sm lg:text-base gap-5 lg:gap-6">
+        <ul className="hidden md:flex text-xs gap-5 lg:gap-6">
           {links.map((link) => (
             <li key={link.href}>
               <Link
@@ -123,21 +123,21 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
         >
           <span
             className={cn(
-              "block w-5 h-0.5 transition-all duration-300",
+              "block w-5 h-[1px] transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "rotate-45 translate-y-2"
             )}
           />
           <span
             className={cn(
-              "block w-5 h-0.5 transition-all duration-300",
+              "block w-5 h-[1px] transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "opacity-0"
             )}
           />
           <span
             className={cn(
-              "block w-5 h-0.5 transition-all duration-300",
+              "block w-5 h-[1px] transition-all duration-300",
               theme === "light" ? "bg-black" : "bg-white",
               isMobileMenuOpen && "-rotate-45 -translate-y-2"
             )}
@@ -176,7 +176,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
             >
               <span
                 className={cn(
-                  "font-semibold text-sm lg:text-base uppercase",
+                  "font-semibold text-xs uppercase",
                   theme === "light" ? "text-black" : "text-white"
                 )}
               >
@@ -216,7 +216,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "block text-sm lg:text-base font-medium transition-all duration-300 py-2",
+                        "block text-xs font-medium transition-all duration-300 py-2",
                         theme === "light"
                           ? "text-gray-800 hover:text-black"
                           : "text-gray-200 hover:text-white",

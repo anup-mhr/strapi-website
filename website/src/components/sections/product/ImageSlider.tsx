@@ -54,7 +54,7 @@ export default function ImageSlider({ images }: { images: File[] }) {
   return (
     <div className="w-full relative">
       <div
-        className="relative aspect-video overflow-hidden"
+        className="relative h-72 md:h-full md:aspect-video overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -64,7 +64,10 @@ export default function ImageSlider({ images }: { images: File[] }) {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((img, index) => (
-            <div key={index} className="relative min-w-full aspect-video">
+            <div
+              key={index}
+              className="relative min-w-full h-72 md:h-full md:aspect-video"
+            >
               <Image
                 src={getImageUrl(img)}
                 alt={img.name}
@@ -91,15 +94,15 @@ export default function ImageSlider({ images }: { images: File[] }) {
       </div>
 
       {/* Controls */}
-      <div className="flex items-center py-6 lg:py-4 justify-end gap-6 lg:gap-10 px-5 md:px-0">
+      <div className="flex items-center py-4 justify-end gap-6 lg:gap-10 px-5 md:px-0">
         <Link
-          className="hover:opacity-70 transition-opacity text-[10px]"
+          className="hover:opacity-70 transition-opacity text-2xs tracking-[2px] uppercase"
           href={parentPath}
         >
           BACK TO PROJECT
         </Link>
 
-        <div className="inline-flex gap-4 md:gap-6 text-[10px]">
+        <div className="inline-flex gap-2 md:gap-6 text-2xs">
           <button
             onClick={prevImage}
             className="inline-flex items-center uppercase cursor-pointer hover:opacity-70 transition-opacity"

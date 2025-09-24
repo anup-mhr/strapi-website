@@ -37,10 +37,10 @@ function ModifiedImage({
     >
       {/* Mobile overlay - always visible on small screens */}
       <div className="absolute top-1/2 left-1/2 z-10 w-full h-full -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-black/30 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-hover:w-[82%] md:group-hover:h-[82%] transition-all duration-500 ease-in-out">
-        <h1 className="uppercase text-base font-semibold text-white translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-100">
+        <h1 className="uppercase text-sm font-semibold text-white translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-100">
           {"name" in project ? project?.name : project?.title}
         </h1>
-        <h1 className="text-white/80 font-medium text-sm uppercase translate-y-0 opacity-100 md:translate-y-6 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-200">
+        <h1 className="text-white/80 font-medium text-xs uppercase translate-y-0 opacity-100 md:translate-y-6 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-200">
           {"category" in project ? project?.category : category}
         </h1>
         <LinkButton
@@ -57,10 +57,10 @@ function ModifiedImage({
           isTouched ? "opacity-100" : "opacity-0"
         }`}
       >
-        <h1 className="uppercase text-base font-semibold text-white">
+        <h1 className="uppercase text-sm font-semibold text-white">
           {"name" in project ? project?.name : project?.title}
         </h1>
-        <h1 className="text-white/80 font-medium text-sm uppercase">
+        <h1 className="text-white/80 font-medium text-xs uppercase">
           {"category" in project ? project?.category : category}
         </h1>
         <LinkButton href={href} className="uppercase mt-2">

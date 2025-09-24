@@ -91,7 +91,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
 
   return (
     <div>
-      <p className="text-black text-sm mb-8 px-5 md:px-0 tracking-widest leading-7">
+      <p className="text-black text-xs mb-8 px-5 md:px-0 tracking-widest leading-7">
         {project.description}
       </p>
       {project.products.length === 0 ? (

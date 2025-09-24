@@ -11,7 +11,7 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
   return (
     <footer
       className={cn(
-        "absolute px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 text-xs sm:text-sm tracking-widest py-4 md:py-6 bottom-0 w-full border-none md:border-t md:border-solid",
+        "absolute px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 text-[10.5px]  tracking-widest py-4 md:py-6 bottom-0 w-full border-none md:border-t md:border-solid",
         className,
         theme === "light"
           ? "text-black border-t-black/50"

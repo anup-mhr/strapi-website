@@ -12,6 +12,8 @@
   --color-secondary: var(--secondary);
   --font-dosis: var(--font-geist-dosis);
 
+  --text-2xs: 10px;
+
   --breakpoint-custom-lg: 1080px;
   --breakpoint-custom-md: 820px;
 }

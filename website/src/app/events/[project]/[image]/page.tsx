@@ -83,15 +83,13 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
     <div className="text-black tracking-[3px]">
       <ImageSlider images={data.images} />
 
-      <div className="text-xs text-gray-800 mb-12 leading-5 px-5 md:px-0">
-        <h1 className="text-black text-sm sm:text-base font-semibold uppercase">
+      <div className="text-2xs text-gray-800 mb-10 leading-5 px-5 md:px-0">
+        <h1 className="text-black text-xs sm:text-sm font-semibold uppercase">
           {data.name}
         </h1>
-        <h1 className="text-xs text-gray-700 sm:text-xs py-0 lg:py-0 uppercase">
-          Events
-        </h1>
+        <h1 className="text-2xs text-gray-700 py-0 uppercase">Events</h1>
 
-        <p className="py-6 tracking-[2px]">{data.description}</p>
+        <p className="py-5 tracking-[2px]">{data.description}</p>
 
         <p>
           Materials: <span className="capitalize">{data.materials}</span>
@@ -99,7 +97,11 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimension}</p>
       </div>
       <div className="px-5 md:px-0">
-        <LinkButton href={data?.CTA?.href} newTab={data?.CTA?.newTab}>
+        <LinkButton
+          href={data?.CTA?.href}
+          newTab={data?.CTA?.newTab}
+          className="py-3"
+        >
           {data?.CTA?.label ?? "Contact us"}
         </LinkButton>
       </div>
