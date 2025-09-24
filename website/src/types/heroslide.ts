@@ -45,6 +45,7 @@ interface HeroSlide {
   CTA: CTA;
   subTitle: string;
   backgroundImage: File;
+  mobileViewImage: File;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

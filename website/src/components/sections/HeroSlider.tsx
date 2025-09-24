@@ -16,6 +16,16 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [logoColor, setLogoColor] = useState("dark");
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+
+    check();
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (slides.length === 0) return;
@@ -82,16 +92,14 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
           >
             <Image
               key={index}
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.backgroundImage.url}`}
-              alt={"alt"}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${isMobile ? slide.mobileViewImage.url : slide.backgroundImage.url}`}
+              alt="alt"
               fill
               className={cn(
-                "object-contain scale-120 md:scale-100 md:object-cover object-center transition-transform duration-[7000ms] ease-out"
+                "scale-120 md:scale-100 object-cover object-center transition-transform duration-[7000ms] ease-out"
               )}
               priority={index === 0}
-              onLoad={() => {
-                setLogoColor(index === currentSlide ? "light" : "dark");
-              }}
+              onLoad={() => setLogoColor(index === currentSlide ? "light" : "dark")}
             />
 
             {/* Content */}

@@ -397,6 +397,7 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
       'api::hero-slide.hero-slide'
     > &
       Schema.Attribute.Private;
+    mobileViewImage: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     subTitle: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
