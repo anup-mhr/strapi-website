@@ -52,7 +52,7 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
 
   return (
     <div
-      className="relative w-full min-h-[60vh] overflow-hidden"
+      className="group relative w-full overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -60,30 +60,28 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
       {images.map((img, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentIndex ? "opacity-100 z-20" : "opacity-0 z-10"
-          } flex items-center justify-center`}
+          className={`transition-opacity duration-1000 ease-in-out ${
+            index === currentIndex ? "opacity-100" : "opacity-0 pointer-events-none absolute inset-0"
+          }`}
         >
-          <div className="mx-auto max-w-[55rem] grid grid-cols-2 gap-12">
-            <div className="relative w-full h-[60vh]">
+          <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-12 items-center p-4">
+            <div className="relative w-full h-[25rem] lg:h-[30rem]">
               <Image
                 src={img.image}
                 alt={img.title}
                 fill
-                className="object-contain w-full h-full"
+                className="object-cover"
                 priority={index === 0}
               />
             </div>
 
             <div className="flex flex-col gap-4 justify-center">
-              <h1 className="font-semibold text-2xl">{img.title}</h1>
-
+              <h1 className="!text-black tagline font-semibold text-xl">{img.title}</h1>
               <div>
-                <h2 className="font-semibold text-lg">{img.subtitle}</h2>
-                <p>{img.description}</p>
+                <h2 className="font-semibold">{img.subtitle}</h2>
+                <p className="font-extralight leading-6">{img.description}</p>
               </div>
-
-              <LinkButton className="bg-white text-primary-brown outline-1 outline-primary-brown/20">
+              <LinkButton className="bg-white text-primary outline-1 outline-primary/20">
                 READ STORY
               </LinkButton>
             </div>
@@ -94,14 +92,14 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-50 absolute top-1/2 left-4 -translate-y-1/2 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="group-hover:block z-50 absolute top-1/2 left-4 -translate-y-1/2 bg-primary/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
         <ChevronsLeft size={32} strokeWidth={0.8} />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute top-1/2 right-4 -translate-y-1/2 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="z-50 absolute top-1/2 right-4 -translate-y-1/2 bg-primary/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
         <ChevronsRight size={32} strokeWidth={0.8} />
       </button>

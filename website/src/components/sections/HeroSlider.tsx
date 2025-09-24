@@ -68,7 +68,7 @@ export default function HeroSlider({ images }: { images: ImageData[] }) {
             priority={index === 0}
           />
 
-          <LinkButton className="absolute bottom-1/4 -translate-y-1 left-1/2 -translate-x-1/2 z-30 bg-primary-brown-dark/50">
+          <LinkButton className="absolute bottom-1/4 -translate-y-1 left-1/2 -translate-x-1/2 z-30 bg-primary/50">
             SHOP ALL
           </LinkButton>
         </div>
@@ -77,14 +77,14 @@ export default function HeroSlider({ images }: { images: ImageData[] }) {
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-50 absolute bottom-1/4 left-6 sm:left-12 md:left-24 lg:left-32 xl:left-48  bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="z-50 absolute bottom-1/4 left-6 sm:left-12 md:left-24 lg:left-32 xl:left-48  bg-primary/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
         <ChevronsLeft size={32} strokeWidth={0.8}  />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute bottom-1/4  right-6 sm:right-12 md:right-24 lg:right-32 xl:right-48 bg-primary-brown-dark/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
+        className="z-50 absolute bottom-1/4  right-6 sm:right-12 md:right-24 lg:right-32 xl:right-48 bg-primary/50 hover:bg-black/40 text-white p-3 rounded-full flex items-center justify-center transition"
       >
         <ChevronsRight size={32} strokeWidth={0.8}  />
       </button>

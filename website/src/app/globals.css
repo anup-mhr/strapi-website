@@ -1,23 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary-brown: #5f3f24;
-  --primary-brown-dark: #411d01;
+  --color-primary: #604025;
+  --color-body: #000000;
+
+  --font-montserrat: var(--font-montserrat);
+  --font-cormorant: var(--font-cormorant);
+  --font-nunito: var(--font-nunito);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary-brown: var(--primary-brown);
-  --color-primary-brown-dark: var(--primary-brown-dark);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-primary);
+
+  --breakpoint-custom-lg:850px;
 }
 
+body{
+  font-family: var(--font-nunito);
+  font-weight: normal;
+}
 
+.padding {
+  @apply px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48;
+}
 
-.padding{
-  @apply px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48
+.nav {
+  @apply text-primary;
+  font-family: var(--font-montserrat);
+}
+
+.tagline {
+  @apply font-bold italic text-primary;
+  font-family: var(--font-cormorant);
+}
+
+.heading {
+  @apply font-semibold text-primary text-3xl md:text-4xl lg:text-5xl;
+  font-family: var(--font-nunito);
+}
+
+.subheading {
+  @apply font-normal italic text-primary text-lg md:text-xl lg:text-2xl;
+  font-family: var(--font-cormorant);
 }
