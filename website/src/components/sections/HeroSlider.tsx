@@ -135,8 +135,8 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                 //   }
                 // }}
               />
-
               {/* Content with staggered animation */}
+
               <div
                 className={cn(
                   "absolute tracking-widest md:min-w-36 z-30 cursor-default",
