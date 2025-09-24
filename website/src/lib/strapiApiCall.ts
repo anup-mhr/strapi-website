@@ -12,7 +12,7 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {
     const queryOptions = {
       fields: ["*"],
-      populate: ["CTA", "backgroundImage"],
+      populate: ["CTA", "backgroundImage", "mobileViewImage"],
       pagination: {
         pageSize: 6,
       },

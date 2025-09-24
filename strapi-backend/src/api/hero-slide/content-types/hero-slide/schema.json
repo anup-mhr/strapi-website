@@ -32,6 +32,13 @@
         "videos",
         "audios"
       ]
+    },
+    "mobileViewImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
