@@ -14,7 +14,7 @@ function Footer() {
         <p>CANE CONCEPT</p>
 
         <p className="mt-6">AKU ZELIANG &copy; {new Date().getFullYear()}</p>
-        <p>INFO@AKUZELIANG.COM</p>
+        <p>hello@akuzeliang.com</p>
       </div>
       {/* Right Section */}
       <p className="text-center md:text-right">TERMS & CONDITIONS</p>

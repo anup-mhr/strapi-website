@@ -53,7 +53,7 @@ function Contact() {
               <div className="flex flex-col space-y-8">
                 <div>
                   <p className="font-medium">Email</p>
-                  <p>info@akuzeliang.com</p>
+                  <p>hello@akuzeliang.com</p>
                 </div>
 
                 <div>

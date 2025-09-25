@@ -34,7 +34,7 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
         </Link>
 
         <p className="hover:opacity-70 transition-opacity cursor-pointer">
-          contact@akuzeliang.com
+          hello@akuzeliang.com
         </p>
       </div>
 
@@ -54,7 +54,7 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
             Follow us on Instagram
           </Link>
           <p className="hover:opacity-70 transition-opacity cursor-pointer text-xs sm:text-sm">
-            contact@akuzeliang.com
+            hello@akuzeliang.com
           </p>
         </div>
       </div> */}
