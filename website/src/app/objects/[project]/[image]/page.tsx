@@ -1,7 +1,8 @@
 import LinkButton from "@/components/common/LinkButton";
+import { MemoizedShopifyBuyButton as ShopifyBuyButton } from "@/components/common/ShopifyBuyButton";
+import ImageSlider from "@/components/sections/product/ImageSlider";
 import { capitalize, getImageUrl } from "@/lib/helper";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
-import ImageSlider from "../../../../components/sections/product/ImageSlider";
 
 export const revalidate = 300;
 
@@ -100,13 +101,18 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         <p>Dimensions: {data.dimension}</p>
       </div>
       <div className="px-5 md:px-0">
-        <LinkButton
-          href={data?.CTA?.href}
-          newTab={data?.CTA?.newTab}
-          className="py-3"
-        >
-          {data?.CTA?.label ?? "Contact us"}
-        </LinkButton>
+        {data.shopifyProductId && (
+          <ShopifyBuyButton productId={data.shopifyProductId} />
+        )}
+        {!data.shopifyProductId && (
+          <LinkButton
+            href={data?.CTA?.href}
+            newTab={data?.CTA?.newTab}
+            className="py-3"
+          >
+            {data?.CTA?.label ?? "Contact us"}
+          </LinkButton>
+        )}
       </div>
     </div>
   );

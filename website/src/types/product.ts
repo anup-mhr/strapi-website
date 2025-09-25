@@ -5,6 +5,7 @@ interface ProductDetails extends ProjectTitleList {
   description: string;
   dimension: string;
   materials: string;
+  shopifyProductId?: string;
   thumbnail: File;
   images: File[];
   name: string;
