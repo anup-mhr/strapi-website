@@ -66,10 +66,6 @@ async function fetchProjectsByCategory(
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
       queryOptions,
-      {
-        cache: "force-cache",
-        // revalidate: 60 * 5,
-      }
     );
     return data.data;
   } catch (error) {
