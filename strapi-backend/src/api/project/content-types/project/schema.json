@@ -23,7 +23,7 @@
     },
     "description": {
       "type": "text",
-      "required": true
+      "required": false
     },
     "thumbnail": {
       "type": "media",

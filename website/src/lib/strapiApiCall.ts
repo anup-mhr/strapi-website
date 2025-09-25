@@ -20,8 +20,8 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     };
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
-      queryOptions,
-      { revalidate: 60 * 5 }
+      queryOptions
+
     );
     return data.data;
   } catch (error) {
@@ -40,11 +40,8 @@ async function fetchProjectListByCategory(
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
-      queryOptions,
-      {
-        // cache: "force-cache",
-        revalidate: 60 * 5,
-      }
+      queryOptions
+  
     );
     return data.data;
   } catch (error) {
@@ -71,7 +68,7 @@ async function fetchProjectsByCategory(
       queryOptions,
       {
         cache: "force-cache",
-        revalidate: 60 * 5,
+        // revalidate: 60 * 5,
       }
     );
     return data.data;
@@ -99,9 +96,7 @@ async function fetchProjectBySlug(
         },
       },
     };
-    const data = await fetchStrapi("/api/projects", queryOptions, {
-      revalidate: 60 * 60,
-    });
+    const data = await fetchStrapi("/api/projects", queryOptions);
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);
@@ -117,9 +112,7 @@ async function fetchProductBySlug(
       filters: { slug: { $eq: slug } },
       populate: "*",
     };
-    const data = await fetchStrapi("/api/products", queryOptions, {
-      revalidate: 60 * 5,
-    });
+    const data = await fetchStrapi("/api/products", queryOptions);
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);
@@ -142,9 +135,7 @@ async function fetchAllProjectsAndProduct(): Promise<
         pageSize: 1000,
       },
     };
-    const data = await fetchStrapi("/api/projects", queryOptions, {
-      revalidate: 60 * 60,
-    });
+    const data = await fetchStrapi("/api/projects", queryOptions);
     return data.data;
   } catch (error) {
     console.error("Error fetching all project and products ", error);

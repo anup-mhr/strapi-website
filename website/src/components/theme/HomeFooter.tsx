@@ -21,17 +21,17 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
       {/* Desktop Layout */}
       <div className="flex flex-col md:flex-row gap-3 md:gap-6 lg:gap-10 items-center justify-between">
         <div className="flex gap-6 lg:gap-8">
-          <p className="hover:opacity-70 transition-opacity cursor-pointer">
+          <a href="https://heirloomnaga.com/" className="hover:opacity-70 transition-opacity cursor-pointer">
             Heirloom Naga
-          </p>
-          <p className="hover:opacity-70 transition-opacity cursor-pointer">
+          </a>
+          <a href="https://caneconcept.com/" className="hover:opacity-70 transition-opacity cursor-pointer">
             Cane Concept
-          </p>
+          </a>
         </div>
 
-        <Link href="/" className="hover:opacity-70 transition-opacity">
+        <a href="https://www.instagram.com/aku1068" className="hover:opacity-70 transition-opacity">
           Follow us on Instagram
-        </Link>
+        </a>
 
         <p className="hover:opacity-70 transition-opacity cursor-pointer">
           hello@akuzeliang.com

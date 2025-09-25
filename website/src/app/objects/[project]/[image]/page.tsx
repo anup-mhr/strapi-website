@@ -92,18 +92,18 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         </h1>
         <h1 className="text-2xs text-gray-700 py-0 uppercase">Objects</h1>
 
-        <p className="py-5 tracking-[2px]">{data.description}</p>
+        {
+          data.description && <p className="py-5 tracking-[2px]">{data.description}</p>
+        }
 
-        {(data.materials || data.dimension) && (
-          <div className="pt-5">
-            {data.materials && (
-              <p>
-                Materials: <span className="capitalize">{data.materials}</span>{" "}
-              </p>
-            )}
-            {data.dimension && <p>Dimensions: {data.dimension}</p>}
-          </div>
-        )}
+        {
+          data.materials && <p> Materials: <span className="capitalize">{data.materials}</span> </p>
+        }
+
+        {
+          data.dimension && <p>Dimensions: {data.dimension}</p>
+        }
+
       </div>
       <div className="px-5 md:px-0">
         <LinkButton

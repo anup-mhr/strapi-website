@@ -94,18 +94,18 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
           URRA DESIGN STUDIO
         </h1>
 
-        <p className="pt-5 tracking-[2px]">{data.description}</p>
+        {
+          data.description && <p className="py-5 tracking-[2px]">{data.description}</p>
+        }
 
-        {(data.materials || data.dimension) && (
-          <div className="pt-5">
-            {data.materials && (
-              <p>
-                Materials: <span className="capitalize">{data.materials}</span>{" "}
-              </p>
-            )}
-            {data.dimension && <p>Dimensions: {data.dimension}</p>}
-          </div>
-        )}
+        {
+          data.materials && <p> Materials: <span className="capitalize">{data.materials}</span> </p>
+        }
+
+        {
+          data.dimension && <p>Dimensions: {data.dimension}</p>
+        }
+
       </div>
       <div className="px-5 md:px-0">
         <LinkButton

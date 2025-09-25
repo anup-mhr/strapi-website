@@ -94,7 +94,13 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
           Collaborations
         </h1>
 
-        <p className="py-5 tracking-[2px]">{data.description}</p>
+        {
+          data.description && <p className="py-5 tracking-[2px]">{data.description}</p>
+        }
+
+        {
+          data.materials && <p> Materials: <span className="capitalize">{data.materials}</span> </p>
+        }
 
         {(data.materials || data.dimension) && (
           <div className="pt-5">

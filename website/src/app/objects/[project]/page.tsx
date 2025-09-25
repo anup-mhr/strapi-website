@@ -93,17 +93,20 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
 
   return (
     <div>
-      <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7">
-        {project.description
-          .split(new RegExp(`(${project.title})`, "gi"))
-          .map((part, index) =>
-            part.toLowerCase() === project.title.toLowerCase() ? (
-              <strong key={index}>{part}</strong>
-            ) : (
-              part
-            )
-          )}
-      </p>
+      {
+        project.description && <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7">
+          {project.description
+            .split(new RegExp(`(${project.title})`, "gi"))
+            .map((part, index) =>
+              part.toLowerCase() === project.title.toLowerCase() ? (
+                <strong key={index}>{part}</strong>
+              ) : (
+                part
+              )
+            )}
+        </p>
+      }
+
       {project.products.length === 0 ? (
         <h1 className="text-black font-semibold">We will be updating soon.</h1>
       ) : (

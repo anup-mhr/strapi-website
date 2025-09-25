@@ -21,7 +21,7 @@ export async function fetchStrapi(
   endpoint: string,
   queryOptions: IQueryOptions = {},
   options: IOptions = {
-    revalidate: 60 * 5,
+    // revalidate: 60 * 5,
   }
 ) {
   const query = qs.stringify(queryOptions, { encodeValuesOnly: true });
