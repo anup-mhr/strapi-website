@@ -61,6 +61,24 @@
       "relation": "manyToOne",
       "target": "api::project.project",
       "inversedBy": "products"
+    },
+    "shopifyBuyButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "shopifyProductId": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "shopifyBuyButton"
+            },
+            true
+          ]
+        }
+      },
+      "required": true
     }
   }
 }

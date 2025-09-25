@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-09-24T05:02:02.846Z"
+    "x-generation-date": "2025-09-25T05:20:27.154Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -4272,7 +4272,8 @@
               "description",
               "images",
               "thumbnail",
-              "slug"
+              "slug",
+              "shopifyProductId"
             ],
             "type": "object",
             "properties": {
@@ -4329,6 +4330,12 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "shopifyBuyButton": {
+                "type": "boolean"
+              },
+              "shopifyProductId": {
+                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -4393,7 +4400,8 @@
           "description",
           "images",
           "thumbnail",
-          "slug"
+          "slug",
+          "shopifyProductId"
         ],
         "properties": {
           "id": {
@@ -5460,6 +5468,12 @@
                         }
                       }
                     },
+                    "shopifyBuyButton": {
+                      "type": "boolean"
+                    },
+                    "shopifyProductId": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -5713,6 +5727,12 @@
                 }
               }
             }
+          },
+          "shopifyBuyButton": {
+            "type": "boolean"
+          },
+          "shopifyProductId": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -6890,6 +6910,12 @@
                       }
                     }
                   }
+                },
+                "shopifyBuyButton": {
+                  "type": "boolean"
+                },
+                "shopifyProductId": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
