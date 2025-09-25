@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     console.log("companyname", companyName);
 
-    const subject = `Aku Zeliang - New Contact Message from ${firstName} ${lastName}`;
+    const subject = `Aku Zeliang - Message from ${firstName} ${lastName}`;
 
     const htmlContent = mailTemplate({
       companyName,
@@ -27,8 +27,8 @@ export async function POST(req: Request) {
 
     const transporter = nodemailer.createTransport({
       host,
-      port: Number(port) || 587,
-      secure: false,
+      port: Number(port) || 465,
+      secure: true,
       auth: {
         user,
         pass,
