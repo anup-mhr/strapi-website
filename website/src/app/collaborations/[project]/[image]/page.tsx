@@ -95,11 +95,14 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         </h1>
 
         <p className="py-5 tracking-[2px]">{data.description}</p>
+        
+        {
+          data.materials && <p> Materials: <span className="capitalize">{data.materials}</span> </p>
+        }
 
-        <p>
-          Materials: <span className="capitalize">{data.materials}</span>
-        </p>
-        <p>Dimensions: {data.dimension}</p>
+        {
+          data.dimension && <p>Dimensions: {data.dimension}</p>
+        }
       </div>
       <div className="px-5 md:px-0">
         <LinkButton
