@@ -3,7 +3,7 @@ import { capitalize, getImageUrl } from "@/lib/helper";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "../../../../components/sections/product/ImageSlider";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -92,9 +92,9 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         </h1>
         <h1 className="text-2xs text-gray-700 py-0 uppercase">Objects</h1>
 
-        {
-          data.description && <p className="py-5 tracking-[2px]">{data.description}</p>
-        }
+        {data.description && (
+          <p className="py-5 tracking-[2px]">{data.description}</p>
+        )}
 
         {(data.materials || data.dimension) && (
           <div className="pt-5">
@@ -106,7 +106,6 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
             {data.dimension && <p>Dimensions: {data.dimension}</p>}
           </div>
         )}
-
       </div>
       <div className="px-5 md:px-0">
         <LinkButton

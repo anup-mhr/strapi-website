@@ -5,7 +5,7 @@ import {
   fetchProjectListByCategory,
 } from "@/lib/strapiApiCall";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Events");
@@ -93,8 +93,8 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
 
   return (
     <div>
-      {
-        project.description && <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7">
+      {project.description && (
+        <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7">
           {project.description
             .split(new RegExp(`(${project.title})`, "gi"))
             .map((part, index) =>
@@ -105,7 +105,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
               )
             )}
         </p>
-      }
+      )}
       {project.products.length === 0 ? (
         <h1 className="text-black font-semibold">We will be updating soon.</h1>
       ) : (

@@ -3,7 +3,7 @@ import { capitalize, getImageUrl } from "@/lib/helper";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "../../../../components/sections/product/ImageSlider";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
