@@ -2,6 +2,7 @@ import LinkButton from "@/components/common/LinkButton";
 import { capitalize, getImageUrl } from "@/lib/helper";
 import { fetchProductBySlug } from "@/lib/strapiApiCall";
 import ImageSlider from "../../../../components/sections/product/ImageSlider";
+import TanstackProviders from "@/provider/TanstackProvider";
 
 export const revalidate = 0;
 
@@ -78,14 +79,17 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
   if (!data)
     return (
       <div>
-        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
-
+        <h1 className="text-black  text-center text-sm font-semibold">
+          Coming soon.
+        </h1>
       </div>
     );
 
   return (
     <div className="text-black tracking-[3px]">
-      <ImageSlider images={data.images} />
+      <TanstackProviders>
+        <ImageSlider images={data.images} />
+      </TanstackProviders>
 
       <div className="text-2xs text-gray-800 mb-10 leading-5 px-5 md:px-0">
         <h1 className="text-black text-xs sm:text-sm font-semibold uppercase">

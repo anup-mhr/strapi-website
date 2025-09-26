@@ -8,6 +8,7 @@ import {
   ProjectTitleList,
 } from "@/types/project";
 import { ProductDetails } from "@/types/product";
+import { useQuery } from "@tanstack/react-query";
 
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {
@@ -100,6 +101,34 @@ async function fetchProjectBySlug(
   }
 }
 
+async function fetchProjectBySlugCache(
+  slug: string
+): Promise<ProjectDetails | null> {
+  try {
+    const queryOptions = {
+      filters: { slug: { $eq: slug } },
+      fields: ["title", "description", "category"],
+      populate: {
+        products: {
+          fields: ["slug", "name"],
+          populate: {
+            thumbnail: {
+              fields: ["*"],
+            },
+          },
+        },
+      },
+    };
+    const data = await fetchStrapi("/api/projects", queryOptions, {
+      revalidate: 60 * 5,
+    });
+    return data.data[0];
+  } catch (error) {
+    console.error("Error fetching project details ", error);
+    return null;
+  }
+}
+
 async function fetchProductBySlug(
   slug: string
 ): Promise<ProductDetails | null> {
@@ -138,6 +167,17 @@ async function fetchAllProjectsAndProduct(): Promise<
     return null;
   }
 }
+export const useProduct = (slug: string | null) => {
+  return useQuery({
+    queryKey: ["product", slug],
+    queryFn: () => {
+      if (!slug) throw new Error("Slug is required");
+      return fetchProjectBySlug(slug);
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!slug,
+  });
+};
 
 export {
   fetchHeroSlides,
@@ -146,4 +186,5 @@ export {
   fetchProjectBySlug,
   fetchProductBySlug,
   fetchAllProjectsAndProduct,
+  fetchProjectBySlugCache,
 };
