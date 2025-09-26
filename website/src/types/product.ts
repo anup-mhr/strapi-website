@@ -2,7 +2,7 @@ import { CTA, File } from "./heroslide";
 import { ProjectTitleList } from "./project";
 
 interface ProductDetails extends ProjectTitleList {
-  description: string;
+  description?: string;
   dimension: string;
   materials: string;
   thumbnail: File;

@@ -20,7 +20,7 @@ interface ProductDetails {
 }
 
 interface ProjectDetails extends ProjectList {
-  description: string;
+  description?: string;
   products: ProductDetails[];
 }
 
