@@ -78,7 +78,7 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
   if (!data)
     return (
       <div>
-        <h1 className="text-black font-semibold">We will be updating soon.</h1>
+        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
       </div>
     );
 
