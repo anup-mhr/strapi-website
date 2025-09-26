@@ -11,6 +11,8 @@ export const metadata = {
     "Collaborations portfolio showcasing design work across multiple disciplines",
 };
 
+export const revalidate = 0;
+
 export default async function Layout({ children }: { children: ReactNode }) {
   const projects = await fetchProjectListByCategory("Collaborations");
 

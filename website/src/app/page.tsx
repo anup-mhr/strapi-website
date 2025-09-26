@@ -4,7 +4,7 @@ import Navigation from "@/components/theme/Navigation";
 import { links } from "@/constants/constants";
 import { fetchHeroSlides } from "@/lib/strapiApiCall";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Home() {
   const slides = await fetchHeroSlides();

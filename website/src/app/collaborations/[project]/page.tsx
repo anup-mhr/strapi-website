@@ -5,7 +5,7 @@ import {
   fetchProjectListByCategory,
 } from "@/lib/strapiApiCall";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const projects = await fetchProjectListByCategory("Collaborations");

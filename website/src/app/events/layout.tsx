@@ -11,6 +11,8 @@ export const metadata = {
     "Events portfolio showcasing design work across multiple disciplines",
 };
 
+export const revalidate = 60;
+
 export default async function Layout({ children }: { children: ReactNode }) {
   const projects = await fetchProjectListByCategory("Events");
 
