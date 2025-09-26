@@ -39,15 +39,16 @@ export function sortProjects(
 
     case "date-asc":
       return sorted.sort((a, b) => {
-        const dateA = new Date(a.createdAt || a.publishedAt || 0);
-        const dateB = new Date(b.createdAt || b.publishedAt || 0);
+        console.log(a);
+        const dateA = new Date(a.projectDate || 0);
+        const dateB = new Date(b.projectDate || 0);
         return dateA.getTime() - dateB.getTime();
       });
 
     case "date-desc":
       return sorted.sort((a, b) => {
-        const dateA = new Date(a.createdAt || a.publishedAt || 0);
-        const dateB = new Date(b.createdAt || b.publishedAt || 0);
+        const dateA = new Date(a.projectDate || 0);
+        const dateB = new Date(b.projectDate || 0);
         return dateB.getTime() - dateA.getTime();
       });
 

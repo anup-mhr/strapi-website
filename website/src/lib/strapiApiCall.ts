@@ -36,7 +36,7 @@ async function fetchProjectListByCategory(
   try {
     const queryOptions = {
       filters: { category: { $eq: category } },
-      fields: ["slug", "title"],
+      fields: ["slug", "title", "projectDate"],
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
@@ -56,7 +56,7 @@ async function fetchProjectsByCategory(
   try {
     const queryOptions = {
       filters: { category: { $eq: category } },
-      fields: ["id", "title", "category", "slug"],
+      fields: ["id", "title", "category", "slug","projectDate"],
       populate: {
         thumbnail: {
           fields: ["*"],

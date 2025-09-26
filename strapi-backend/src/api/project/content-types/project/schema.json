@@ -49,6 +49,10 @@
       "targetField": "title",
       "required": true,
       "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "projectDate": {
+      "type": "date",
+      "required": true
     }
   }
 }
