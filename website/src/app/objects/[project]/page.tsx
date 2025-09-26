@@ -87,8 +87,7 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
   if (!project)
     return (
       <div>
-        <h1 className="text-black font-semibold text-center">
-Coming soon</h1>
+        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
       </div>
     );
 

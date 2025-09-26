@@ -107,8 +107,8 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
         </p>
       )}
       {project.products.length === 0 ? (
-        <h1 className="text-black font-semibold text-center">
-Coming soon</h1>
+        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
+
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
           {project.products.map((product) => (
