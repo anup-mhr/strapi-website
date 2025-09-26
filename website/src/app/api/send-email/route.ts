@@ -9,12 +9,29 @@ const pass = process.env.SMTP_PASS;
 
 export async function POST(req: Request) {
   try {
-    const { companyName, email, firstName, lastName, message, phoneNumber } =
-      await req.json();
+    const {
+      companyName,
+      email,
+      firstName,
+      lastName,
+      message,
+      phoneNumber,
+      category,
+      project,
+      image,
+    } = await req.json();
 
-    console.log("companyname", companyName);
+    let subject = "";
 
-    const subject = `Aku Zeliang - Message from ${firstName} ${lastName}`;
+    if (category && project && image) {
+      subject = `Inquiry - ${category} - ${project} - ${image}`;
+    } else if (category && project) {
+      subject = `Inquiry - ${category} - ${project}`;
+    } else if (category) {
+      subject = `Inquiry - ${category}`;
+    } else {
+      subject = `Inquiry - Aku Zeliang`;
+    }
 
     const htmlContent = mailTemplate({
       companyName,
@@ -36,8 +53,8 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-      from: user,
-      to: user,
+      from: `Aku Zeliang <${user}>`,
+      to: "zeroo3442@gmail.com",
       subject,
       text: message,
       html: htmlContent,

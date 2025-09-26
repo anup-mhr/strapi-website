@@ -21,7 +21,6 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
       queryOptions
-
     );
     return data.data;
   } catch (error) {
@@ -41,7 +40,6 @@ async function fetchProjectListByCategory(
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
       queryOptions
-  
     );
     return data.data;
   } catch (error) {
@@ -56,7 +54,7 @@ async function fetchProjectsByCategory(
   try {
     const queryOptions = {
       filters: { category: { $eq: category } },
-      fields: ["id", "title", "category", "slug","projectDate"],
+      fields: ["id", "title", "category", "slug", "projectDate"],
       populate: {
         thumbnail: {
           fields: ["*"],
@@ -65,7 +63,7 @@ async function fetchProjectsByCategory(
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
-      queryOptions,
+      queryOptions
     );
     return data.data;
   } catch (error) {
@@ -92,7 +90,9 @@ async function fetchProjectBySlug(
         },
       },
     };
-    const data = await fetchStrapi("/api/projects", queryOptions);
+    const data = await fetchStrapi("/api/projects", queryOptions, {
+      // revalidate: 60,
+    });
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);

@@ -1,5 +1,7 @@
 "use client";
 import Toast from "@/components/common/Toast";
+import { useNavigationHistory } from "@/hooks/useNavigationHistory";
+import { capitalize } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -20,13 +22,26 @@ function ContactForm({ className }: { className?: string }) {
   } = useForm<ContactFrom>({
     resolver: zodResolver(contactSchema),
   });
+  const { getPreviousPage } = useNavigationHistory();
 
   const onSubmit = async (formData: ContactFrom) => {
     try {
+      let category = null;
+      let project = null;
+      let image = null;
+
+      const previousPage = getPreviousPage();
+      if (previousPage) {
+        const arr = previousPage.split("/");
+        category = capitalize(arr?.[1]) ?? null;
+        project = capitalize(arr?.[2]?.split("-").join(" ")) ?? null;
+        image = arr?.[3]?.toUpperCase() ?? null;
+      }
+
       const res = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, category, project, image }),
       });
 
       if (!res.ok) {

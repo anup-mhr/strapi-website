@@ -17,7 +17,8 @@ export function getImageUrl(image: File): string {
   return `${baseUrl}${url}`;
 }
 
-export function capitalize(string: string) {
+export function capitalize(string: string | null) {
+  if (!string) return null;
   return string
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
