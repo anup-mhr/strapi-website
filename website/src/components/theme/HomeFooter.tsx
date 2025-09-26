@@ -1,6 +1,4 @@
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
 
 interface HomeFooterProps {
   theme?: "light" | "dark";
@@ -21,15 +19,27 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
       {/* Desktop Layout */}
       <div className="flex flex-col md:flex-row gap-3 md:gap-6 lg:gap-10 items-center justify-between">
         <div className="flex gap-6 lg:gap-8">
-          <a href="https://heirloomnaga.com/" className="hover:opacity-70 transition-opacity cursor-pointer">
+          <a
+            href="https://heirloomnaga.com/"
+            target="_blank"
+            className="hover:opacity-70 transition-opacity cursor-pointer"
+          >
             Heirloom Naga
           </a>
-          <a href="https://caneconcept.com/" className="hover:opacity-70 transition-opacity cursor-pointer">
+          <a
+            href="https://caneconcept.com/"
+            target="_blank"
+            className="hover:opacity-70 transition-opacity cursor-pointer"
+          >
             Cane Concept
           </a>
         </div>
 
-        <a href="https://www.instagram.com/aku1068" className="hover:opacity-70 transition-opacity">
+        <a
+          href="https://www.instagram.com/aku1068"
+          target="_blank"
+          className="hover:opacity-70 transition-opacity"
+        >
           Follow us on Instagram
         </a>
 

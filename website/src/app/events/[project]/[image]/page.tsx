@@ -92,9 +92,9 @@ async function page({ params }: { params: Promise<{ image: string }> }) {
         </h1>
         <h1 className="text-2xs text-gray-700 py-0 uppercase">Events</h1>
 
-        {
-          data.description && <p className="py-5 tracking-[2px]">{data.description}</p>
-        }
+        {data.description && data.description.length > 0 && (
+          <p className="py-5 tracking-[2px]">{data.description}</p>
+        )}
 
         {(data.materials || data.dimension) && (
           <div className="pt-5">
