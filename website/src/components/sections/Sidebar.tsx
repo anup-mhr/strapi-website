@@ -25,12 +25,14 @@ function Sidebar({ projects, all = "ALL WORKS" }: SidebarProps) {
     <div className="text-black z-25 bg-white top-[5rem] md:top-[9rem] hidden md:block md:sticky self-start uppercase">
       <div className="flex items-center justify-between mb-4">
         <div className="hover:font-semibold transition-transform duration-500 ease-in-out hover:transform hover:translate-x-2">
-          <Link
-            href={`/${segment[0]}`}
-            className={clsx("text-xs", allWorks && !slug && "font-semibold")}
-          >
-            {all}
-          </Link>
+          {sortedProjects.length > 0 && (
+            <Link
+              href={`/${segment[0]}`}
+              className={clsx("text-xs", allWorks && !slug && "font-semibold")}
+            >
+              {all}
+            </Link>
+          )}
         </div>
       </div>
 

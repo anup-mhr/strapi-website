@@ -7,9 +7,11 @@ import { ProjectSorter } from "./ProjectShorter";
 
 interface ProjectGridProps {
   projects: ProjectList[];
+  category: "urra" | "objects" | "collaborations" | "events";
+  ctaLabel?: string;
 }
 
-function ProjectGrid({ projects }: ProjectGridProps) {
+function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
   const { currentSort } = useSort();
 
   if (!projects) return <div>Loading</div>;
@@ -33,14 +35,16 @@ function ProjectGrid({ projects }: ProjectGridProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
         {projects.length === 0 && (
-          <div className="text-black">We will be updating soon.</div>
+          <div className="text-black  text-center text-sm font-semibold">
+            Coming soon.
+          </div>
         )}
         {sortedProjects.map((project) => (
           <ModifiedImage
             key={project.slug}
             project={project}
-            ctaLabel="VIEW WORK"
-            href={`/urra/${project.slug}`}
+            ctaLabel={ctaLabel}
+            href={`/${category}/${project.slug}`}
           />
         ))}
       </div>

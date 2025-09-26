@@ -1,26 +1,10 @@
-import ModifiedImage from "@/components/common/ModifiedImage";
+import ProjectGrid from "@/components/common/ProjectGrid";
 import { fetchProjectsByCategory } from "@/lib/strapiApiCall";
 
 async function Page() {
   const projects = await fetchProjectsByCategory("Objects");
 
-  if (!projects) return <div>Loading</div>;
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
-      {projects.length === 0 && (
-        <div className="text-black">We will be updating soon.</div>
-      )}
-      {projects.map((project) => (
-        <ModifiedImage
-          key={project.slug}
-          ctaLabel="VIEW WORK"
-          project={project}
-          href={`/objects/${project.slug}`}
-        />
-      ))}
-    </div>
-  );
+  return <ProjectGrid projects={projects || []} category="objects" />;
 }
 
 export default Page;

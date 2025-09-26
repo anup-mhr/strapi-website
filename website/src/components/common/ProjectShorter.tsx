@@ -41,7 +41,7 @@ export function ProjectSorter() {
     <div className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 text-2xs uppercase tracking-[2px] text-black bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[140px]"
+        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 text-2xs uppercase tracking-[2px] text-black bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
       >
         <span>{currentLabel}</span>
         <ChevronDown
