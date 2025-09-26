@@ -8,7 +8,7 @@ const geistDosis = Dosis({
 });
 
 export const metadata: Metadata = {
-  title: "Aku Zeliang - Portfolio",
+  title: "Aku Zeliang",
   description:
     "Creative portfolio showcasing design work across multiple disciplines",
 };
