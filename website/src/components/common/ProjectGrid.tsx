@@ -21,12 +21,14 @@ function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
   return (
     <div className="space-y-4">
       {/* Mobile sorting control */}
-      <div className="flex px-5 justify-between items-center md:hidden">
-        <span className="text-[9px] uppercase tracking-[2px] text-gray-700">
-          {projects.length} Projects
-        </span>
-        {projects.length > 0 && <ProjectSorter />}
-      </div>
+      {projects.length > 0 && (
+        <div className="flex px-5 justify-between items-center md:hidden">
+          <span className="text-[9px] uppercase tracking-[2px] text-gray-700">
+            {projects.length} Projects
+          </span>
+          {projects.length > 0 && <ProjectSorter />}
+        </div>
+      )}
 
       {/* Desktop sorting control */}
       <div className="hidden md:flex justify-end mb-4">
