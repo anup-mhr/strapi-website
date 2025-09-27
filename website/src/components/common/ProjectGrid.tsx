@@ -22,7 +22,7 @@ function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
     <div className="space-y-4">
       {/* Mobile sorting control */}
       <div className="flex px-5 justify-between items-center md:hidden">
-        <span className="text-2xs uppercase tracking-[2px] text-gray-700">
+        <span className="text-[9px] uppercase tracking-[2px] text-gray-700">
           {projects.length} Projects
         </span>
         {projects.length > 0 && <ProjectSorter />}

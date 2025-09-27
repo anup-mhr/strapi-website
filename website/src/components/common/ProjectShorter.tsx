@@ -8,7 +8,7 @@ const sortOptions = [
     value: "date-desc" as const,
     label: (
       <>
-        Newest <span className="text-sm">→</span> Oldest
+        Newest <span className="text-2xs md:text-sm">→</span> Oldest
       </>
     ),
   },
@@ -16,7 +16,7 @@ const sortOptions = [
     value: "date-asc" as const,
     label: (
       <>
-        Oldest <span className="text-sm">→</span> Newest
+        Oldest <span className="text-2xs md:text-sm">→</span> Newest
       </>
     ),
   },
@@ -41,7 +41,7 @@ export function ProjectSorter() {
     <div className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 text-2xs uppercase tracking-[2px] text-black bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
+        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 text-[9px] uppercase tracking-[2px] text-black bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
       >
         <span>{currentLabel}</span>
         <ChevronDown
@@ -57,7 +57,7 @@ export function ProjectSorter() {
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}
-              className={`block w-full px-4 py-2 text-2xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-[2px] ${
+              className={`block w-full px-4 py-2 text-[9px] text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-[2px] ${
                 currentSort === option.value
                   ? "bg-gray-100  text-black font-semibold"
                   : "text-gray-700"

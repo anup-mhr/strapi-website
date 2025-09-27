@@ -8,7 +8,7 @@ async function Page() {
     <ProjectGrid
       projects={projects || []}
       category="events"
-      ctaLabel="view events"
+      ctaLabel="view event"
     />
   );
 }
