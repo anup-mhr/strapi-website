@@ -87,7 +87,9 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
   if (!project)
     return (
       <div>
-        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
+        <h1 className="text-black  text-center text-sm font-semibold">
+          Coming soon.
+        </h1>
       </div>
     );
 
@@ -107,7 +109,9 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
         </p>
       )}
       {project.products.length === 0 ? (
-        <h1 className="text-black  text-center text-sm font-semibold">Coming soon.</h1>
+        <h1 className="text-black  text-center text-sm font-semibold">
+          Coming soon.
+        </h1>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
           {project.products.map((product) => (
@@ -115,7 +119,6 @@ async function page({ params }: { params: Promise<{ project: string }> }) {
               key={product.documentId}
               project={product}
               category="Events"
-              ctaLabel="VIEW EVENT"
               href={`/events/${slug}/${product.slug}`}
             />
           ))}

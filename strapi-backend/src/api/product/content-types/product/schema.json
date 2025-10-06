@@ -44,14 +44,6 @@
         "images"
       ]
     },
-    "thumbnail": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "slug": {
       "type": "uid",
       "targetField": "name",

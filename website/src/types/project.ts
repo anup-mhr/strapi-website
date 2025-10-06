@@ -14,8 +14,8 @@ interface ProjectList extends ProjectTitleList {
 interface ProductDetails {
   id: number;
   documentId: string;
+  images: File[];
   name: string;
-  thumbnail: File;
   slug: string;
 }
 

@@ -21,8 +21,8 @@ export async function generateMetadata({
 
     const description = project?.description || "Checkout our latest products";
     // Get the best image for meta tags
-    const metaImageUrl = project?.thumbnail
-      ? getImageUrl(project.thumbnail)
+    const metaImageUrl = project?.images?.[0]
+      ? getImageUrl(project.images?.[0])
       : "";
 
     const metadata: any = {

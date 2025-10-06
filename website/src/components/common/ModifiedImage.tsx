@@ -1,10 +1,10 @@
-"use client";
+// "use client";
 import { getImageUrl } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { ProductDetails, ProjectList } from "@/types/project";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+// import { useState } from "react";
 
 function ModifiedImage({
   project,
@@ -17,22 +17,22 @@ function ModifiedImage({
   ctaLabel?: string;
   category?: string;
 }) {
-  const [isTouched, setIsTouched] = useState(false);
+  // const [isTouched, setIsTouched] = useState(false);
 
-  const handleTouchStart = () => {
-    setIsTouched(true);
-  };
+  // const handleTouchStart = () => {
+  //   setIsTouched(true);
+  // };
 
-  const handleTouchEnd = () => {
-    // Keep the overlay visible for a short time on mobile
-    setTimeout(() => setIsTouched(false), 2000);
-  };
+  // const handleTouchEnd = () => {
+  //   // Keep the overlay visible for a short time on mobile
+  //   setTimeout(() => setIsTouched(false), 2000);
+  // };
 
   return (
     <div
       className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      // onTouchStart={handleTouchStart}
+      // onTouchEnd={handleTouchEnd}
     >
       {/* Mobile overlay - always visible on small screens */}
       <Link
@@ -56,7 +56,7 @@ function ModifiedImage({
       </Link>
 
       {/* Touch-based overlay for better mobile interaction */}
-      <Link
+      {/* <Link
         href={href}
         className={`md:hidden absolute top-1/2 left-1/2 z-10 w-[82%] h-[82%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-black/40 transition-all duration-500 ease-in-out ${
           isTouched ? "opacity-100" : "opacity-0"
@@ -76,10 +76,12 @@ function ModifiedImage({
         >
           {ctaLabel}
         </button>
-      </Link>
+      </Link> */}
 
       <Image
-        src={getImageUrl(project.thumbnail)}
+        src={getImageUrl(
+          "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
+        )}
         alt={"name" in project ? project?.name : project?.title}
         fill
         className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"

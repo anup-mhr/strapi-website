@@ -84,7 +84,7 @@ async function fetchProjectBySlug(
         products: {
           fields: ["slug", "name"],
           populate: {
-            thumbnail: {
+            images: {
               fields: ["*"],
             },
           },
@@ -112,7 +112,7 @@ async function fetchProjectBySlugCache(
         products: {
           fields: ["slug", "name"],
           populate: {
-            thumbnail: {
+            images: {
               fields: ["*"],
             },
           },
