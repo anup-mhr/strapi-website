@@ -3,6 +3,7 @@
 :root {
   --color-primary: #604025;
   --color-body: #000000;
+  --color-primary-pink: #c87477;
 
   --font-montserrat: var(--font-montserrat);
   --font-cormorant: var(--font-cormorant);
@@ -11,6 +12,7 @@
 
 @theme inline {
   --color-primary: var(--color-primary);
+  --color-primary-pink: var(--color-primary-pink);
 
   --breakpoint-custom-lg: 850px;
 }

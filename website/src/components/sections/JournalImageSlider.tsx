@@ -81,8 +81,8 @@ export default function JournalImageSlider({ images }: { images: ImageData[] }) 
                 <h2 className="font-semibold">{img.subtitle}</h2>
                 <p className="font-extralight leading-6">{img.description}</p>
               </div>
-              <LinkButton className="bg-white text-primary outline-1 outline-primary/20">
-                READ STORY
+              <LinkButton className="px-0 tracking-normal border-b-1 rounded-none py-0 text-black text-base">
+                Read Story
               </LinkButton>
             </div>
           </div>

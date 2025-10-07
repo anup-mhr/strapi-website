@@ -12,6 +12,30 @@ export const products = [
     }
 ]
 
+export const product = {
+    name: "Slouch Bag 03A",
+    price: 1999,
+    size: "12 x 7 x 10 x 28 inch",
+    material: "Cotton",
+    description:
+        "Expertly made to combine lasting durability with timeless craftsmanship, ideal for daily living.",
+    availability: "2 in stock",
+    slug: "slouch-bag-03a",
+    images: [
+        "/images/product.png",
+        "/images/hero.png",
+        "/images/product.png",
+        "/images/hero.png",
+    ],
+};
+
+export const relatedProducts = [
+    { image: "/images/product.png", title: "Slouch Bag 1A", price: 1999 },
+    { image: "/images/product.png", title: "Slouch Bag 2A", price: 1999 },
+    { image: "/images/product.png", title: "Slouch Bag 4A", price: 1999 },
+    { image: "/images/product.png", title: "Slouch Bag 5A", price: 1999 },
+];
+
 
 export const journal = [
     {
@@ -35,3 +59,46 @@ export const journal = [
     }
     ,
 ]
+
+export const categories = [
+    {
+        name: "Accessories",
+        subcategories: [],
+    },
+    {
+        name: "Bags",
+        subcategories: ["Mini Pouch", "Textile"],
+    },
+    {
+        name: "Bamboo Textiles",
+        subcategories: ["Mekhala Single", "Mekhala Suit", "Shawls", "Scarves"],
+    },
+    {
+        name: "Cotton Throws",
+        subcategories: [],
+    },
+    {
+        name: "Cushion Covers",
+        subcategories: ["16x16", "18x18", "20x20"],
+    },
+    {
+        name: "Eri",
+        subcategories: ["Stoles"],
+    },
+    {
+        name: "Indigenous Naga Crafts",
+        subcategories: ["Umbrellas"],
+    },
+    {
+        name: "Table Runners",
+        subcategories: [],
+    },
+    {
+        name: "Textile Artwork",
+        subcategories: [],
+    },
+    {
+        name: "Wall Decor",
+        subcategories: ["Bamboo & Loin Loom", "Textile"],
+    },
+];

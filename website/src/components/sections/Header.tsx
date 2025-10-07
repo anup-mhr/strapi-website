@@ -65,11 +65,11 @@ const Header = ({ className = "" }: { className?: string }) => {
 
 
       <ul className="hidden md:flex gap-6 ">
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/">SHOP</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/">JOURNAL</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/">ABOUT</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/">CONTACT</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/">CART(0)</Link>
+        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/shop">SHOP</Link>
+        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/journal">JOURNAL</Link>
+        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/about">ABOUT</Link>
+        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/contact">CONTACT</Link>
+        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/cart">CART(0)</Link>
       </ul>
 
       {/* Mobile Hamburger */}
@@ -97,11 +97,11 @@ const Header = ({ className = "" }: { className?: string }) => {
           </button>
         </div>
         <div className="padding flex flex-col gap-8 py-8">
-          <Link href="/" className="">SHOP</Link>
-          <Link href="/" className="">JOURNAL</Link>
-          <Link href="/" className="">ABOUT</Link>
-          <Link href="/" className="">CONTACT</Link>
-          <Link href="/" className="">CART(0)</Link>
+          <Link href="/shop" className="">SHOP</Link>
+          <Link href="/journal" className="">JOURNAL</Link>
+          <Link href="/about" className="">ABOUT</Link>
+          <Link href="/contact" className="">CONTACT</Link>
+          <Link href="/cart" className="">CART(0)</Link>
         </div>
       </div>
     </header>

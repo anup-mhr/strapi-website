@@ -95,11 +95,6 @@ export default function Home() {
         </div>
       </div>
 
-
-      <div className="flex flex-col gap-2 items-center mt-24 mb-12">
-        <Image src={"/images/design.png"} alt={"design"} width={210} height={100} className="w-[150px] sm:w-[180px] lg:w-[210px] mb-2" />
-      </div>
-
       <Footer />
     </div>
   );
