@@ -1,6 +1,6 @@
 import Image from "next/image";
 import HeroSlider from "@/components/sections/HeroSlider";
-import { heroImages, journal, trending } from "@/constants/constants";
+import { heroImages, journal, products } from "@/constants/constants";
 import Header from "@/components/sections/Header";
 import LinkButton from "@/components/LinkButton";
 import Footer from "@/components/sections/Footer";
@@ -27,7 +27,7 @@ export default function Home() {
           </div>
         </div>
 
-        <ProductList products={Array(8).fill(trending[0])} />
+        <ProductList products={Array(8).fill(products[0])} />
       </div>
 
       {/* Sale Section */}
@@ -39,8 +39,7 @@ export default function Home() {
           <LinkButton href="/" className="bg-black">VIEW ALL</LinkButton>
         </div>
 
-        <ProductList products={Array(8).fill(trending[0])} />
-
+        <ProductList products={Array(8).fill(products[0])} />
 
       </div>
 

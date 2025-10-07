@@ -12,10 +12,10 @@
 @theme inline {
   --color-primary: var(--color-primary);
 
-  --breakpoint-custom-lg:850px;
+  --breakpoint-custom-lg: 850px;
 }
 
-body{
+body {
   font-family: var(--font-nunito);
   font-weight: normal;
 }
@@ -42,4 +42,35 @@ body{
 .subheading {
   @apply font-normal italic text-primary text-lg md:text-xl lg:text-2xl;
   font-family: var(--font-cormorant);
+}
+
+.range-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  position: relative;
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+.range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  background: black;
+  border-radius: 9999px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Firefox */
+.range-thumb::-moz-range-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: black;
+  border-radius: 9999px;
+  cursor: pointer;
+  pointer-events: auto;
 }

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "product"
+    "displayName": "Product"
   },
   "options": {
     "draftAndPublish": true
@@ -15,51 +15,58 @@
       "type": "string",
       "required": true
     },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "products"
+    },
+    "sub_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sub-category.sub-category",
+      "inversedBy": "products"
+    },
+    "size": {
+      "type": "blocks",
+      "required": true
+    },
+    "customText": {
+      "type": "blocks"
+    },
+    "stock": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "material": {
+      "type": "blocks"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "originalPrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "sale": {
+      "type": "boolean"
+    },
     "description": {
-      "type": "text",
-      "required": true
-    },
-    "materials": {
-      "type": "string"
-    },
-    "dimension": {
-      "type": "string",
-      "required": false,
-      "regex": "^\\d+(\\.\\d+)?(\"?|\\s*)\\s?[xX]\\s?\\d+(\\.\\d+)?(\"?|\\s*)$"
-    },
-    "CTA": {
-      "type": "component",
-      "component": "utilities.link",
-      "repeatable": false,
-      "required": true
+      "type": "blocks"
     },
     "images": {
       "type": "media",
       "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "thumbnail": {
-      "type": "media",
-      "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "files"
       ]
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "name",
-      "required": true,
-      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-    },
-    "project": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::project.project",
-      "inversedBy": "products"
     }
   }
 }

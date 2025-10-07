@@ -4,7 +4,7 @@ export const heroImages = [
 ]
 
 
-export const trending = [
+export const products = [
     {
         image: "/images/product.png",
         title: "AISHA 2D",
