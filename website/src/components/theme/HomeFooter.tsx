@@ -12,8 +12,8 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
         "absolute px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 text-[10.5px]  tracking-widest py-4 md:py-6 bottom-0 w-full border-none md:border-t md:border-solid",
         className,
         theme === "light"
-          ? "text-black border-t-black/50"
-          : "text-white border-t-gray-200/50"
+          ? "text-black/70 border-t-black/35"
+          : "text-white/70 border-t-gray-200/35"
       )}
     >
       {/* Desktop Layout */}
