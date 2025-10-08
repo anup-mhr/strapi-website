@@ -5,8 +5,18 @@ import Image from "next/image";
 import { cn } from "../../lib/utils";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const navLinks = [
+  { label: "SHOP", href: "/shop" },
+  { label: "JOURNAL", href: "/journal" },
+  { label: "ABOUT", href: "/about" },
+  { label: "CONTACT", href: "/contact" },
+  { label: "CART(0)", href: "/cart" },
+];
 
 const Header = ({ className = "" }: { className?: string }) => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,10 +30,14 @@ const Header = ({ className = "" }: { className?: string }) => {
 
   // Close mobile menu on ESC or outside click
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => e.key === "Escape" && setIsMobileMenuOpen(false);
+    const handleEscape = (e: KeyboardEvent) =>
+      e.key === "Escape" && setIsMobileMenuOpen(false);
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (!target.closest(".mobile-menu") && !target.closest(".hamburger")) {
+      if (
+        !target.closest(".mobile-menu") &&
+        !target.closest(".hamburger")
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -48,12 +62,13 @@ const Header = ({ className = "" }: { className?: string }) => {
       className={cn(
         "fixed w-full z-50 transition-all duration-600 py-6",
         "flex items-center justify-between padding font-semibold",
-          isScrolled
-            ? "bg-white/50 shadow-md backdrop-blur-md py-3"
-            : "bg-transparent ",
+        isScrolled
+          ? "bg-white/50 shadow-md backdrop-blur-md py-3"
+          : "bg-transparent ",
         className
       )}
     >
+
       <Link href="/" className="w-40 lg:w-50 h-14 relative">
         <Image
           src="/images/logo.png"
@@ -63,13 +78,20 @@ const Header = ({ className = "" }: { className?: string }) => {
         />
       </Link>
 
-
-      <ul className="hidden md:flex gap-6 ">
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/shop">SHOP</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/journal">JOURNAL</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/about">ABOUT</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/contact">CONTACT</Link>
-        <Link className="hover:font-bold hover:-translate-y-0.5 transition-all duration-500 ease-in-out" href="/cart">CART(0)</Link>
+      <ul className="hidden md:flex gap-6 text-primary">
+        {navLinks.map(({ label, href }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className={cn(
+                "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5",
+                pathname.startsWith(href) && "text-primary-pink"
+              )}
+            >
+              {label}
+            </Link>
+          </li>
+        ))}
       </ul>
 
       {/* Mobile Hamburger */}
@@ -96,12 +118,20 @@ const Header = ({ className = "" }: { className?: string }) => {
             <X size={24} />
           </button>
         </div>
+
         <div className="padding flex flex-col gap-8 py-8">
-          <Link href="/shop" className="">SHOP</Link>
-          <Link href="/journal" className="">JOURNAL</Link>
-          <Link href="/about" className="">ABOUT</Link>
-          <Link href="/contact" className="">CONTACT</Link>
-          <Link href="/cart" className="">CART(0)</Link>
+          {navLinks.map(({ label, href }) => (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "text-base font-semibold",
+                pathname === href && "text-primary-pink"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>

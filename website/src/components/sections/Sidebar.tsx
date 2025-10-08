@@ -62,7 +62,7 @@ const Sidebar = () => {
                         </span>
                     </div>
 
-                    <button className="mt-3 px-12 rounded-md py-2 bg-primary-pink text-white hover:bg-pink-100">
+                    <button className="mt-3 px-12 rounded-md py-2 bg-primary-pink text-white hover:bg-secondary-pink">
                         FILTER
                     </button>
                 </div>

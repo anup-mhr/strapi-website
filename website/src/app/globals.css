@@ -4,6 +4,7 @@
   --color-primary: #604025;
   --color-body: #000000;
   --color-primary-pink: #c87477;
+  --color-secondary-pink: #eb898c;
 
   --font-montserrat: var(--font-montserrat);
   --font-cormorant: var(--font-cormorant);
@@ -13,7 +14,7 @@
 @theme inline {
   --color-primary: var(--color-primary);
   --color-primary-pink: var(--color-primary-pink);
-
+  --color-secondary-pink: var(--color-secondary-pink);
   --breakpoint-custom-lg: 850px;
 }
 
@@ -37,7 +38,7 @@ body {
 }
 
 .heading {
-  @apply font-semibold text-primary text-3xl md:text-4xl lg:text-5xl;
+  @apply text-black text-3xl md:text-4xl lg:text-5xl;
   font-family: var(--font-nunito);
 }
 

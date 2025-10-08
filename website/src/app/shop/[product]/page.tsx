@@ -4,6 +4,7 @@ import Footer from "@/components/sections/Footer";
 import ProductList from "@/components/sections/ProductList";
 import ProductGallery from "@/components/ProductGallery";
 import { product , relatedProducts } from "@/constants/constants";
+import Heading from "@/components/Heading";
 
 export default async function ProductPage({ params }: { params: Promise<{ product: string }> }) {
     const slug = (await params).product;
@@ -12,18 +13,8 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
         <div>
             <Header />
 
-            <div className="padding pt-[3rem]">
-                <div className="flex flex-col gap-2 items-center mt-14 sm:mt-20 lg:mt-24 mb-12 text-primary">
-                    <Image
-                        src={"/images/design.png"}
-                        alt={"design"}
-                        width={210}
-                        height={100}
-                        className="mb-4"
-                    />
-                    <h1 className="text-5xl heading">SHOP</h1>
-                    <h2 className="text-2xl subheading">Our latest products</h2>
-                </div>
+            <main className="padding pt-[3rem]">
+                <Heading title="SHOP" subtitle="Our latest products" />
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 w-full justify-between gap-8 items-start mb-20">
                     <ProductGallery images={product.images} name={product.name} />
@@ -79,7 +70,7 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
                     </h1>
                     <ProductList products={relatedProducts} />
                 </div>
-            </div>
+            </main>
 
             <Footer />
         </div>

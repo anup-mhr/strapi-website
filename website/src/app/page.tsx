@@ -2,10 +2,10 @@ import Image from "next/image";
 import HeroSlider from "@/components/sections/HeroSlider";
 import { heroImages, journal, products } from "@/constants/constants";
 import Header from "@/components/sections/Header";
-import LinkButton from "@/components/LinkButton";
 import Footer from "@/components/sections/Footer";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
+import Heading from "@/components/Heading";
 
 export default function Home() {
   return (
@@ -15,16 +15,11 @@ export default function Home() {
 
       {/* Trending Section */}
       <div className="padding">
-        <div className="text-3xl text-center py-12 font-semibold">
+        <div className="text-3xl text-center py-12">
 
           <h1 className="tagline text-3xl md:text-4xl lg:text-5xl">Blending heritage with design <br />Empowering artisans, preserving craft, honouring hands.</h1>
 
-          <div className="flex flex-col gap-2 items-center mt-14 sm:mt-20 lg:mt-24 text-primary">
-            <Image src={"/images/design.png"} alt={"design"} width={210} height={100} className="w-[150px] sm:w-[180px] lg:w-[210px] mb-2" />
-            <h1 className="heading">JUST IN</h1>
-            <h2 className="subheading">New & Trending</h2>
-            <LinkButton href="/" className="bg-black">SHOP NOW</LinkButton>
-          </div>
+          <Heading title="JUST IN" subtitle="New & Trending" CTA="SHOP NOW" href="/shop" />
         </div>
 
         <ProductList products={Array(8).fill(products[0])} />
@@ -32,37 +27,20 @@ export default function Home() {
 
       {/* Sale Section */}
       <div className="padding">
-        <div className="flex flex-col gap-2 items-center mt-14 sm:mt-20 lg:mt-24 mb-12 text-primary">
-          <Image src={"/images/design.png"} alt={"design"} width={210} height={100} className="w-[150px] sm:w-[180px] lg:w-[210px] mb-2" />
-          <h1 className="text-5xl heading">SALE</h1>
-          <h2 className="text-2xl subheading">Limited time only</h2>
-          <LinkButton href="/" className="bg-black">VIEW ALL</LinkButton>
-        </div>
+        <Heading title="SALE" subtitle="Limited time only" CTA="VIEW ALL" href="/shop" />
 
         <ProductList products={Array(8).fill(products[0])} />
-
       </div>
 
 
       <div className="padding">
-        <div className="flex flex-col gap-2 items-center mt-14 sm:mt-20 lg:mt-24 mb-6 text-primary">
-          <Image src={"/images/design.png"} alt={"design"} width={210} height={100} className="mb-4" />
-          <h1 className="text-5xl heading">JOURNAL</h1>
-          <h2 className="text-2xl subheading">Stories of Craft, Culture and Change</h2>
-          <LinkButton href="/" className="bg-black">VIEW ALL</LinkButton>
-        </div>
+        <Heading title="JOURNAL" subtitle="Stories of Craft, Culture and Change" CTA="VIEW ALL" href="/journal" />
 
         <JournalImageSlider images={journal} />
       </div>
 
       <div className="padding">
-        <div className="flex flex-col gap-2 items-center mt-14 sm:mt-20 lg:mt-24 mb-12 text-primary">
-          <Image src={"/images/design.png"} alt={"design"} width={210} height={100} className="w-[150px] sm:w-[180px] lg:w-[210px] mb-2" />
-          <h1 className="text-5xl heading">ABOUT</h1>
-          <h2 className="text-2xl subheading">Our Journey</h2>
-          <LinkButton href="/" className="bg-black">READ MORE</LinkButton>
-        </div>
-
+        <Heading title="ABOUT" subtitle="Our Journey" CTA="READ MORE" href="/about" />
 
         <div className="grid grid-cols-1 2xl:grid-cols-2 gap-y-4 gap-x-1 mx-auto max-w-sm sm:max-w-2xl 2xl:max-w-full">
           <div className="flex flex-col sm:flex-row bg-black">

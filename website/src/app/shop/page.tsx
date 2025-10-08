@@ -1,3 +1,4 @@
+import Heading from "@/components/Heading";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
@@ -9,11 +10,9 @@ export default function Page() {
     return (
         <div>
             <Header />
-            <div className="padding pt-[12rem]">
-                <div className="text-center mb-16">
-                    <h1 className="text-3xl font-bold">SHOP</h1>
-                    <h2 className="tagline text-lg">Our latest products</h2>
-                </div>
+
+            <main className="padding py-12">
+                <Heading title="SHOP" subtitle="Our latest products" />
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-[2rem] xl:gap-[4rem]">
                     <Sidebar />
@@ -30,19 +29,19 @@ export default function Page() {
                             products={Array(8).fill(products[0])}
                             className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
                         />
-
-                        <div className="flex space-x-2 mt-10">
-                            <button className="w-10 h-10 bg-primary-pink text-white rounded-full">1</button>
-                            <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">2</button>
-                            <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">3</button>
-                            <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">4</button>
-                            <button className="text-gray-600">
-                                <ChevronsRight />
-                            </button>
-                        </div>
                     </div>
                 </div>
-            </div>
+                <div className="flex justify-center space-x-2 mt-10">
+                    <button className="w-10 h-10 bg-primary-pink text-white rounded-full">1</button>
+                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">2</button>
+                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">3</button>
+                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">4</button>
+                    <button className="text-gray-600">
+                        <ChevronsRight />
+                    </button>
+                </div>
+            </main>
+
             <Footer />
         </div>
     );
