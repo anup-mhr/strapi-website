@@ -24,7 +24,7 @@ function JournalPage() {
                 </div>
 
 
-                <section className="grid grid-cols-3 gap-4 gap-y-24 text-gray-700">
+                <section className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-24 text-gray-700">
                     {
                         Array(6).fill(journal[0]).map((journal, index) => (
                             <div key={index}>
