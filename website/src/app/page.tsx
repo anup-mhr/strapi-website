@@ -1,11 +1,11 @@
-import Image from "next/image";
-import HeroSlider from "@/components/sections/HeroSlider";
-import { heroImages, journal, products } from "@/constants/constants";
-import Header from "@/components/sections/Header";
+import Heading from "@/components/Heading";
 import Footer from "@/components/sections/Footer";
+import Header from "@/components/sections/Header";
+import HeroSlider from "@/components/sections/HeroSlider";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
-import Heading from "@/components/Heading";
+import { heroImages, journal, products } from "@/constants/constants";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -15,11 +15,18 @@ export default function Home() {
 
       {/* Trending Section */}
       <div className="padding">
-        <div className="text-3xl text-center py-12">
+        <div className="text-3xl text-center pt-12">
+          <h1 className="tagline text-2xl md:text-3xl lg:text-4xl">
+            Blending heritage with design <br />
+            Empowering artisans, preserving craft, honouring hands.
+          </h1>
 
-          <h1 className="tagline text-3xl md:text-4xl lg:text-5xl">Blending heritage with design <br />Empowering artisans, preserving craft, honouring hands.</h1>
-
-          <Heading title="JUST IN" subtitle="New & Trending" CTA="SHOP NOW" href="/shop" />
+          <Heading
+            title="JUST IN"
+            subtitle="New & Trending"
+            CTA="SHOP NOW"
+            href="/shop"
+          />
         </div>
 
         <ProductList products={Array(8).fill(products[0])} />
@@ -27,20 +34,34 @@ export default function Home() {
 
       {/* Sale Section */}
       <div className="padding">
-        <Heading title="SALE" subtitle="Limited time only" CTA="VIEW ALL" href="/shop" />
+        <Heading
+          title="SALE"
+          subtitle="Limited time only"
+          CTA="VIEW ALL"
+          href="/shop"
+        />
 
         <ProductList products={Array(8).fill(products[0])} />
       </div>
 
-
       <div className="padding">
-        <Heading title="JOURNAL" subtitle="Stories of Craft, Culture and Change" CTA="VIEW ALL" href="/journal" />
+        <Heading
+          title="JOURNAL"
+          subtitle="Stories of Craft, Culture and Change"
+          CTA="VIEW ALL"
+          href="/journal"
+        />
 
         <JournalImageSlider images={journal} />
       </div>
 
       <div className="padding">
-        <Heading title="ABOUT" subtitle="Our Journey" CTA="READ MORE" href="/about" />
+        <Heading
+          title="ABOUT"
+          subtitle="Our Journey"
+          CTA="READ MORE"
+          href="/about"
+        />
 
         <div className="grid grid-cols-1 2xl:grid-cols-2 gap-y-4 gap-x-1 mx-auto max-w-sm sm:max-w-2xl 2xl:max-w-full">
           <div className="flex flex-col sm:flex-row bg-black">
