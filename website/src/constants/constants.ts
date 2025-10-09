@@ -20,7 +20,7 @@ export const product = {
   material: "Cotton",
   description:
     "Expertly made to combine lasting durability with timeless craftsmanship, ideal for daily living.",
-  availability: "2 in stock",
+  availability: 5,
   slug: "slouch-bag-03a",
   images: [
     "/images/product.png",
