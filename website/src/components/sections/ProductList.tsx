@@ -22,10 +22,10 @@ const ProductList = ({
               className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
             />
 
-            <div className="absolute top-1/2 left-1/2 z-10 w-full h-full -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-white/50 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-hover:w-[82%] md:group-hover:h-[82%] transition-all duration-500 ease-in-out">
+            <div className="absolute top-1/2 left-1/2 z-10 w-full h-full -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-white/50 opacity-0 md:group-hover:opacity-100 md:group-hover:w-[82%] md:group-hover:h-[82%] transition-all duration-500 ease-in-out">
               <button
                 className={cn(
-                  "md:py-3 mt-2 w-max uppercase  text-2xs group cursor-pointer bg-black text-white px-8 py-2 font-bold tracking-normal text-sm rounded-md",
+                  "mt-2 w-max uppercase  text-2xs group cursor-pointer bg-black text-white px-8 py-2 font-bold tracking-normal text-sm rounded-md",
                   "scale-100 opacity-100 md:scale-90 md:opacity-0 md:group-hover:scale-100 md:group-hover:opacity-100 transition-all duration-500 delay-300 uppercase "
                 )}
               >

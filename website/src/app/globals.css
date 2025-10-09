@@ -24,7 +24,7 @@ body {
 }
 
 .padding {
-  @apply px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48;
+  @apply px-6 sm:px-12 md:px-20 lg:px-28 xl:px-44;
 }
 
 .nav {
@@ -38,7 +38,7 @@ body {
 }
 
 .heading {
-  @apply text-black text-2xl md:text-3xl lg:text-4xl font-semibold;
+  @apply text-black text-xl md:text-2xl lg:text-3xl font-semibold;
   font-family: var(--font-nunito);
 }
 
