@@ -7,7 +7,7 @@ import { ProjectSorter } from "./ProjectShorter";
 
 interface ProjectGridProps {
   projects: ProjectList[];
-  category: "urra" | "objects" | "collaborations" | "events";
+  category: string;
   ctaLabel?: string;
 }
 

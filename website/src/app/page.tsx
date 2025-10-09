@@ -1,7 +1,6 @@
 import HeroSlider from "@/components/sections/HeroSlider";
 import HomeFooter from "@/components/theme/HomeFooter";
 import Navigation from "@/components/theme/Navigation";
-import { links } from "@/constants/constants";
 import { fetchHeroSlides } from "@/lib/strapiApiCall";
 
 export const revalidate = 0;
@@ -11,7 +10,7 @@ export default async function Home() {
 
   return (
     <main className="font-dosis">
-      <Navigation links={links} theme="dark" />
+      <Navigation theme="dark" />
       <HeroSlider slides={slides} />
 
       <HomeFooter theme="dark" className="hidden md:block z-20" />

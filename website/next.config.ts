@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         protocol: url.protocol.replace(":", "") as "http" | "https", // ensure literal type
         hostname: url.hostname,
         port: url.port || undefined, // undefined if no port
-        pathname: "/uploads/**",
+        pathname: "/**",
       },
       {
         protocol: "http",

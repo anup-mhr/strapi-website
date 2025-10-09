@@ -10,6 +10,16 @@ import {
 import { ProductDetails } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
 
+async function fetchProjectCategories(): Promise<string[]> {
+  try {
+    const data = await fetchStrapi("/api/projects/categories");
+    return data ?? [];
+  } catch (error) {
+    console.error("Error fetching project categories", error);
+    return [];
+  }
+}
+
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {
     const queryOptions = {
@@ -187,4 +197,5 @@ export {
   fetchProductBySlug,
   fetchAllProjectsAndProduct,
   fetchProjectBySlugCache,
+  fetchProjectCategories,
 };

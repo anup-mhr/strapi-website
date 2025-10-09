@@ -39,9 +39,10 @@
       "required": true,
       "enum": [
         "Urra Design Studio",
+        "Objects",
         "Collaborations",
         "Events",
-        "Objects"
+        "Gallery"
       ]
     },
     "slug": {

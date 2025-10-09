@@ -454,7 +454,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
   attributes: {
     category: Schema.Attribute.Enumeration<
-      ['Urra Design Studio', 'Collaborations', 'Events', 'Objects']
+      ['Urra Design Studio', 'Objects', 'Collaborations', 'Events', 'Gallery']
     > &
       Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;

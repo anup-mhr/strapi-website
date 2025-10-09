@@ -1,7 +1,6 @@
 import ContactForm from "@/components/sections/contactForm/ContactForm";
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
-import { links } from "@/constants/constants";
 import Image from "next/image";
 
 export const metadata = {
@@ -13,7 +12,7 @@ export const metadata = {
 function Contact() {
   return (
     <div className="font-dosis">
-      <Navigation links={links} theme="dark" />
+      <Navigation theme="dark" />
 
       <div>
         <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-screen">

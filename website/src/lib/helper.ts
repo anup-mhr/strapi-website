@@ -1,6 +1,7 @@
 import { SortOption } from "@/context/SortContext";
 import { File } from "@/types/heroslide";
 import { ProjectList } from "@/types/project";
+import { CategoryMeta } from "@/types/category";
 
 export function getImageUrl(image: File): string {
   if (!image?.url) return "/images/placeholder.webp";
@@ -57,3 +58,28 @@ export function sortProjects(
       return sorted;
   }
 }
+
+export function getCategoryViaSlug(slug: string): CategoryMeta {
+  //for urra because the slug is urra but the category and display names are Urra Design Studio
+  //for other categories, slug and display names are basically the same.
+  const map: Record<string, CategoryMeta> = {
+    urra: {
+      title: "Aku Zeliang - Urra Design Studio",
+      description:
+        "Urra Design Studio portfolio showcasing design work across multiple disciplines",
+      displayName: "Urra Design Studio",
+    }
+  };
+
+  const name = capitalize(slug)
+
+  return (
+    map[slug] || {
+      title: `Aku Zeliang - ${name}`,
+      description:
+        `${name} showcasing design work across multiple disciplines`,
+      displayName: name,
+    }
+  );
+}
+
