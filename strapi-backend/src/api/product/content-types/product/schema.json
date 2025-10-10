@@ -17,11 +17,13 @@
     },
     "description": {
       "type": "text",
-      "required": false
+      "required": false,
+      "regex": "^(?!\\s*$).+$"
     },
     "materials": {
       "type": "string",
-      "required": false
+      "required": false,
+      "regex": "^(?!\\s*$).+$"
     },
     "dimension": {
       "type": "string",

@@ -93,7 +93,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
             <div
               key={index}
               className={cn(
-                "absolute inset-0 transition-opacity duration-1200 ease-in-out",
+                "absolute inset-0 transition-opacity duration-1500 ease-in-out",
                 isActive ? "opacity-100 z-20" : "opacity-0 z-10"
               )}
               style={{

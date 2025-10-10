@@ -376,7 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
   collectionName: 'hero_slides';
   info: {
-    displayName: 'Hero Slide';
+    displayName: 'hero slider';
     pluralName: 'hero-slides';
     singularName: 'hero-slide';
   };
@@ -438,7 +438,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
-    displayName: 'product';
+    displayName: 'images';
     pluralName: 'products';
     singularName: 'product';
   };

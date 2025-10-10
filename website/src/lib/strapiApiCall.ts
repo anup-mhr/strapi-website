@@ -148,7 +148,7 @@ async function fetchProjectBySlugCache(
   try {
     const queryOptions = {
       filters: { slug: { $eq: slug } },
-      fields: ["title", "description", "category"],
+      fields: ["title", "description"],
       populate: {
         products: {
           fields: ["slug", "name"],
@@ -157,6 +157,9 @@ async function fetchProjectBySlugCache(
               fields: ["*"],
             },
           },
+        },
+        category: {
+          fields: ["title"],
         },
       },
     };
@@ -191,10 +194,13 @@ async function fetchAllProjectsAndProduct(): Promise<
 > {
   try {
     const queryOptions = {
-      fields: ["category", "slug"],
+      fields: ["slug"],
       populate: {
         products: {
           fields: ["slug"],
+        },
+        category: {
+          fields: ["title"],
         },
       },
       pagination: {
