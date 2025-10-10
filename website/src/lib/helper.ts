@@ -2,6 +2,7 @@ import { SortOption } from "@/context/SortContext";
 import { CategoryMeta } from "@/types/category";
 import { File } from "@/types/heroslide";
 import { ProjectList } from "@/types/project";
+import { fetchProjectCategories } from "./strapiApiCall";
 
 export function getImageUrl(image: File): string {
   if (!image?.url) return "/images/placeholder.webp";
@@ -80,4 +81,29 @@ export function getCategoryViaSlug(slug: string): CategoryMeta {
       displayName: name,
     }
   );
+}
+
+export async function loadLinks() {
+  try {
+    const links = {
+      href: "/contact",
+      label: "CONTACT",
+    };
+    const categories = await fetchProjectCategories();
+
+    const categoryLinks = categories.map((category) => {
+      if (category.toUpperCase() === "URRA DESIGN STUDIO") {
+        return { href: "/urra", label: category.toUpperCase() };
+      }
+      return {
+        href: `/${category.toLowerCase()}`,
+        label: category.toUpperCase(),
+      };
+    });
+
+    return [...categoryLinks, links];
+  } catch (error) {
+    console.error("Failed to load navigation links", error);
+    return [];
+  }
 }

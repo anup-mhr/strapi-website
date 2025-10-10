@@ -1,17 +1,16 @@
 "use client";
-import { useLinks } from "@/context/LinkContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface NavigationProps {
+  links: { href: string; label: string }[];
   theme?: "light" | "dark";
   className?: string;
 }
 
-function Navigation({ theme = "light", className }: NavigationProps) {
-  const links = useLinks();
+function Navigation({ links, theme = "light", className }: NavigationProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

@@ -1,8 +1,7 @@
+import { NavigationTracker } from "@/components/common/NavigationTracker";
 import type { Metadata } from "next";
 import { Dosis } from "next/font/google";
 import "./globals.css";
-import { NavigationTracker } from "@/components/common/NavigationTracker";
-import { LinksProvider } from "@/context/LinkContext";
 
 const geistDosis = Dosis({
   variable: "--font-geist-dosis",
@@ -22,10 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistDosis.variable} antialiased`}>
-        <LinksProvider>
-          <NavigationTracker />
-          {children}
-        </LinksProvider>
+        {/* <LinksProvider> */}
+        <NavigationTracker />
+        {children}
+        {/* </LinksProvider> */}
       </body>
     </html>
   );

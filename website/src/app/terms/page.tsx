@@ -1,10 +1,12 @@
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
+import { loadLinks } from "@/lib/helper";
 
-function page() {
+async function page() {
+  const links = await loadLinks();
   return (
     <div className="bg-white text-black font-dosis tracking-wider">
-      <Navigation />
+      <Navigation links={links} />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 py-20 md:py-40 ">
         <h1 className="text-3xl font-semibold mb-6 text-center">

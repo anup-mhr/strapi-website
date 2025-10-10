@@ -12,7 +12,13 @@ import { useQuery } from "@tanstack/react-query";
 
 async function fetchProjectCategories(): Promise<string[]> {
   try {
-    const data = await fetchStrapi("/api/pages");
+    const data = await fetchStrapi(
+      "/api/pages",
+      {},
+      {
+        revalidate: 60,
+      }
+    );
     const titles =
       data?.data
         ?.sort(
