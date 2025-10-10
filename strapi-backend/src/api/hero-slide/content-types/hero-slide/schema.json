@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hero-slide",
     "pluralName": "hero-slides",
-    "displayName": "Hero Slide"
+    "displayName": "hero slider"
   },
   "options": {
     "draftAndPublish": true

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "product"
+    "displayName": "images"
   },
   "options": {
     "draftAndPublish": true
@@ -17,13 +17,11 @@
     },
     "description": {
       "type": "text",
-      "required": false,
-      "regex": "^(?!\\s*$).+$"
+      "required": false
     },
     "materials": {
       "type": "string",
-      "required": false,
-      "regex": "^(?!\\s*$).+$"
+      "required": false
     },
     "dimension": {
       "type": "string",

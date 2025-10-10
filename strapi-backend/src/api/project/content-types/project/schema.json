@@ -23,8 +23,7 @@
     },
     "description": {
       "type": "text",
-      "required": false,
-      "regex": "^(?!\\s*$).+$"
+      "required": false
     },
     "thumbnail": {
       "type": "media",
