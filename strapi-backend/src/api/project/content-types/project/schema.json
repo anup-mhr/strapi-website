@@ -34,17 +34,6 @@
         "images"
       ]
     },
-    "category": {
-      "type": "enumeration",
-      "required": true,
-      "enum": [
-        "Urra Design Studio",
-        "Objects",
-        "Collaborations",
-        "Events",
-        "Gallery"
-      ]
-    },
     "slug": {
       "type": "uid",
       "targetField": "title",
@@ -54,6 +43,12 @@
     "projectDate": {
       "type": "date",
       "required": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::page.page",
+      "inversedBy": "projects"
     }
   }
 }

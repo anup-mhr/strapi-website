@@ -12,8 +12,16 @@ import { useQuery } from "@tanstack/react-query";
 
 async function fetchProjectCategories(): Promise<string[]> {
   try {
-    const data = await fetchStrapi("/api/projects/categories");
-    return data ?? [];
+    const data = await fetchStrapi("/api/pages");
+    const titles =
+      data?.data
+        ?.sort(
+          (a: any, b: any) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+        .map((page: any) => page.title) ?? [];
+
+    return titles;
   } catch (error) {
     console.error("Error fetching project categories", error);
     return [];
@@ -45,13 +53,20 @@ async function fetchProjectListByCategory(
 ): Promise<ProjectTitleList[] | []> {
   try {
     const queryOptions = {
-      filters: { category: { $eq: category } },
+      filters: {
+        category: {
+          title: {
+            $eq: category,
+          },
+        },
+      },
       fields: ["slug", "title", "projectDate"],
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
       queryOptions
     );
+
     return data.data;
   } catch (error) {
     console.error("Error fetching project lists", error);
@@ -64,11 +79,14 @@ async function fetchProjectsByCategory(
 ): Promise<ProjectList[] | []> {
   try {
     const queryOptions = {
-      filters: { category: { $eq: category } },
-      fields: ["id", "title", "category", "slug", "projectDate"],
+      filters: { category: { title: { $eq: category } } },
+      fields: ["id", "title", "slug", "projectDate"],
       populate: {
         thumbnail: {
           fields: ["*"],
+        },
+        category: {
+          fields: ["title"],
         },
       },
     };
@@ -76,6 +94,8 @@ async function fetchProjectsByCategory(
       "/api/projects",
       queryOptions
     );
+    console.log("========fetchProjectsByCategory=======");
+    console.log(data.data);
     return data.data;
   } catch (error) {
     console.error("Error fetching project  lists", error);
@@ -89,7 +109,7 @@ async function fetchProjectBySlug(
   try {
     const queryOptions = {
       filters: { slug: { $eq: slug } },
-      fields: ["title", "description", "category"],
+      fields: ["title", "description"],
       populate: {
         products: {
           fields: ["slug", "name"],
@@ -99,11 +119,16 @@ async function fetchProjectBySlug(
             },
           },
         },
+        category: {
+          fields: ["title"],
+        },
       },
     };
     const data = await fetchStrapi("/api/projects", queryOptions, {
       // revalidate: 60,
     });
+    console.log("========fetchProjectBySlug=======");
+    console.log(data.data[0]);
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);

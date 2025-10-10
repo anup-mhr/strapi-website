@@ -17,7 +17,13 @@ export async function generateMetadata({
 
 export const revalidate = 60;
 
-export default async function Layout({ children, params }: { children: ReactNode, params: Promise<{ category: string }> }) {
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{ category: string }>;
+}) {
   const { category } = await params;
   const { displayName } = getCategoryViaSlug(category);
   const projects = await fetchProjectListByCategory(displayName);

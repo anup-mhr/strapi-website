@@ -3,4 +3,3 @@ export type CategoryMeta = {
   description: string;
   displayName: string;
 };
-

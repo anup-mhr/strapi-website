@@ -15,7 +15,7 @@ function ModifiedImage({
   project: ProjectList | ProductDetails;
   href: string;
   ctaLabel?: string;
-  category?: string;
+  category?: { title: string };
 }) {
   // const [isTouched, setIsTouched] = useState(false);
 
@@ -43,7 +43,7 @@ function ModifiedImage({
           {"name" in project ? project?.name : project?.title}
         </h1>
         <h1 className="text-white/80 font-medium text-xs uppercase translate-y-0 opacity-100 md:translate-y-6 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-200">
-          {"category" in project ? project?.category : category}
+          {"category" in project ? project?.category?.title : category?.title}
         </h1>
         <button
           className={cn(

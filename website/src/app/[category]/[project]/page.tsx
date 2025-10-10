@@ -1,10 +1,13 @@
 import ModifiedImage from "@/components/common/ModifiedImage";
 import { getCategoryViaSlug } from "@/lib/helper";
-import { fetchProjectBySlug, fetchProjectCategories, fetchProjectListByCategory } from "@/lib/strapiApiCall";
+import {
+  fetchProjectBySlug,
+  fetchProjectCategories,
+  fetchProjectListByCategory,
+} from "@/lib/strapiApiCall";
 import { generateProjectMetadata } from "@/lib/metadataHelper";
 
 export const revalidate = 0;
-
 
 export async function generateStaticParams() {
   const categories = await fetchProjectCategories();
@@ -23,12 +26,20 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ category: string, project: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string; project: string }>;
+}) {
   const slug = (await params).project;
   return await generateProjectMetadata(slug);
 }
 
-async function page({ params }: { params: Promise<{ category: string, project: string }> }) {
+async function page({
+  params,
+}: {
+  params: Promise<{ category: string; project: string }>;
+}) {
   const { category, project: projectSlug } = await params;
 
   const project = await fetchProjectBySlug(projectSlug);
@@ -69,7 +80,7 @@ async function page({ params }: { params: Promise<{ category: string, project: s
           {project.products.map((product) => (
             <ModifiedImage
               key={product.documentId}
-              category={displayName}
+              category={{ title: displayName }}
               project={product}
               href={`/${category}/${projectSlug}/${product.slug}`}
             />

@@ -28,7 +28,6 @@ function Navigation({ theme = "light", className }: NavigationProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   // Close mobile menu when clicking outside or on escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -102,8 +101,8 @@ function Navigation({ theme = "light", className }: NavigationProps) {
                   link.href === "/"
                     ? pathname === "/"
                     : pathname.startsWith(link.href)
-                      ? "active"
-                      : ""
+                    ? "active"
+                    : ""
                 )}
               >
                 {link.label}
@@ -218,9 +217,9 @@ function Navigation({ theme = "light", className }: NavigationProps) {
                           ? "text-gray-800 hover:text-black"
                           : "text-gray-200 hover:text-white",
                         pathname.startsWith(link.href) &&
-                        (theme === "light"
-                          ? "text-black border-l-4 border-black pl-4"
-                          : "text-white border-l-4 border-white pl-4")
+                          (theme === "light"
+                            ? "text-black border-l-4 border-black pl-4"
+                            : "text-white border-l-4 border-white pl-4")
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >

@@ -1,7 +1,7 @@
 import { SortOption } from "@/context/SortContext";
+import { CategoryMeta } from "@/types/category";
 import { File } from "@/types/heroslide";
 import { ProjectList } from "@/types/project";
-import { CategoryMeta } from "@/types/category";
 
 export function getImageUrl(image: File): string {
   if (!image?.url) return "/images/placeholder.webp";
@@ -68,18 +68,16 @@ export function getCategoryViaSlug(slug: string): CategoryMeta {
       description:
         "Urra Design Studio portfolio showcasing design work across multiple disciplines",
       displayName: "Urra Design Studio",
-    }
+    },
   };
 
-  const name = capitalize(slug)
+  const name = capitalize(slug);
 
   return (
     map[slug] || {
       title: `Aku Zeliang - ${name}`,
-      description:
-        `${name} showcasing design work across multiple disciplines`,
+      description: `${name} showcasing design work across multiple disciplines`,
       displayName: name,
     }
   );
 }
-
