@@ -1,109 +1,56 @@
 // app/shop/page.tsx
-import { shopifyFetch } from "@/lib/shopify";
 import Heading from "@/components/Heading";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 import Sidebar from "@/components/sections/Sidebar";
+import { getProducts } from "@/lib/shopify";
 import { ChevronsRight } from "lucide-react";
-import { ShopifyProduct } from "@/types/shopify";
 
-const QUERY = `
-query GetProducts($first: Int!) {
-  products(first: $first) {
-    edges {
-      node {
-        id
-        title
-        description
-        images(first: 1) {
-          edges {
-            node {
-              src
-            }
-          }
-        }
-        variants(first: 1) {
-          edges {
-            node {
-              price
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
 
-async function getProducts(): Promise<ShopifyProduct[]> {
-    const data = await shopifyFetch<{
-        products: {
-            edges: {
-                node: {
-                    id: string;
-                    title: string;
-                    description: string;
-                    images: { edges: { node: { src: string } }[] };
-                    variants: { edges: { node: { price: string } }[] };
-                };
-            }[];
-        };
-    }>(QUERY, { first: 9 });
-
-    console.log("data",data);
-
-    return data.products.edges.map(({ node }) => ({
-        id: node.id,
-        title: node.title,
-        description: node.description,
-        images: node.images.edges.map(img => ({ src: img.node.src })),
-        variants: node.variants.edges.map(v => ({ price: v.node.price })),
-    }));
-}
 
 export default async function ShopPage() {
-    const products = await getProducts();
-    console.log("products", products);
-    return (
-        <div>
-            <Header />
+  const products = await getProducts();
 
-            <main className="padding py-12">
-                <Heading title="SHOP" subtitle="Our latest products" />
+  return (
+    <div>
+      <Header />
 
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-[2rem] xl:gap-[4rem]">
-                    <Sidebar />
+      <main className="padding py-12">
+        <Heading title="SHOP" subtitle="Our latest products" />
 
-                    <div>
-                        <div className="flex justify-between items-center mb-10">
-                            <p className="text-xs text-gray-600">
-                                SHOWING 1-{products.length} OF 209 RESULTS
-                            </p>
-                            <select className="border border-black/20 text-primary rounded-md font-bold tracking-normal pl-6 px-2 py-2">
-                                <option>SORT BY</option>
-                            </select>
-                        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-[2rem] xl:gap-[4rem]">
+          <Sidebar />
 
-                        <ProductList
-                            products={products}
-                            className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
-                        />
-                    </div>
-                </div>
+          <div>
+            <div className="flex justify-between items-center mb-10">
+              <p className="text-xs text-gray-600">
+                SHOWING 1-{products.length} OF 209 RESULTS
+              </p>
+              <select className="border border-black/20 text-primary rounded-md font-bold tracking-normal pl-6 px-2 py-2">
+                <option>SORT BY</option>
+              </select>
+            </div>
 
-                <div className="flex justify-center space-x-2 mt-10">
-                    <button className="w-10 h-10 bg-primary-pink text-white rounded-full">1</button>
-                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">2</button>
-                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">3</button>
-                    <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">4</button>
-                    <button className="text-gray-600">
-                        <ChevronsRight />
-                    </button>
-                </div>
-            </main>
-
-            <Footer />
+            <ProductList
+              products={products}
+              className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+            />
+          </div>
         </div>
-    );
+
+        <div className="flex justify-center space-x-2 mt-10">
+          <button className="w-10 h-10 bg-primary-pink text-white rounded-full">1</button>
+          <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">2</button>
+          <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">3</button>
+          <button className="w-10 h-10 border border-black/20 rounded-full text-gray-600">4</button>
+          <button className="text-gray-600">
+            <ChevronsRight />
+          </button>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
 }
