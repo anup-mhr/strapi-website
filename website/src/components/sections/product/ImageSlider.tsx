@@ -120,7 +120,7 @@ export default function ImageSlider({ images }: ImageSliderProps) {
     <div className="w-full relative">
       {/* Image Slider */}
       <div
-        className="relative h-72 md:h-full md:aspect-video overflow-hidden"
+        className="relative w-full h-full overflow-hidden"
         // onTouchStart={handleTouchStart}
         // onTouchMove={handleTouchMove}
         // onTouchEnd={handleTouchEnd}
@@ -130,16 +130,14 @@ export default function ImageSlider({ images }: ImageSliderProps) {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((img, index) => (
-            <div
-              key={img.id || index}
-              className="relative min-w-full h-72 md:h-full md:aspect-video"
-            >
+            <div key={img.id || index} className="relative min-w-full h-full">
               <Image
                 src={getImageUrl(img)}
                 alt={img.name || `Image ${index + 1}`}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover"
+                // fill
+                width={600}
+                height={600}
+                className="object-center w-full h-full"
                 priority={index === 0}
               />
             </div>

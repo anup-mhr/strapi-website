@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         pathname: "/uploads/**",
       },
       {
+        protocol: "https",
+        hostname: "wise-crown-e62ba727c5.media.strapiapp.com",
+        pathname: "/**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         pathname: "/uploads/**",
