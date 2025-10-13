@@ -45,6 +45,7 @@ function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
           <ModifiedImage
             key={project.slug}
             project={project}
+            mime={project.thumbnail.mime}
             ctaLabel={ctaLabel}
             href={`/${category}/${project.slug}`}
           />

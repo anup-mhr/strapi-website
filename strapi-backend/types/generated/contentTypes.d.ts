@@ -384,7 +384,7 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    backgroundImage: Schema.Attribute.Media<'images'> &
+    backgroundImage: Schema.Attribute.Media<'images' | 'videos'> &
       Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -396,7 +396,7 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
       'api::hero-slide.hero-slide'
     > &
       Schema.Attribute.Private;
-    mobileViewImage: Schema.Attribute.Media<'images'> &
+    mobileViewImage: Schema.Attribute.Media<'images' | 'videos'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     subTitle: Schema.Attribute.String & Schema.Attribute.Required;
@@ -455,7 +455,8 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     Generate_Slug: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.Private;
-    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    images: Schema.Attribute.Media<'images' | 'videos', true> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -505,7 +506,8 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     projectDate: Schema.Attribute.Date & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    thumbnail: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    thumbnail: Schema.Attribute.Media<'images' | 'videos'> &
+      Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

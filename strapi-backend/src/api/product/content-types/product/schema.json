@@ -63,7 +63,8 @@
       "multiple": true,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "videos"
       ]
     },
     "Generate_Slug": {

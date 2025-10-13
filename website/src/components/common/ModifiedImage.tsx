@@ -9,11 +9,13 @@ import Link from "next/link";
 function ModifiedImage({
   project,
   href,
+  mime,
   ctaLabel = "VIEW IMAGE",
   category,
 }: {
   project: ProjectList | ProductDetails;
   href: string;
+  mime: string;
   ctaLabel?: string;
   category?: { title: string };
 }) {
@@ -78,14 +80,26 @@ function ModifiedImage({
         </button>
       </Link> */}
 
-      <Image
-        src={getImageUrl(
-          "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
-        )}
-        alt={"name" in project ? project?.name : project?.title}
-        fill
-        className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
-      />
+      {mime.includes("video") ? (
+        <video
+          src={getImageUrl(
+            "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
+          )}
+          autoPlay
+          loop
+          muted
+          className="object-cover h-full transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+        />
+      ) : (
+        <Image
+          src={getImageUrl(
+            "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
+          )}
+          alt={"name" in project ? project?.name : project?.title}
+          fill
+          className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+        />
+      )}
     </div>
   );
 }
