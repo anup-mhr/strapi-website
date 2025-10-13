@@ -1,13 +1,15 @@
 "use client";
 import { ProjectSorter } from "@/components/common/ProjectSorter";
+
 import Heading from "@/components/Heading";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
-import { products } from "@/constants/constants";
+// import { products } from "@/constants/constants";
+import { getProducts } from "@/lib/shopify";
 import { ChevronsRight, Filter } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // interface Product {
 //   id: number;
@@ -25,7 +27,17 @@ import { useMemo, useState } from "react";
 
 const itemsPerPage = 9;
 
-export default function Page() {
+function Page() {
+  const [products, setProducts] = useState<any>([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const products = await getProducts();
+      setProducts(products);
+    }
+    fetchProducts();
+  }, []);
+
   const [filters, setFilters] = useState<Filters>({
     minPrice: 500,
     maxPrice: 10000,
@@ -38,7 +50,7 @@ export default function Page() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
 
   const filteredAndSortedProducts = useMemo(() => {
-    const filtered = products.filter((product) => {
+    const filtered = products.filter((product: any) => {
       const priceMatch =
         product.price >= appliedFilters.minPrice &&
         product.price <= appliedFilters.maxPrice;
@@ -53,20 +65,27 @@ export default function Page() {
 
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
+        filtered.sort((a: any, b: any) => a.price - b.price);
         break;
       case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
+        filtered.sort((a: any, b: any) => b.price - a.price);
         break;
       case "name":
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        filtered.sort((a: any, b: any) => a.title.localeCompare(b.title));
         break;
       default:
         break;
     }
 
     return filtered;
-  }, [appliedFilters, sortBy]);
+  }, [
+    appliedFilters.maxPrice,
+    appliedFilters.minPrice,
+    appliedFilters.selectedCategories,
+    appliedFilters.selectedSubcategories,
+    products,
+    sortBy,
+  ]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -195,3 +214,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default Page;

@@ -1,10 +1,11 @@
 "use client";
 
+import { ShopifyImage } from "@/types/shopify";
 import Image from "next/image";
 import { useState } from "react";
 
 type ProductGalleryProps = {
-  images: string[];
+  images: ShopifyImage[];
   name: string;
 };
 
@@ -16,7 +17,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
       {/* Main Image */}
       <div className="w-full aspect-[3/4] lg:aspect-[3/3.5] relative">
         <Image
-          src={images[selectedImageIndex]}
+          src={images[selectedImageIndex].src}
           alt={name}
           fill
           className="object-cover rounded"
@@ -36,7 +37,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
             } hover:border-primary-pink`}
           >
             <Image
-              src={img}
+              src={img.src}
               alt={`${name} ${index + 1}`}
               fill
               className="object-cover"

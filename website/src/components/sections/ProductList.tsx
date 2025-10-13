@@ -1,5 +1,6 @@
+import { formatPrice } from "@/lib/helper";
 import { cn } from "@/lib/utils";
-import { productType } from "@/types/types";
+import { ShopifyProductPreview } from "@/types/shopify";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,16 +8,17 @@ const ProductList = ({
   products,
   className = "grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
 }: {
-  products: productType[];
+  products: ShopifyProductPreview[];
   className?: string;
 }) => {
+  console.log(products);
   return (
     <div className={cn("grid gap-x-3 gap-y-8 w-full", className)}>
       {products.map((product, index) => (
         <Link href={"/shop/1"} key={index}>
           <div className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
             <Image
-              src={product.image}
+              src={product.images[0].src}
               alt={product.title}
               fill
               className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
@@ -42,7 +44,13 @@ const ProductList = ({
 
           <div className="py-3 px-4 md:px-6 flex flex-col items-center text-sm tracking-normal">
             <p className="font-bold">{product.title}</p>
-            <p>₹ {product.price.toLocaleString("en-IN")}</p>
+            <p>
+              {" "}
+              {formatPrice(
+                product.variants[0].price.amount,
+                product.variants[0].price.currencyCode
+              )}
+            </p>
           </div>
         </Link>
       ))}
