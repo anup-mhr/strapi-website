@@ -17,8 +17,12 @@
     },
     "description": {
       "type": "text",
-      "required": false,
-      "regex": "^(?!\\s*$).+$"
+      "required": false
+    },
+    "metadata": {
+      "type": "boolean",
+      "private": true,
+      "default": false
     },
     "materials": {
       "type": "string",
@@ -32,8 +36,7 @@
           ]
         }
       },
-      "required": false,
-      "regex": "^(?!\\s*$).+$"
+      "required": false
     },
     "dimension": {
       "type": "string",
@@ -47,8 +50,7 @@
           ]
         }
       },
-      "required": false,
-      "regex": "^\\d+(\\.\\d+)?(\"?|\\s*)\\s?[xX]\\s?\\d+(\\.\\d+)?(\"?|\\s*)$"
+      "required": false
     },
     "CTA": {
       "type": "component",
@@ -63,6 +65,12 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "Generate_Slug": {
+      "type": "boolean",
+      "private": true,
+      "required": true,
+      "default": false
     },
     "slug": {
       "type": "uid",
@@ -85,17 +93,6 @@
       "relation": "manyToOne",
       "target": "api::project.project",
       "inversedBy": "products"
-    },
-    "Generate_Slug": {
-      "type": "boolean",
-      "private": true,
-      "required": true,
-      "default": false
-    },
-    "metadata": {
-      "type": "boolean",
-      "private": true,
-      "default": false
     }
   }
 }
