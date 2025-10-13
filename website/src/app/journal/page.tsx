@@ -18,7 +18,7 @@ function JournalPage() {
 
                 <div className="flex justify-between items-center mb-10">
                     <p className="text-xs text-gray-600">SHOWING 1-9 OF 16 RESULTS</p>
-                    <select className="border border-black/20 text-primary rounded-md font-bold tracking-normal pl-6 px-2 py-2">
+                    <select className="border border-black/20 text-primary rounded-md text-sm font-bold tracking-normal pl-6 px-2 py-2">
                         <option>FILTER BY</option>
                     </select>
                 </div>

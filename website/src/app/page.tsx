@@ -6,8 +6,15 @@ import Footer from "@/components/sections/Footer";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
 import Heading from "@/components/Heading";
+import { getProducts } from "@/lib/shopify";
+import { GET_PRODUCTS, GET_SALES } from "@/lib/shopifyQueries";
 
-export default function Home() {
+export default async function Home() {
+  const { products } = await getProducts({ first: 8, query: GET_PRODUCTS });
+  const { products: salesProducts } = await getProducts({ first: 4, query: GET_SALES, variables: { handle: "sale" }, });
+
+  console.log("salesProducts", salesProducts);
+
   return (
     <div>
       <Header className="text-primary" />
@@ -22,14 +29,14 @@ export default function Home() {
           <Heading title="JUST IN" subtitle="New & Trending" CTA="SHOP NOW" href="/shop" />
         </div>
 
-        <ProductList products={Array(8).fill(products[0])} />
+        <ProductList products={products} />
       </div>
 
       {/* Sale Section */}
       <div className="padding">
         <Heading title="SALE" subtitle="Limited time only" CTA="VIEW ALL" href="/shop" />
 
-        <ProductList products={Array(8).fill(products[0])} />
+        <ProductList products={salesProducts} />
       </div>
 
 
