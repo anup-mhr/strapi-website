@@ -13,14 +13,15 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center">
       {/* Main Image */}
       <div className="w-full aspect-[3/4] lg:aspect-[3/3.5] relative">
         <Image
           src={images[selectedImageIndex].src}
           alt={name}
-          fill
-          className="object-cover rounded"
+          width={600}
+          height={600}
+          className="object-center w-full h-full rounded"
         />
       </div>
 

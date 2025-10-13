@@ -4,10 +4,21 @@ import Header from "@/components/sections/Header";
 import HeroSlider from "@/components/sections/HeroSlider";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
-import { heroImages, journal, products } from "@/constants/constants";
+import { heroImages, journal } from "@/constants/constants";
 import Image from "next/image";
+import { getProducts } from "@/lib/shopify";
+import { GET_PRODUCTS, GET_SALES } from "@/lib/shopifyQueries";
 
-export default function Home() {
+export default async function Home() {
+  const { products } = await getProducts({ first: 8, query: GET_PRODUCTS });
+  const { products: salesProducts } = await getProducts({
+    first: 4,
+    query: GET_SALES,
+    variables: { handle: "sale" },
+  });
+
+  console.log("salesProducts", salesProducts);
+
   return (
     <div>
       <Header className="text-primary" />
@@ -29,7 +40,7 @@ export default function Home() {
           />
         </div>
 
-        <ProductList products={Array(8).fill(products[0])} />
+        <ProductList products={products} />
       </div>
 
       {/* Sale Section */}
@@ -41,7 +52,7 @@ export default function Home() {
           href="/shop"
         />
 
-        <ProductList products={Array(8).fill(products[0])} />
+        <ProductList products={salesProducts} />
       </div>
 
       <div className="padding">

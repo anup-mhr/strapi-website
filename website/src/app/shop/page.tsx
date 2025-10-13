@@ -7,21 +7,31 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
+import { GET_PRODUCTS } from "@/lib/shopifyQueries";
 import { ChevronsRight, Filter } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const itemsPerPage = 9;
 
-function Page() {
+export default function ShopPage({
+  searchParams,
+}: {
+  searchParams: { page?: string; cursor?: string };
+}) {
   const [products, setProducts] = useState<any>([]);
+  const cursor = searchParams.cursor || null;
 
   useEffect(() => {
     async function fetchProducts() {
-      const products = await getProducts();
+      const { products } = await getProducts({
+        first: 9,
+        after: cursor,
+        query: GET_PRODUCTS,
+      });
       setProducts(products);
     }
     fetchProducts();
-  }, []);
+  }, [cursor]);
 
   const [filters, setFilters] = useState<Filters>({
     minPrice: 500,
@@ -88,7 +98,6 @@ function Page() {
   return (
     <div>
       <Header />
-
       <main className="padding py-12">
         <Heading title="SHOP" subtitle="Our latest products" />
 
@@ -194,10 +203,7 @@ function Page() {
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
 }
-
-export default Page;

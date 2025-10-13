@@ -46,8 +46,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       <div className="text-base text-gray-700 mb-6 space-y-8">
         <div className="space-y-2">
           {selectedVariant.selectedOptions.map((option, index) => (
-            <p key={index}>
-              {option.name}: {option.value}
+            <p
+              key={index}
+              className={`${option.name.toUpperCase() === "NOTE" && "mt-8"}`}
+            >
+              {option.name.toUpperCase() !== "NOTE" && (
+                <strong>{option.name}:</strong>
+              )}
+              {option.value}
             </p>
           ))}
         </div>

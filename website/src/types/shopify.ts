@@ -9,15 +9,16 @@ export interface ShopifyPrice {
 
 export interface ShopifyVariantPreview {
   price: ShopifyPrice;
+  compareAtPrice?: ShopifyPrice;
 }
 
 export interface ShopifyVariant {
-
   title: string;
   availableForSale: boolean;
   selectedOptions: { name: string; value: string }[];
   note: string | null;
   price: ShopifyPrice;
+  compareAtPrice?: ShopifyPrice;
   inventoryQuantity: number;
 }
 

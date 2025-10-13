@@ -2,7 +2,6 @@ import {
   ShopifyProduct,
   ShopifyProductPreview,
   ShopifyVariant,
-  ShopifyVariantPreview,
 } from "@/types/shopify";
 import { GraphQLClient } from "graphql-request";
 
@@ -74,78 +73,59 @@ export async function getInventoryQuantityByVariantId(
   }
 }
 
-export async function getProducts(): Promise<ShopifyProductPreview[]> {
-  const query = `
-    query GetProducts($first: Int!) {
-      products(first: $first) {
-        edges {
-          node {
-            id
-            handle
-            title
-            description
-            images(first: 1) {
-              edges {
-                node {
-                  src
-                }
-              }
-            }
-            variants(first: 1) {
-              edges {
-                node {
-                  price {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
+export async function getProducts({
+  first = 9,
+  after,
+  query,
+  variables,
+}: {
+  first?: number;
+  after?: string | null;
+  query: string;
+  variables?: Record<string, any>;
+}) {
+  const vars = { first, after, ...variables };
 
-  const data = await shopifyFetch<{
-    products: {
-      edges: {
-        node: {
-          id: string;
-          handle: string;
-          title: string;
-          description: string;
-          images: { edges: { node: { src: string } }[] };
-          variants: {
-            edges: {
-              node: {
-                price: {
-                  amount: string;
-                  currencyCode: string;
-                };
-              };
-            }[];
-          };
-        };
-      }[];
+  const data = await shopifyFetch<any>(query, vars);
+
+  const productEdges =
+    data.products?.edges || data.collectionByHandle?.products?.edges || [];
+
+  const pageInfo = data.products?.pageInfo ||
+    data.collectionByHandle?.products?.pageInfo || {
+      hasNextPage: false,
+      hasPreviousPage: false,
+      endCursor: null,
+      startCursor: null,
     };
-  }>(query, { first: 9 });
 
-  return data.products.edges.map(({ node }) => ({
-    id: node.id,
-    handle: node.handle,
-    title: node.title,
-    description: node.description,
-    images: node.images.edges.map((img) => ({ src: img.node.src })),
-    variants: node.variants.edges.map(
-      (v): ShopifyVariantPreview => ({
-        price: {
-          amount: v.node.price.amount,
-          currencyCode: v.node.price.currencyCode,
-        },
-      })
-    ),
-  }));
+  const products: ShopifyProductPreview[] = productEdges.map(
+    ({ node }: any) => {
+      return {
+        id: node.id,
+        handle: node.handle,
+        title: node.title,
+        description: node.description,
+        images: node.images.edges.map((img: any) => ({ src: img.node.src })),
+        variants: node.variants.edges.map((v: any) => ({
+          price: {
+            amount: v.node.price?.amount,
+            currencyCode: v.node.price?.currencyCode,
+          },
+          compareAtPrice: {
+            amount: v.node.compareAtPrice?.amount || v.node.price?.amount,
+            currencyCode:
+              v.node.compareAtPrice?.currencyCode || v.node.price?.currencyCode,
+          },
+        })),
+      };
+    }
+  );
+
+  return {
+    products,
+    pageInfo,
+  };
 }
 
 export async function getProductByHandle(
@@ -241,4 +221,30 @@ export async function getProductByHandle(
     images: product.images.edges.map((img) => ({ src: img.node.src })),
     variants: variantsWithStock,
   };
+}
+
+export async function getTotalProductCount(): Promise<number> {
+  try {
+    const response = await fetch(
+      `https://${domain}/admin/api/2025-10/products/count.json?status=active`,
+      {
+        headers: {
+          "X-Shopify-Access-Token": adminToken,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store", // optional: always fetch fresh
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to fetch product count:", response.statusText);
+      return 0;
+    }
+
+    const data = await response.json();
+    return data.count ?? 0;
+  } catch (error) {
+    console.error("Error fetching total product count:", error);
+    return 0;
+  }
 }

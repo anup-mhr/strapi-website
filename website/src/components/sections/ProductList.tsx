@@ -34,12 +34,15 @@ const ProductList = ({
                 view
               </button>
             </div>
-
-            {/* {product?.sale && (
+            {product.variants.some((p) => {
+              const compareAt = Number(p.compareAtPrice?.amount);
+              const price = Number(p.price?.amount);
+              return compareAt > 0 && compareAt !== price;
+            }) && (
               <div className="absolute bottom-5 right-5 z-30 bg-primary-pink w-14 h-14 flex justify-center items-center text-white text-base font-semibold rounded-full ">
                 Sale
               </div>
-            )} */}
+            )}
           </div>
 
           <div className="py-3 px-4 md:px-6 flex flex-col items-center text-sm tracking-normal">
