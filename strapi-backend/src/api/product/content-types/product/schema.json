@@ -69,8 +69,7 @@
     "Generate_Slug": {
       "type": "boolean",
       "private": true,
-      "required": true,
-      "default": false
+      "required": true
     },
     "slug": {
       "type": "uid",

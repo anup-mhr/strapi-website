@@ -454,8 +454,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     dimension: Schema.Attribute.String;
     Generate_Slug: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
-      Schema.Attribute.Private &
-      Schema.Attribute.DefaultTo<false>;
+      Schema.Attribute.Private;
     images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -495,8 +494,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text;
     Generate_Slug: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
-      Schema.Attribute.Private &
-      Schema.Attribute.DefaultTo<false>;
+      Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

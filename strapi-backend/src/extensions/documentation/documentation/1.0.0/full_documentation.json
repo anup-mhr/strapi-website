@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-10-13T03:47:47.754Z"
+    "x-generation-date": "2025-10-13T05:51:27.018Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -4894,6 +4894,9 @@
                       "description": {
                         "type": "string"
                       },
+                      "metadata": {
+                        "type": "boolean"
+                      },
                       "materials": {
                         "type": "string"
                       },
@@ -5504,6 +5507,9 @@
                           }
                         }
                       },
+                      "Generate_Slug": {
+                        "type": "boolean"
+                      },
                       "slug": {
                         "type": "string"
                       },
@@ -5517,12 +5523,6 @@
                             "type": "string"
                           }
                         }
-                      },
-                      "Generate_Slug": {
-                        "type": "boolean"
-                      },
-                      "metadata": {
-                        "type": "boolean"
                       },
                       "createdAt": {
                         "type": "string",
@@ -5930,8 +5930,8 @@
             "required": [
               "name",
               "images",
-              "slug",
-              "Generate_Slug"
+              "Generate_Slug",
+              "slug"
             ],
             "type": "object",
             "properties": {
@@ -5940,6 +5940,9 @@
               },
               "description": {
                 "type": "string"
+              },
+              "metadata": {
+                "type": "boolean"
               },
               "materials": {
                 "type": "string"
@@ -5964,6 +5967,9 @@
                   "example": "string or id"
                 }
               },
+              "Generate_Slug": {
+                "type": "boolean"
+              },
               "slug": {
                 "type": "string"
               },
@@ -5977,12 +5983,6 @@
                   }
                 ],
                 "example": "string or id"
-              },
-              "Generate_Slug": {
-                "type": "boolean"
-              },
-              "metadata": {
-                "type": "boolean"
               },
               "locale": {
                 "type": "string"
@@ -6045,8 +6045,8 @@
         "required": [
           "name",
           "images",
-          "slug",
-          "Generate_Slug"
+          "Generate_Slug",
+          "slug"
         ],
         "properties": {
           "id": {
@@ -6060,6 +6060,9 @@
           },
           "description": {
             "type": "string"
+          },
+          "metadata": {
+            "type": "boolean"
           },
           "materials": {
             "type": "string"
@@ -6671,6 +6674,9 @@
               }
             }
           },
+          "Generate_Slug": {
+            "type": "boolean"
+          },
           "slug": {
             "type": "string"
           },
@@ -6699,6 +6705,9 @@
                     },
                     "description": {
                       "type": "string"
+                    },
+                    "metadata": {
+                      "type": "boolean"
                     },
                     "materials": {
                       "type": "string"
@@ -6841,6 +6850,9 @@
                         }
                       }
                     },
+                    "Generate_Slug": {
+                      "type": "boolean"
+                    },
                     "slug": {
                       "type": "string"
                     },
@@ -6854,12 +6866,6 @@
                           "type": "string"
                         }
                       }
-                    },
-                    "Generate_Slug": {
-                      "type": "boolean"
-                    },
-                    "metadata": {
-                      "type": "boolean"
                     },
                     "createdAt": {
                       "type": "string",
@@ -7192,12 +7198,6 @@
               }
             }
           },
-          "Generate_Slug": {
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "boolean"
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -7418,6 +7418,9 @@
                 },
                 "description": {
                   "type": "string"
+                },
+                "metadata": {
+                  "type": "boolean"
                 },
                 "materials": {
                   "type": "string"
@@ -8029,6 +8032,9 @@
                     }
                   }
                 },
+                "Generate_Slug": {
+                  "type": "boolean"
+                },
                 "slug": {
                   "type": "string"
                 },
@@ -8331,12 +8337,6 @@
                       }
                     }
                   }
-                },
-                "Generate_Slug": {
-                  "type": "boolean"
-                },
-                "metadata": {
-                  "type": "boolean"
                 },
                 "createdAt": {
                   "type": "string",
