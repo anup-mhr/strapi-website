@@ -19,7 +19,7 @@ export default function ShopPage({
   searchParams: { page?: string; cursor?: string };
 }) {
   const [products, setProducts] = useState<any>([]);
-  const cursor = searchParams.cursor || null;
+  const cursor = searchParams?.cursor || null;
 
   useEffect(() => {
     async function fetchProducts() {
@@ -162,7 +162,7 @@ export default function ShopPage({
             </div>
 
             <ProductList
-              products={Array(8).fill(products[0])}
+              products={products}
               className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
             />
 

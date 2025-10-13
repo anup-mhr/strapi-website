@@ -31,8 +31,18 @@ export const product = {
 };
 
 export const relatedProducts = [
-  { image: "/images/product.png", title: "Slouch Bag 1A", price: 1999 },
-  { image: "/images/product.png", title: "Slouch Bag 2A", price: 1999 },
+  {
+    image:
+      "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=1200&h=800&fit=crop",
+    title: "Slouch Bag 1A",
+    price: 1999,
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=800&fit=crop",
+    title: "Slouch Bag 2A",
+    price: 1999,
+  },
   { image: "/images/product.png", title: "Slouch Bag 4A", price: 1999 },
   { image: "/images/product.png", title: "Slouch Bag 5A", price: 1999 },
 ];

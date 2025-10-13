@@ -15,7 +15,7 @@ const ProductList = ({
   return (
     <div className={cn("grid gap-x-3 gap-y-8 w-full", className)}>
       {products.map((product, index) => (
-        <Link href={"/shop/1"} key={index}>
+        <Link href={`/shop/${product?.handle}`} key={index}>
           <div className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
             <Image
               src={product?.images?.[0]?.src}
@@ -34,7 +34,7 @@ const ProductList = ({
                 view
               </button>
             </div>
-            {product.variants.some((p) => {
+            {product.variants?.some((p) => {
               const compareAt = Number(p.compareAtPrice?.amount);
               const price = Number(p.price?.amount);
               return compareAt > 0 && compareAt !== price;

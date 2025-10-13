@@ -3,10 +3,10 @@ import ProductGallery from "@/components/ProductGallery";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
-import { relatedProducts } from "@/constants/constants";
 
 import ProductDetails from "@/components/ProductDetails";
-import { getProductByHandle } from "@/lib/shopify";
+import { getProductByHandle, getProducts } from "@/lib/shopify";
+import { GET_PRODUCTS } from "@/lib/shopifyQueries";
 
 export default async function ProductPage({
   params,
@@ -15,6 +15,13 @@ export default async function ProductPage({
 }) {
   const handle = (await params).product;
   const product = await getProductByHandle(handle);
+
+  // update fetch for related products
+  const { products: relatedProducts } = await getProducts({
+    first: 9,
+    after: null,
+    query: GET_PRODUCTS,
+  });
 
   if (!product) return <div>Product not found</div>;
 
@@ -36,7 +43,7 @@ export default async function ProductPage({
           <h1 className="text-xl font-semibold mb-6 uppercase tracking-wider">
             Related Products
           </h1>
-          <ProductList products={relatedProducts as any} />
+          <ProductList products={relatedProducts} />
         </div>
       </main>
 

@@ -13,7 +13,6 @@ const navLinks = [
   { label: "JOURNAL", href: "/journal" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
-  { label: "CART", href: "/cart" },
 ];
 
 const Header = ({ className = "" }: { className?: string }) => {
