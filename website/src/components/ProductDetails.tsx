@@ -35,7 +35,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         <h2 className="text-xl font-bold uppercase tracking-widest">
           {product.title}
         </h2>
-        <p>
+        <p className="text-lg mb-4">
           {formatPrice(
             selectedVariant.price.amount,
             selectedVariant.price.currencyCode
@@ -43,18 +43,21 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </p>
       </div>
 
-      <div className="text-lg text-gray-700 mb-6 space-y-8">
+      <div className="text-base text-gray-700 mb-6 space-y-8">
         <div className="space-y-2">
           {selectedVariant.selectedOptions.map((option, index) => (
             <p key={index}>
-              <strong>{option.name}:</strong> {option.value}
+              {option.name}: {option.value}
             </p>
           ))}
         </div>
-
-        <p className="mt-4 text-black">{product.description}</p>
+        <p className="mt-4 text-gray-700">{product.description}</p>
         <p>
-          <strong>Availability:</strong> {selectedVariant.inventoryQuantity}
+          Availability:{" "}
+          <span className="text-primary-pink">
+            {selectedVariant.inventoryQuantity}
+          </span>{" "}
+          in stock
         </p>
       </div>
 
@@ -78,12 +81,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row items-center gap-8 mt-12">
-        <div className="flex items-center gap-8">
-          <label htmlFor="quantity">Quantity</label>
+      <div className="flex items-center gap-4 md:gap-8 mt-15 xl:mt-44">
+        <div className="flex items-center gap-2 md:gap-8">
+          <label htmlFor="quantity" className="text-gray-700">
+            Quantity
+          </label>
           <select
             id="quantity"
-            className="px-4 py-2"
+            className="px-4 py-2 border border-primary-pink/30"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
           >
@@ -99,7 +104,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </div>
 
         <button
-          className="w-full bg-black text-white px-6 py-4 rounded-md hover:opacity-90"
+          className="w-full bg-black text-white px-6 py-3 rounded-md hover:opacity-90"
           disabled={
             !selectedVariant.availableForSale ||
             selectedVariant.inventoryQuantity === 0

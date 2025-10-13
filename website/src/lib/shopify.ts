@@ -1,4 +1,9 @@
-import { ShopifyProduct, ShopifyProductPreview, ShopifyVariant, ShopifyVariantPreview } from "@/types/shopify";
+import {
+  ShopifyProduct,
+  ShopifyProductPreview,
+  ShopifyVariant,
+  ShopifyVariantPreview,
+} from "@/types/shopify";
 import { GraphQLClient } from "graphql-request";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
@@ -13,12 +18,16 @@ const client = new GraphQLClient(endpoint, {
   },
 });
 
-export async function shopifyFetch<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+export async function shopifyFetch<T>(
+  query: string,
+  variables: Record<string, any> = {}
+): Promise<T> {
   return client.request<T>(query, variables);
 }
 
-
-export async function getInventoryQuantityByVariantId(variantId: string): Promise<number> {
+export async function getInventoryQuantityByVariantId(
+  variantId: string
+): Promise<number> {
   try {
     //extracting the numeric id that is present in the end
     const numericId = variantId.split("/").pop();
@@ -128,17 +137,20 @@ export async function getProducts(): Promise<ShopifyProductPreview[]> {
     title: node.title,
     description: node.description,
     images: node.images.edges.map((img) => ({ src: img.node.src })),
-    variants: node.variants.edges.map((v): ShopifyVariantPreview => ({
-      price: {
-        amount: v.node.price.amount,
-        currencyCode: v.node.price.currencyCode,
-      },
-    })),
+    variants: node.variants.edges.map(
+      (v): ShopifyVariantPreview => ({
+        price: {
+          amount: v.node.price.amount,
+          currencyCode: v.node.price.currencyCode,
+        },
+      })
+    ),
   }));
 }
 
-
-export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {
+export async function getProductByHandle(
+  handle: string
+): Promise<ShopifyProduct | null> {
   const query = `
     query GetProductByHandle($handle: String!) {
       productByHandle(handle: $handle) {
@@ -230,4 +242,3 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
     variants: variantsWithStock,
   };
 }
-

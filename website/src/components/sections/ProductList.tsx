@@ -18,8 +18,8 @@ const ProductList = ({
         <Link href={"/shop/1"} key={index}>
           <div className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
             <Image
-              src={product.images[0].src}
-              alt={product.title}
+              src={product?.images?.[0]?.src}
+              alt={product?.title}
               fill
               className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
             />
@@ -35,20 +35,19 @@ const ProductList = ({
               </button>
             </div>
 
-            {product?.sale && (
+            {/* {product?.sale && (
               <div className="absolute bottom-5 right-5 z-30 bg-primary-pink w-14 h-14 flex justify-center items-center text-white text-base font-semibold rounded-full ">
                 Sale
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="py-3 px-4 md:px-6 flex flex-col items-center text-sm tracking-normal">
-            <p className="font-bold">{product.title}</p>
+            <p className="font-bold">{product?.title}</p>
             <p>
-              {" "}
               {formatPrice(
-                product.variants[0].price.amount,
-                product.variants[0].price.currencyCode
+                product?.variants?.[0].price.amount,
+                product?.variants?.[0].price.currencyCode
               )}
             </p>
           </div>

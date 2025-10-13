@@ -6,24 +6,9 @@ import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
-// import { products } from "@/constants/constants";
 import { getProducts } from "@/lib/shopify";
 import { ChevronsRight, Filter } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-
-// interface Product {
-//   id: number;
-//   name: string;
-//   price: number;
-//   category: string;
-//   subcategory: string;
-//   image: string;
-// }
-
-// interface Category {
-//   name: string;
-//   subcategories: string[];
-// }
 
 const itemsPerPage = 9;
 

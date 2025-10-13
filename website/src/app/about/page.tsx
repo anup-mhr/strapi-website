@@ -121,7 +121,7 @@ function AboutPage() {
             <Image
               src="/images/about/jesmina.jpeg"
               alt="Jesmina Zeliang"
-              width={400}
+              width={500}
               height={500}
               className="w-[24rem] mx-auto lg:w-full  object-cover shadow-md"
             />
