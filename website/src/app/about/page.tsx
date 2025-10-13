@@ -16,14 +16,14 @@ function AboutPage() {
           <Image
             src="/images/hero.jpeg"
             alt={""}
-            width={200}
+            width={600}
             height={600}
             className="w-full col-span-2 object-center object-cover h-full"
           />
           <Image
             src="/images/hero.jpeg"
             alt={""}
-            width={200}
+            width={600}
             height={600}
             className="w-full object-center object-cover h-[20rem] md:h-full"
           />
@@ -31,16 +31,16 @@ function AboutPage() {
             <Image
               src="/images/hero.jpeg"
               alt={""}
-              width={200}
+              width={600}
               height={600}
-              className="w-full object-cover object-center h-[10rem] md:h-full"
+              className="w-full object-cover object-center h-[10rem] md:h-96"
             />
             <Image
               src="/images/hero.jpeg"
               alt={""}
-              width={200}
+              width={600}
               height={600}
-              className="w-full object-cover object-center h-[10rem] md:h-full"
+              className="w-full object-cover object-center h-[10rem] md:h-96"
             />
           </div>
         </div>

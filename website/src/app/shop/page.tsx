@@ -23,6 +23,8 @@ import { useMemo, useState } from "react";
 //   subcategories: string[];
 // }
 
+const itemsPerPage = 9;
+
 export default function Page() {
   const [filters, setFilters] = useState<Filters>({
     minPrice: 500,
@@ -34,7 +36,6 @@ export default function Page() {
   const [sortBy, setSortBy] = useState<string>("default");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
-  const itemsPerPage = 9;
 
   const filteredAndSortedProducts = useMemo(() => {
     const filtered = products.filter((product) => {
