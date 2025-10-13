@@ -11,7 +11,7 @@ interface SortContextType {
 const SortContext = createContext<SortContextType | undefined>(undefined);
 
 export function SortProvider({ children }: { children: ReactNode }) {
-  const [currentSort, setCurrentSort] = useState<SortOption>("name-asc");
+  const [currentSort, setCurrentSort] = useState<SortOption>("date-desc");
 
   return (
     <SortContext.Provider value={{ currentSort, setCurrentSort }}>
