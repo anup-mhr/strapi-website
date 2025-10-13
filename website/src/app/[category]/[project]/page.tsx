@@ -58,7 +58,7 @@ async function page({
   return (
     <div>
       {project.description && (
-        <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7">
+        <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7 whitespace-pre-line">
           {project.description
             .split(new RegExp(`(${project.title})`, "gi"))
             .map((part, index) =>

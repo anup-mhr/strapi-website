@@ -47,7 +47,9 @@ async function page({
         <h1 className="text-2xs text-gray-700 py-0 uppercase">{displayName}</h1>
 
         {product.description && (
-          <p className="pt-5 tracking-[2px]">{product.description}</p>
+          <p className="pt-5 tracking-[2px] whitespace-pre-line">
+            {product.description}
+          </p>
         )}
 
         {(product.materials || product.dimension) && (
