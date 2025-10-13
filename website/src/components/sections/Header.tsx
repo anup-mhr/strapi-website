@@ -6,19 +6,36 @@ import { cn } from "../../lib/utils";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { shopifyService } from "@/lib/shopify-v2";
 
 const navLinks = [
   { label: "SHOP", href: "/shop" },
   { label: "JOURNAL", href: "/journal" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
-  { label: "CART(0)", href: "/cart" },
+  { label: "CART", href: "/cart" },
 ];
 
 const Header = ({ className = "" }: { className?: string }) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = async () => {
+      const cart = await shopifyService.getCart();
+      const count = cart.lineItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      setCartItemCount(count);
+    };
+
+    updateCartCount();
+    const interval = setInterval(updateCartCount, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Scroll listener
   useEffect(() => {
@@ -34,10 +51,7 @@ const Header = ({ className = "" }: { className?: string }) => {
       e.key === "Escape" && setIsMobileMenuOpen(false);
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (
-        !target.closest(".mobile-menu") &&
-        !target.closest(".hamburger")
-      ) {
+      if (!target.closest(".mobile-menu") && !target.closest(".hamburger")) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -68,7 +82,6 @@ const Header = ({ className = "" }: { className?: string }) => {
         className
       )}
     >
-
       <Link href="/" className="w-40 lg:w-50 h-14 relative">
         <Image
           src="/images/logo.png"
@@ -84,7 +97,7 @@ const Header = ({ className = "" }: { className?: string }) => {
             <Link
               href={href}
               className={cn(
-                "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5",
+                "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
                 pathname.startsWith(href) && "text-primary-pink"
               )}
             >
@@ -92,6 +105,17 @@ const Header = ({ className = "" }: { className?: string }) => {
             </Link>
           </li>
         ))}
+        <li>
+          <Link
+            href={"/cart"}
+            className={cn(
+              "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
+              pathname.startsWith("/cart") && "text-primary-pink"
+            )}
+          >
+            CART <span>({cartItemCount})</span>
+          </Link>
+        </li>
       </ul>
 
       {/* Mobile Hamburger */}
@@ -125,13 +149,22 @@ const Header = ({ className = "" }: { className?: string }) => {
               key={href}
               href={href}
               className={cn(
-                "text-base font-semibold",
+                "text-base font-semibold uppercase",
                 pathname === href && "text-primary-pink"
               )}
             >
               {label}
             </Link>
           ))}
+          <Link
+            href={"/cart"}
+            className={cn(
+              "text-base font-semibold uppercase",
+              pathname === "/cart" && "text-primary-pink"
+            )}
+          >
+            CART <span>({cartItemCount})</span>
+          </Link>
         </div>
       </div>
     </header>

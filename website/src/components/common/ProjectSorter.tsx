@@ -3,16 +3,10 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 const sortOptions = [
-  {
-    value: "date-desc" as const,
-    label: <>Sort By</>,
-  },
-  {
-    value: "date-asc" as const,
-    label: <>category</>,
-  },
-  { value: "name-asc" as const, label: "Name A-Z" },
-  { value: "name-desc" as const, label: "Name Z-A" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "newest", label: "Newest First" },
+  { value: "name", label: "Name A-Z" },
 ];
 
 export function ProjectSorter() {
