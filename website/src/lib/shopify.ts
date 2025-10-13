@@ -19,10 +19,13 @@ export async function shopifyFetch<T>(query: string, variables: Record<string, a
 
 
 export async function getInventoryQuantityByVariantId(variantId: string): Promise<number> {
-  console.log("variant id",variantId);
   try {
+    //extracting the numeric id that is present in the end
+    const numericId = variantId.split("/").pop();
+    if (!numericId) throw new Error("Invalid variant ID format");
+
     const variantRes = await fetch(
-      `https://${domain}/admin/api/2025-10/variants/${variantId}.json`,
+      `https://${domain}/admin/api/2025-10/variants/${numericId}.json`,
       {
         headers: {
           "X-Shopify-Access-Token": adminToken,
@@ -32,8 +35,17 @@ export async function getInventoryQuantityByVariantId(variantId: string): Promis
     );
 
     const variantData = await variantRes.json();
-    console.log("variantData",variantData);
+
+    if (!variantData.variant) {
+      console.error("Variant not found:", variantData);
+      return 0;
+    }
+
     const inventoryItemId = variantData.variant.inventory_item_id;
+    if (!inventoryItemId) {
+      console.error("No inventory_item_id found for variant:", variantData);
+      return 0;
+    }
 
     const inventoryRes = await fetch(
       `https://${domain}/admin/api/2025-10/inventory_levels.json?inventory_item_ids=${inventoryItemId}`,
@@ -46,7 +58,6 @@ export async function getInventoryQuantityByVariantId(variantId: string): Promis
     );
 
     const inventoryData = await inventoryRes.json();
-    console.log(inventoryData);
     return inventoryData.inventory_levels?.[0]?.available ?? 0;
   } catch (error) {
     console.error("Failed to fetch inventory:", error);
