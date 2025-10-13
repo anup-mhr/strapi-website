@@ -36,6 +36,16 @@
     },
     "slug": {
       "type": "uid",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Generate_Slug"
+            },
+            true
+          ]
+        }
+      },
       "targetField": "title",
       "required": true,
       "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -49,6 +59,12 @@
       "relation": "manyToOne",
       "target": "api::page.page",
       "inversedBy": "projects"
+    },
+    "Generate_Slug": {
+      "type": "boolean",
+      "private": true,
+      "required": true,
+      "default": false
     }
   }
 }

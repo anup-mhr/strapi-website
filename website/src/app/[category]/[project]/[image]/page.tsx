@@ -1,9 +1,9 @@
 import LinkButton from "@/components/common/LinkButton";
 import ImageSlider from "@/components/sections/product/ImageSlider";
-import TanstackProviders from "@/provider/TanstackProvider";
-import { fetchProductBySlug } from "@/lib/strapiApiCall";
-import { generateProductMetadata } from "@/lib/metadataHelper";
 import { getCategoryViaSlug } from "@/lib/helper";
+import { generateProductMetadata } from "@/lib/metadataHelper";
+import { fetchProductBySlug } from "@/lib/strapiApiCall";
+import TanstackProviders from "@/provider/TanstackProvider";
 
 export const revalidate = 3600;
 
@@ -16,7 +16,11 @@ export async function generateMetadata({
   return generateProductMetadata(slug);
 }
 
-async function page({ params }: { params: Promise<{ category: string, image: string }> }) {
+async function page({
+  params,
+}: {
+  params: Promise<{ category: string; image: string }>;
+}) {
   const { category, image: slug } = await params;
   const product = await fetchProductBySlug(slug);
 
@@ -40,9 +44,7 @@ async function page({ params }: { params: Promise<{ category: string, image: str
         <h1 className="text-black text-xs sm:text-sm font-semibold uppercase">
           {product.name}
         </h1>
-        <h1 className="text-2xs text-gray-700 py-0 uppercase">
-          {displayName}
-        </h1>
+        <h1 className="text-2xs text-gray-700 py-0 uppercase">{displayName}</h1>
 
         {product.description && (
           <p className="pt-5 tracking-[2px]">{product.description}</p>
@@ -52,7 +54,8 @@ async function page({ params }: { params: Promise<{ category: string, image: str
           <div className="pt-5">
             {product.materials && (
               <p>
-                Materials: <span className="capitalize">{product.materials}</span>
+                Materials:{" "}
+                <span className="capitalize">{product.materials}</span>
               </p>
             )}
             {product.dimension && <p>Dimensions: {product.dimension}</p>}

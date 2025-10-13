@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-10-10T10:41:31.960Z"
+    "x-generation-date": "2025-10-13T03:47:47.754Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -5518,6 +5518,12 @@
                           }
                         }
                       },
+                      "Generate_Slug": {
+                        "type": "boolean"
+                      },
+                      "metadata": {
+                        "type": "boolean"
+                      },
                       "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -5793,6 +5799,9 @@
                     }
                   }
                 },
+                "Generate_Slug": {
+                  "type": "boolean"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -5921,7 +5930,8 @@
             "required": [
               "name",
               "images",
-              "slug"
+              "slug",
+              "Generate_Slug"
             ],
             "type": "object",
             "properties": {
@@ -5967,6 +5977,12 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "Generate_Slug": {
+                "type": "boolean"
+              },
+              "metadata": {
+                "type": "boolean"
               },
               "locale": {
                 "type": "string"
@@ -6029,7 +6045,8 @@
         "required": [
           "name",
           "images",
-          "slug"
+          "slug",
+          "Generate_Slug"
         ],
         "properties": {
           "id": {
@@ -6838,6 +6855,12 @@
                         }
                       }
                     },
+                    "Generate_Slug": {
+                      "type": "boolean"
+                    },
+                    "metadata": {
+                      "type": "boolean"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -7113,6 +7136,9 @@
                   }
                 }
               },
+              "Generate_Slug": {
+                "type": "boolean"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -7165,6 +7191,12 @@
                 }
               }
             }
+          },
+          "Generate_Slug": {
+            "type": "boolean"
+          },
+          "metadata": {
+            "type": "boolean"
           },
           "createdAt": {
             "type": "string",
@@ -7241,7 +7273,8 @@
               "title",
               "thumbnail",
               "slug",
-              "projectDate"
+              "projectDate",
+              "Generate_Slug"
             ],
             "type": "object",
             "properties": {
@@ -7293,6 +7326,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "Generate_Slug": {
+                "type": "boolean"
               },
               "locale": {
                 "type": "string"
@@ -7356,7 +7392,8 @@
           "title",
           "thumbnail",
           "slug",
-          "projectDate"
+          "projectDate",
+          "Generate_Slug"
         ],
         "properties": {
           "id": {
@@ -8239,6 +8276,9 @@
                         }
                       }
                     },
+                    "Generate_Slug": {
+                      "type": "boolean"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -8291,6 +8331,12 @@
                       }
                     }
                   }
+                },
+                "Generate_Slug": {
+                  "type": "boolean"
+                },
+                "metadata": {
+                  "type": "boolean"
                 },
                 "createdAt": {
                   "type": "string",
@@ -8498,6 +8544,9 @@
                 "type": "string"
               }
             }
+          },
+          "Generate_Slug": {
+            "type": "boolean"
           },
           "createdAt": {
             "type": "string",

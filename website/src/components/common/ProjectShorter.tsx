@@ -8,7 +8,7 @@ const sortOptions = [
     value: "date-desc" as const,
     label: (
       <>
-        Newest <span className="text-2xs md:text-sm">→</span> Oldest
+        Newest <span className="text-2xs md:text-sm leading-1">→</span> Oldest
       </>
     ),
   },
@@ -16,7 +16,7 @@ const sortOptions = [
     value: "date-asc" as const,
     label: (
       <>
-        Oldest <span className="text-2xs md:text-sm">→</span> Newest
+        Oldest <span className="text-2xs md:text-sm leading-1">→</span> Newest
       </>
     ),
   },

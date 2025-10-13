@@ -1,9 +1,5 @@
-// lib/metadataHelper.ts
 import { capitalize, getCategoryViaSlug, getImageUrl } from "@/lib/helper";
-import {
-  fetchProjectBySlug,
-  fetchProductBySlug,
-} from "@/lib/strapiApiCall";
+import { fetchProductBySlug, fetchProjectBySlug } from "@/lib/strapiApiCall";
 
 // Universal SEO builder
 function buildSEO({
@@ -83,15 +79,12 @@ export async function generateProductMetadata(productSlug: string) {
     const product = await fetchProductBySlug(productSlug);
 
     const title = product?.name
-      ? `Urra Design Studio - ${capitalize(product.name)}`
+      ? `Aku Zeliang - ${capitalize(product.name)}`
       : "Aku Zeliang - Our Projects";
 
-    const description =
-      product?.description || "Checkout our latest products";
+    const description = product?.description || "Checkout our latest products";
 
-    const image = product?.images?.[0]
-      ? getImageUrl(product.images[0])
-      : "";
+    const image = product?.images?.[0] ? getImageUrl(product.images[0]) : "";
 
     return buildSEO({ title, description, image });
   } catch (error) {

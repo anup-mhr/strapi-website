@@ -1,11 +1,11 @@
 import ModifiedImage from "@/components/common/ModifiedImage";
 import { getCategoryViaSlug } from "@/lib/helper";
+import { generateProjectMetadata } from "@/lib/metadataHelper";
 import {
   fetchProjectBySlug,
   fetchProjectCategories,
   fetchProjectListByCategory,
 } from "@/lib/strapiApiCall";
-import { generateProjectMetadata } from "@/lib/metadataHelper";
 
 export const revalidate = 0;
 

@@ -22,11 +22,31 @@
     },
     "materials": {
       "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "metadata"
+            },
+            true
+          ]
+        }
+      },
       "required": false,
       "regex": "^(?!\\s*$).+$"
     },
     "dimension": {
       "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "metadata"
+            },
+            true
+          ]
+        }
+      },
       "required": false,
       "regex": "^\\d+(\\.\\d+)?(\"?|\\s*)\\s?[xX]\\s?\\d+(\\.\\d+)?(\"?|\\s*)$"
     },
@@ -46,6 +66,16 @@
     },
     "slug": {
       "type": "uid",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Generate_Slug"
+            },
+            true
+          ]
+        }
+      },
       "targetField": "name",
       "required": true,
       "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -55,6 +85,17 @@
       "relation": "manyToOne",
       "target": "api::project.project",
       "inversedBy": "products"
+    },
+    "Generate_Slug": {
+      "type": "boolean",
+      "private": true,
+      "required": true,
+      "default": false
+    },
+    "metadata": {
+      "type": "boolean",
+      "private": true,
+      "default": false
     }
   }
 }

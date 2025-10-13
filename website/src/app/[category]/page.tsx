@@ -12,7 +12,7 @@ async function Page({ params }: { params: Promise<{ category: string }> }) {
   const projects = await fetchProjectsByCategory(displayName);
 
   const categories = await fetchProjectCategories();
-  console.log(categories);
+  // console.log(categories);
 
   if (!categories.includes(displayName)) {
     notFound();
