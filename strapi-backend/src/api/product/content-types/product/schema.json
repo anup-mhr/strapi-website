@@ -4,7 +4,7 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "product"
+    "displayName": "images"
   },
   "options": {
     "draftAndPublish": true
@@ -17,16 +17,40 @@
     },
     "description": {
       "type": "text",
-      "required": true
+      "required": false
+    },
+    "metadata": {
+      "type": "boolean",
+      "private": true,
+      "default": false
     },
     "materials": {
       "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "metadata"
+            },
+            true
+          ]
+        }
+      },
       "required": false
     },
     "dimension": {
       "type": "string",
-      "required": false,
-      "regex": "^\\d+(\\.\\d+)?(\"?|\\s*)\\s?[xX]\\s?\\d+(\\.\\d+)?(\"?|\\s*)$"
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "metadata"
+            },
+            true
+          ]
+        }
+      },
+      "required": false
     },
     "CTA": {
       "type": "component",
@@ -39,19 +63,27 @@
       "multiple": true,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "videos"
       ]
     },
-    "thumbnail": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images"
-      ]
+    "Generate_Slug": {
+      "type": "boolean",
+      "private": true,
+      "required": true
     },
     "slug": {
       "type": "uid",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Generate_Slug"
+            },
+            true
+          ]
+        }
+      },
       "targetField": "name",
       "required": true,
       "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"

@@ -15,7 +15,7 @@ async function dynamicRoutesList() {
   if (!everything) return [];
 
   const routes = everything.flatMap((item) => {
-    const category = categoryMap[item.category];
+    const category = categoryMap[item?.category?.title];
     return item.products.map(
       (product) => `${category}/${item.slug}/${product.slug}`
     );
@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     "/",
     "/contact",
+    "/terms",
     "/collaborations",
     "/events",
     "/objects",

@@ -8,6 +8,31 @@ import {
   ProjectTitleList,
 } from "@/types/project";
 import { ProductDetails } from "@/types/product";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchProjectCategories(): Promise<string[]> {
+  try {
+    const data = await fetchStrapi(
+      "/api/pages",
+      {},
+      {
+        revalidate: 60,
+      }
+    );
+    const titles =
+      data?.data
+        ?.sort(
+          (a: any, b: any) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+        .map((page: any) => page.title) ?? [];
+
+    return titles;
+  } catch (error) {
+    console.error("Error fetching project categories", error);
+    return [];
+  }
+}
 
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   try {
@@ -20,8 +45,7 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     };
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
-      queryOptions,
-      { revalidate: 60 * 5 }
+      queryOptions
     );
     return data.data;
   } catch (error) {
@@ -35,17 +59,20 @@ async function fetchProjectListByCategory(
 ): Promise<ProjectTitleList[] | []> {
   try {
     const queryOptions = {
-      filters: { category: { $eq: category } },
-      fields: ["slug", "title"],
+      filters: {
+        category: {
+          title: {
+            $eq: category,
+          },
+        },
+      },
+      fields: ["slug", "title", "projectDate"],
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
-      queryOptions,
-      {
-        // cache: "force-cache",
-        revalidate: 60 * 5,
-      }
+      queryOptions
     );
+
     return data.data;
   } catch (error) {
     console.error("Error fetching project lists", error);
@@ -58,22 +85,23 @@ async function fetchProjectsByCategory(
 ): Promise<ProjectList[] | []> {
   try {
     const queryOptions = {
-      filters: { category: { $eq: category } },
-      fields: ["id", "title", "category", "slug"],
+      filters: { category: { title: { $eq: category } } },
+      fields: ["id", "title", "slug", "projectDate"],
       populate: {
         thumbnail: {
           fields: ["*"],
+        },
+        category: {
+          fields: ["title"],
         },
       },
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
-      queryOptions,
-      {
-        cache: "force-cache",
-        revalidate: 60 * 5,
-      }
+      queryOptions
     );
+    console.log("========fetchProjectsByCategory=======");
+    console.log(data.data);
     return data.data;
   } catch (error) {
     console.error("Error fetching project  lists", error);
@@ -87,20 +115,56 @@ async function fetchProjectBySlug(
   try {
     const queryOptions = {
       filters: { slug: { $eq: slug } },
-      fields: ["title", "description", "category"],
+      fields: ["title", "description"],
       populate: {
         products: {
           fields: ["slug", "name"],
           populate: {
-            thumbnail: {
+            images: {
               fields: ["*"],
             },
           },
         },
+        category: {
+          fields: ["title"],
+        },
       },
     };
     const data = await fetchStrapi("/api/projects", queryOptions, {
-      revalidate: 60 * 60,
+      // revalidate: 60,
+    });
+    console.log("========fetchProjectBySlug=======");
+    console.log(data.data[0]);
+    return data.data[0];
+  } catch (error) {
+    console.error("Error fetching project details ", error);
+    return null;
+  }
+}
+
+async function fetchProjectBySlugCache(
+  slug: string
+): Promise<ProjectDetails | null> {
+  try {
+    const queryOptions = {
+      filters: { slug: { $eq: slug } },
+      fields: ["title", "description"],
+      populate: {
+        products: {
+          fields: ["slug", "name"],
+          populate: {
+            images: {
+              fields: ["*"],
+            },
+          },
+        },
+        category: {
+          fields: ["title"],
+        },
+      },
+    };
+    const data = await fetchStrapi("/api/projects", queryOptions, {
+      revalidate: 60 * 5,
     });
     return data.data[0];
   } catch (error) {
@@ -117,9 +181,7 @@ async function fetchProductBySlug(
       filters: { slug: { $eq: slug } },
       populate: "*",
     };
-    const data = await fetchStrapi("/api/products", queryOptions, {
-      revalidate: 60 * 5,
-    });
+    const data = await fetchStrapi("/api/products", queryOptions);
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);
@@ -132,25 +194,37 @@ async function fetchAllProjectsAndProduct(): Promise<
 > {
   try {
     const queryOptions = {
-      fields: ["category", "slug"],
+      fields: ["slug"],
       populate: {
         products: {
           fields: ["slug"],
+        },
+        category: {
+          fields: ["title"],
         },
       },
       pagination: {
         pageSize: 1000,
       },
     };
-    const data = await fetchStrapi("/api/projects", queryOptions, {
-      revalidate: 60 * 60,
-    });
+    const data = await fetchStrapi("/api/projects", queryOptions);
     return data.data;
   } catch (error) {
     console.error("Error fetching all project and products ", error);
     return null;
   }
 }
+export const useProduct = (slug: string | null) => {
+  return useQuery({
+    queryKey: ["product", slug],
+    queryFn: () => {
+      if (!slug) throw new Error("Slug is required");
+      return fetchProjectBySlug(slug);
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!slug,
+  });
+};
 
 export {
   fetchHeroSlides,
@@ -159,4 +233,6 @@ export {
   fetchProjectBySlug,
   fetchProductBySlug,
   fetchAllProjectsAndProduct,
+  fetchProjectBySlugCache,
+  fetchProjectCategories,
 };

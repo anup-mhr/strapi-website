@@ -23,31 +23,47 @@
     },
     "description": {
       "type": "text",
-      "required": true
+      "required": false
     },
     "thumbnail": {
       "type": "media",
       "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images"
-      ]
-    },
-    "category": {
-      "type": "enumeration",
-      "required": true,
-      "enum": [
-        "Urra Design Studio",
-        "Collaborations",
-        "Events",
-        "Objects"
+        "images",
+        "videos"
       ]
     },
     "slug": {
       "type": "uid",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Generate_Slug"
+            },
+            true
+          ]
+        }
+      },
       "targetField": "title",
       "required": true,
       "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "projectDate": {
+      "type": "date",
+      "required": true
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::page.page",
+      "inversedBy": "projects"
+    },
+    "Generate_Slug": {
+      "type": "boolean",
+      "private": true,
+      "required": true
     }
   }
 }

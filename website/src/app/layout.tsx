@@ -1,3 +1,4 @@
+import { NavigationTracker } from "@/components/common/NavigationTracker";
 import type { Metadata } from "next";
 import { Dosis } from "next/font/google";
 import "./globals.css";
@@ -8,7 +9,7 @@ const geistDosis = Dosis({
 });
 
 export const metadata: Metadata = {
-  title: "Aku Zeliang - Portfolio",
+  title: "Aku Zeliang",
   description:
     "Creative portfolio showcasing design work across multiple disciplines",
 };
@@ -19,7 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistDosis.variable} antialiased`}>{children}</body>
+      <body className={`${geistDosis.variable} antialiased`}>
+        {/* <LinksProvider> */}
+        <NavigationTracker />
+        {children}
+        {/* </LinksProvider> */}
+      </body>
     </html>
   );
 }

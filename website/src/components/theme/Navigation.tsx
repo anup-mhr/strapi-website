@@ -4,13 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type LinkType = {
-  href: string;
-  label: string;
-};
-
 interface NavigationProps {
-  links: LinkType[];
+  links: { href: string; label: string }[];
   theme?: "light" | "dark";
   className?: string;
 }
@@ -220,7 +215,7 @@ function Navigation({ links, theme = "light", className }: NavigationProps) {
                         theme === "light"
                           ? "text-gray-800 hover:text-black"
                           : "text-gray-200 hover:text-white",
-                        pathname === link.href &&
+                        pathname.startsWith(link.href) &&
                           (theme === "light"
                             ? "text-black border-l-4 border-black pl-4"
                             : "text-white border-l-4 border-white pl-4")

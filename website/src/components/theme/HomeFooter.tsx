@@ -1,6 +1,4 @@
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
 
 interface HomeFooterProps {
   theme?: "light" | "dark";
@@ -14,27 +12,39 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
         "absolute px-4 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 text-[10.5px]  tracking-widest py-4 md:py-6 bottom-0 w-full border-none md:border-t md:border-solid",
         className,
         theme === "light"
-          ? "text-black border-t-black/50"
-          : "text-white border-t-gray-200/50"
+          ? "text-black/70 border-t-black/35"
+          : "text-white/70 border-t-gray-200/35"
       )}
     >
       {/* Desktop Layout */}
       <div className="flex flex-col md:flex-row gap-3 md:gap-6 lg:gap-10 items-center justify-between">
         <div className="flex gap-6 lg:gap-8">
-          <p className="hover:opacity-70 transition-opacity cursor-pointer">
+          <a
+            href="https://heirloomnaga.com/"
+            target="_blank"
+            className="hover:opacity-70 transition-opacity cursor-pointer"
+          >
             Heirloom Naga
-          </p>
-          <p className="hover:opacity-70 transition-opacity cursor-pointer">
+          </a>
+          <a
+            href="https://caneconcept.com/"
+            target="_blank"
+            className="hover:opacity-70 transition-opacity cursor-pointer"
+          >
             Cane Concept
-          </p>
+          </a>
         </div>
 
-        <Link href="/" className="hover:opacity-70 transition-opacity">
+        <a
+          href="https://www.instagram.com/aku1068"
+          target="_blank"
+          className="hover:opacity-70 transition-opacity"
+        >
           Follow us on Instagram
-        </Link>
+        </a>
 
         <p className="hover:opacity-70 transition-opacity cursor-pointer">
-          contact@akuzeliang.com
+          hello@akuzeliang.com
         </p>
       </div>
 
@@ -54,7 +64,7 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
             Follow us on Instagram
           </Link>
           <p className="hover:opacity-70 transition-opacity cursor-pointer text-xs sm:text-sm">
-            contact@akuzeliang.com
+            hello@akuzeliang.com
           </p>
         </div>
       </div> */}

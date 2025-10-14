@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hero-slide",
     "pluralName": "hero-slides",
-    "displayName": "Hero Slide"
+    "displayName": "hero slider"
   },
   "options": {
     "draftAndPublish": true
@@ -29,7 +29,8 @@
       "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "videos"
       ]
     },
     "mobileViewImage": {
@@ -37,7 +38,8 @@
       "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "videos"
       ]
     }
   }

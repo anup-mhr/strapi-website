@@ -8,19 +8,21 @@ interface ProjectTitleList {
 }
 
 interface ProjectList extends ProjectTitleList {
-  category: string;
+  category: {
+    title: string;
+  };
   thumbnail: File;
 }
 interface ProductDetails {
   id: number;
   documentId: string;
+  images: File[];
   name: string;
-  thumbnail: File;
   slug: string;
 }
 
 interface ProjectDetails extends ProjectList {
-  description: string;
+  description?: string;
   products: ProductDetails[];
 }
 
@@ -31,7 +33,9 @@ interface ProjectListResponse {
 
 interface AllProjectsAndProducts {
   slug: string;
-  category: string;
+  category: {
+    title: string;
+  };
   products: {
     slug: string;
   }[];

@@ -1,13 +1,14 @@
 import HeroSlider from "@/components/sections/HeroSlider";
 import HomeFooter from "@/components/theme/HomeFooter";
 import Navigation from "@/components/theme/Navigation";
-import { links } from "@/constants/constants";
+import { loadLinks } from "@/lib/helper";
 import { fetchHeroSlides } from "@/lib/strapiApiCall";
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 export default async function Home() {
   const slides = await fetchHeroSlides();
+  const links = await loadLinks();
 
   return (
     <main className="font-dosis">

@@ -1,7 +1,7 @@
 import ContactForm from "@/components/sections/contactForm/ContactForm";
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
-import { contactPageLinks } from "@/constants/constants";
+import { loadLinks } from "@/lib/helper";
 import Image from "next/image";
 
 export const metadata = {
@@ -10,10 +10,11 @@ export const metadata = {
     "Contact us for collaborations, projects, or just to say hi! We'd love to hear from you.",
 };
 
-function Contact() {
+async function Contact() {
+  const links = await loadLinks();
   return (
     <div className="font-dosis">
-      <Navigation links={contactPageLinks} theme="dark" />
+      <Navigation links={links} theme="dark" />
 
       <div>
         <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-screen">
@@ -53,7 +54,7 @@ function Contact() {
               <div className="flex flex-col space-y-8">
                 <div>
                   <p className="font-medium">Email</p>
-                  <p>info@akuzeliang.com</p>
+                  <p>hello@akuzeliang.com</p>
                 </div>
 
                 <div>

@@ -376,7 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
   collectionName: 'hero_slides';
   info: {
-    displayName: 'Hero Slide';
+    displayName: 'hero slider';
     pluralName: 'hero-slides';
     singularName: 'hero-slide';
   };
@@ -384,7 +384,7 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    backgroundImage: Schema.Attribute.Media<'images'> &
+    backgroundImage: Schema.Attribute.Media<'images' | 'videos'> &
       Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -396,7 +396,7 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
       'api::hero-slide.hero-slide'
     > &
       Schema.Attribute.Private;
-    mobileViewImage: Schema.Attribute.Media<'images'> &
+    mobileViewImage: Schema.Attribute.Media<'images' | 'videos'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     subTitle: Schema.Attribute.String & Schema.Attribute.Required;
@@ -407,10 +407,38 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPagePage extends Struct.CollectionTypeSchema {
+  collectionName: 'pages';
+  info: {
+    displayName: 'page';
+    pluralName: 'pages';
+    singularName: 'page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
+      Schema.Attribute.Private;
+    projects: Schema.Attribute.Relation<'oneToMany', 'api::project.project'>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
-    displayName: 'product';
+    displayName: 'images';
     pluralName: 'products';
     singularName: 'product';
   };
@@ -422,9 +450,13 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     CTA: Schema.Attribute.Component<'utilities.link', false>;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
     dimension: Schema.Attribute.String;
-    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    Generate_Slug: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private;
+    images: Schema.Attribute.Media<'images' | 'videos', true> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -432,6 +464,9 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     materials: Schema.Attribute.String;
+    metadata: Schema.Attribute.Boolean &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<false>;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
@@ -439,7 +474,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.DefaultTo<false>;
     shopifyProductId: Schema.Attribute.String & Schema.Attribute.Required;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    thumbnail: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -457,14 +491,14 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.Enumeration<
-      ['Urra Design Studio', 'Collaborations', 'Events', 'Objects']
-    > &
-      Schema.Attribute.Required;
+    category: Schema.Attribute.Relation<'manyToOne', 'api::page.page'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    Generate_Slug: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -472,9 +506,11 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    projectDate: Schema.Attribute.Date & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    thumbnail: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    thumbnail: Schema.Attribute.Media<'images' | 'videos'> &
+      Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -992,6 +1028,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::hero-slide.hero-slide': ApiHeroSlideHeroSlide;
+      'api::page.page': ApiPagePage;
       'api::product.product': ApiProductProduct;
       'api::project.project': ApiProjectProject;
       'plugin::content-releases.release': PluginContentReleasesRelease;

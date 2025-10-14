@@ -1,8 +1,5 @@
+//put static links here
 export const links = [
-  { href: "/urra", label: "URRA DESIGN STUDIO" },
-  { href: "/objects", label: "OBJECTS" },
-  { href: "/collaborations", label: "COLLABORATIONS" },
-  { href: "/events", label: "EVENTS" },
   { href: "/contact", label: "CONTACT" },
 ];
 

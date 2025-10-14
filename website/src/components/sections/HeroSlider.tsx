@@ -93,7 +93,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
             <div
               key={index}
               className={cn(
-                "absolute inset-0 transition-opacity duration-1200 ease-in-out",
+                "absolute inset-0 transition-opacity duration-1500 ease-in-out",
                 isActive ? "opacity-100 z-20" : "opacity-0 z-10"
               )}
               style={{
@@ -101,40 +101,64 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               }}
             >
               {/* Desktop Image */}
-              <Image
-                src={getImageUrl(slide.backgroundImage)}
-                alt={slide.title}
-                fill
-                className={cn(
-                  "hidden custom-md:block object-cover object-center",
-                  "transition-all duration-1000 ease-in-out",
-                  isActive ? "scale-100" : "scale-105"
-                )}
-                priority={index === 0 || isActive}
-                // onLoad={() => {
-                //   if (isActive) {
-                //     setLogoColor("light");
-                //   }
-                // }}
-              />
+              {slide.backgroundImage.mime.includes("video") ? (
+                <video
+                  src={getImageUrl(slide.backgroundImage)}
+                  autoPlay
+                  muted
+                  loop
+                  className={cn(
+                    "hidden custom-md:block object-cover object-center w-full h-full",
+                    "transition-all duration-1000 ease-in-out",
+                    isActive ? "scale-100" : "scale-105"
+                  )}
+                />
+              ) : (
+                <Image
+                  src={getImageUrl(slide.backgroundImage)}
+                  alt={slide.title}
+                  fill
+                  className={cn(
+                    "hidden custom-md:block object-cover object-center",
+                    "transition-all duration-1000 ease-in-out",
+                    isActive ? "scale-100" : "scale-105"
+                  )}
+                  priority={index === 0 || isActive}
+                  // onLoad={() => {
+                  //   if (isActive) {
+                  //     setLogoColor("light");
+                  //   }
+                  // }}
+                />
+              )}
 
               {/* Mobile Image */}
-              <Image
-                src={getImageUrl(slide.mobileViewImage)}
-                alt={slide.title}
-                fill
-                className={cn(
-                  "block custom-md:hidden object-cover object-center",
-                  "transition-all duration-1000 ease-in-out",
-                  isActive ? "scale-100" : "scale-105"
-                )}
-                priority={index === 0 || isActive}
-                // onLoad={() => {
-                //   if (isActive) {
-                //     setLogoColor("light");
-                //   }
-                // }}
-              />
+              {slide.mobileViewImage.mime.includes("video") ? (
+                <video
+                  src={getImageUrl(slide.mobileViewImage)}
+                  autoPlay
+                  muted
+                  loop
+                  className={cn(
+                    "block custom-md:hidden object-cover object-center w-full h-full",
+                    "transition-all duration-1000 ease-in-out",
+                    isActive ? "scale-100" : "scale-105"
+                  )}
+                />
+              ) : (
+                <Image
+                  src={getImageUrl(slide.mobileViewImage)}
+                  alt={slide.title}
+                  fill
+                  className={cn(
+                    "block custom-md:hidden object-cover object-center",
+                    "transition-all duration-1000 ease-in-out",
+                    isActive ? "scale-100" : "scale-105"
+                  )}
+                  priority={index === 0 || isActive}
+                />
+              )}
+
               {/* Content with staggered animation */}
 
               <div
