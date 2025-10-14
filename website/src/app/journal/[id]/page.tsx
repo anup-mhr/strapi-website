@@ -73,7 +73,7 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
 
   return (
     <div className="min-h-screen bg-heirloom-ivory pt-20">
-      <div className="section-padding py-12">
+      <div className="section-padding ">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <button
@@ -174,8 +174,8 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
                       // sizes="(max-width: 768px) 100vw, 33vw"
                     />
                     {/* </div> */}
-                    <div className="absolute top-0 left-0 bg-white/10 h-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300  p-6">
-                      <h3 className="text-lg font-semibold leading-5 text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors">
+                    <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/20 h-[80%] w-[80%] backdrop-blur-sm rounded-lg opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-400 ease-in-out  p-6">
+                      <h3 className="text-base font-semibold leading-5 text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors">
                         <Link href={`/journal/${relatedPost.id}`}>
                           {relatedPost.title}
                         </Link>
@@ -183,7 +183,7 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
                       <p className="text-sm text-heirloom-charcoal/70 mb-3">
                         {relatedPost.excerpt.substring(0, 100)}...
                       </p>
-                      <div className="flex items-center justify-between text-sm text-heirloom-charcoal/60">
+                      <div className="flex items-center justify-between mt-auto text-heirloom-charcoal/60">
                         <span className="text-primary-pink">Media</span>
                         <span className="text-sm font-medium uppercase">
                           april 2025
