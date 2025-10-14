@@ -67,16 +67,6 @@ async function page({
       </div>
 
       <div className="px-5 md:px-0">
-        <LinkButton
-          href={product?.CTA?.href}
-          newTab={product?.CTA?.newTab}
-          className="py-3"
-        >
-          {product?.CTA?.label ?? "Contact us"}
-        </LinkButton>
-      </div>
-
-      <div className="px-5 md:px-0">
         {product.shopifyProductId && (
           <ShopifyBuyButton productId={product.shopifyProductId} />
         )}
