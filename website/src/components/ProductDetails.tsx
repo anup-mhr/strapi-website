@@ -88,35 +88,39 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       )}
 
       <div className="flex items-center gap-4 md:gap-8 mt-15 xl:mt-44">
-        <div className="flex items-center gap-2 md:gap-8">
-          <label htmlFor="quantity" className="text-gray-700">
-            Quantity
-          </label>
-          <select
-            id="quantity"
-            className="px-4 py-2 border border-primary-pink/30"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-          >
-            {Array.from(
-              { length: selectedVariant.inventoryQuantity ?? 1 },
-              (_, i) => i + 1
-            ).map((q) => (
-              <option key={q} value={q}>
-                {q}
-              </option>
-            ))}
-          </select>
-        </div>
-
+        {selectedVariant.inventoryQuantity > 0 && (
+          <div className="flex items-center gap-2 md:gap-8">
+            <label htmlFor="quantity" className="text-gray-700">
+              Quantity
+            </label>
+            <select
+              id="quantity"
+              className="px-4 py-2 border border-primary-pink/30"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            >
+              {Array.from(
+                { length: selectedVariant.inventoryQuantity ?? 1 },
+                (_, i) => i + 1
+              ).map((q) => (
+                <option key={q} value={q}>
+                  {q}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <button
-          className="w-full bg-black text-white px-6 py-3 rounded-md hover:opacity-90"
+          className="w-full bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:opacity-90 disabled:opacity-90 disabled:cursor-not-allowed"
           disabled={
             !selectedVariant.availableForSale ||
             selectedVariant.inventoryQuantity === 0
           }
         >
-          {selectedVariant.availableForSale ? "ADD TO CART" : "OUT OF STOCK"}
+          {selectedVariant.availableForSale &&
+          selectedVariant.inventoryQuantity !== 0
+            ? "ADD TO CART"
+            : "OUT OF STOCK"}
         </button>
       </div>
     </div>
