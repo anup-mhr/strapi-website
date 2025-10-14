@@ -29,9 +29,9 @@ function Footer() {
         </div>
 
         <p className="mt-6">AKU ZELIANG &copy; {new Date().getFullYear()}</p>
-        <p>
+        <Link href="mailto:hello@akuzeliang.com">
           hello<span className="text-sm">@</span>akuzeliang.com
-        </p>
+        </Link>
       </div>
       {/* Right Section */}
       <Link href="/terms" className="text-center md:text-right">
