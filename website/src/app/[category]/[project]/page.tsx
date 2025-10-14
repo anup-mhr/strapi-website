@@ -58,17 +58,10 @@ async function page({
   return (
     <div>
       {project.description && (
-        <p className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7 whitespace-pre-line">
-          {project.description
-            .split(new RegExp(`(${project.title})`, "gi"))
-            .map((part, index) =>
-              part.toLowerCase() === project.title.toLowerCase() ? (
-                <strong key={index}>{part}</strong>
-              ) : (
-                part
-              )
-            )}
-        </p>
+        <div
+          className="text-black text-xs mb-8 tracking-widest px-5 md:px-0 leading-7 whitespace-pre-line"
+          dangerouslySetInnerHTML={{ __html: project.description }}
+        />
       )}
 
       {project.products.length === 0 ? (
