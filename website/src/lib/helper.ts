@@ -1,7 +1,10 @@
 import { SortOption } from "@/context/SortContext";
 import { ShopifyProductPreview } from "@/types/shopify";
 
-export const formatPrice = (amount: string | null, currencyCode: string) => {
+export const formatPrice = (
+  amount: string | number | null,
+  currencyCode: string
+) => {
   if (!amount) return "";
   return new Intl.NumberFormat(undefined, {
     style: "currency",

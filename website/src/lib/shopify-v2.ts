@@ -154,7 +154,18 @@ const mockCart: Cart = {
   id: "cart-1",
   checkoutUrl: "#",
   totalPrice: 0,
-  lineItems: [],
+  lineItems: [
+    // {
+    //   id: "line-item-1",
+    //   quantity: 1,
+    //   title: "Heirloom Naga Journal",
+    //   price: 65.0,
+    //   image:
+    //     "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&h=800&fit=crop",
+    //   product: mockProducts[3],
+    //   variantId: mockProducts[3].variants[0].id,
+    // },
+  ],
 };
 
 export const shopifyService = {

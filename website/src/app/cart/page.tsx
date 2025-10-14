@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -71,11 +72,11 @@ export default function CartPage() {
 
   if (!cart || cart.lineItems.length === 0) {
     return (
-      <div className="min-h-screen bg-heirloom-ivory pt-20">
-        <div className="section-padding py-16">
+      <div className="pt-20">
+        <div className="section-padding py-10">
           <div className="max-w-2xl mx-auto text-center">
             <ShoppingBag className="w-24 h-24 text-heirloom-charcoal/30 mx-auto mb-6" />
-            <h1 className="text-4xl font-serif font-bold text-heirloom-charcoal mb-4">
+            <h1 className="text-4xl font-bold text-heirloom-charcoal mb-4">
               Your Cart is Empty
             </h1>
             <p className="text-lg text-heirloom-charcoal/70 mb-8">
@@ -85,7 +86,12 @@ export default function CartPage() {
               onClick={() => router.push("/shop")}
               className="inline-flex items-center space-x-2 bg-heirloom-charcoal text-heirloom-ivory px-8 py-4 rounded-sm font-medium hover:bg-heirloom-gold transition-colors duration-300"
             >
-              <span>Continue Shopping</span>
+              <Link
+                href={"/shop"}
+                className="hover:text-primary-pink transition-all duration-300"
+              >
+                Continue Shopping
+              </Link>
             </button>
           </div>
         </div>
@@ -98,13 +104,13 @@ export default function CartPage() {
   const total = cart.totalPrice + shippingCost + tax;
 
   return (
-    <div className="min-h-screen bg-heirloom-ivory pt-20">
+    <div className="pt-30">
       <div className="section-padding py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-serif font-bold text-heirloom-charcoal mb-2">
+              <h1 className="text-4xl font-bold text-heirloom-charcoal mb-2">
                 Shopping Cart
               </h1>
               <p className="text-heirloom-charcoal/70">
@@ -117,7 +123,7 @@ export default function CartPage() {
               className="flex items-center space-x-2 text-heirloom-charcoal hover:text-heirloom-gold transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Continue Shopping</span>
+              <Link href={"/shop"}>Continue Shopping</Link>
             </button>
           </div>
 
@@ -131,7 +137,7 @@ export default function CartPage() {
               <div className="flex justify-end">
                 <button
                   onClick={handleClearCart}
-                  className="text-red-600 hover:text-red-700 text-sm font-medium"
+                  className="text-red-700 hover:text-red-800 text-sm font-medium cursor-pointer"
                 >
                   Clear Cart
                 </button>
@@ -141,7 +147,7 @@ export default function CartPage() {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-heirloom-cream rounded-lg p-6 sticky top-24">
-                <h2 className="text-2xl font-serif font-semibold text-heirloom-charcoal mb-6">
+                <h2 className="text-2xl font-semibold text-heirloom-charcoal mb-6">
                   Order Summary
                 </h2>
 

@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { CartItem as CartItemType } from "@/types/shopify-v2";
-import { Plus, Minus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { formatPrice } from "@/lib/helper";
 import { shopifyService } from "@/lib/shopify-v2";
+import { CartItem as CartItemType } from "@/types/shopify-v2";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 interface CartItemProps {
   item: CartItemType;
@@ -63,7 +64,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
 
       {/* Product Details */}
       <div className="flex-1">
-        <h3 className="font-serif text-lg font-semibold text-heirloom-charcoal mb-1">
+        <h3 className="text-lg font-semibold text-heirloom-charcoal mb-1">
           {item.title}
         </h3>
         <p className="text-sm text-heirloom-charcoal/60 mb-2">
@@ -97,7 +98,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
         <button
           onClick={handleRemove}
           disabled={isUpdating}
-          className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
+          className="p-2 text-red-700 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
         >
           <Trash2 className="w-4 h-4" />
         </button>
@@ -106,7 +107,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
       {/* Item Total */}
       <div className="text-right">
         <p className="text-lg font-semibold text-heirloom-charcoal">
-          ${(item.price * item.quantity).toFixed(2)}
+          {formatPrice(item.price * item.quantity, "INR")}
         </p>
       </div>
     </div>
