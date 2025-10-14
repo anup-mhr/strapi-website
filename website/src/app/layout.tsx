@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { montserrat, cormorant, nunito } from "@/lib/fonts";
 import "./globals.css";
+import { CartProvider } from "@/components/cart-test/CartProvider";
 
 export const metadata: Metadata = {
   title: "Heirloom Naga - Premium Artisan Crafts & Heritage Goods",
@@ -28,7 +29,8 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${cormorant.variable} ${nunito.variable} antialiased`}
       >
-        {children}
+        <CartProvider>{children}</CartProvider>
+        {/* {children} */}
       </body>
     </html>
   );
