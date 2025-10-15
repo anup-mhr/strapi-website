@@ -26,11 +26,11 @@ export function ProjectSorter() {
     <div className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
+        className="inline-flex items-center justify-between cursor-pointer px-3 sm:px-4 py-1.5 sm:py-2 uppercase text-2xs sm:text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[120px] sm:min-w-[150px]"
       >
-        <span>{currentLabel}</span>
+        <span className="truncate">{currentLabel}</span>
         <ChevronDown
-          className={`ml-2 h-4 w-4 transition-transform duration-200 ${
+          className={`ml-1 sm:ml-2 h-4 w-4 md:h-5 md:w-5 flex-shrink-0 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -42,9 +42,9 @@ export function ProjectSorter() {
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}
-              className={`block w-full px-4 py-2 text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
+              className={`block w-full px-3 sm:px-4 py-1.5 sm:py-2 text-2xs sm:text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
                 currentSort === option.value
-                  ? "bg-gray-100  text-black font-semibold"
+                  ? "bg-gray-100 text-black font-semibold"
                   : "text-gray-700"
               }`}
             >

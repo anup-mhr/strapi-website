@@ -90,20 +90,20 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         {/* Modal */}
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col animate-slideUp">
-            <div className="flex justify-between items-center px-6 py-4 border-b">
-              <h2 className="text-xl font-bold">Filters</h2>
+            <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 border-b">
+              <h2 className="text-lg sm:text-xl font-bold">Filters</h2>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto px-6 py-6">
-              <div className="mb-8">
-                <h3 className="font-semibold pb-2 mb-4 border-b-2 border-black/30">
+            <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6">
+              <div className="mb-6 sm:mb-8">
+                <h3 className="text-sm sm:text-base font-semibold pb-2 mb-3 sm:mb-4 border-b-2 border-black/30">
                   FILTER BY PRICE
                 </h3>
 
@@ -136,7 +136,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   />
                 </div>
 
-                <div className="text-base text-gray-500 mt-4">
+                <div className="text-sm sm:text-base text-gray-500 mt-3 sm:mt-4">
                   <span>
                     <span className="font-bold">Price: </span>₹
                     {filters.minPrice.toLocaleString("en-IN")} - ₹
@@ -147,10 +147,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
               {/* Category Filter */}
               <div>
-                <h3 className="font-semibold pb-2 border-b-2 border-black/30 mb-4">
+                <h3 className="text-sm sm:text-base font-semibold pb-2 border-b-2 border-black/30 mb-3 sm:mb-4">
                   FILTER BY CATEGORY
                 </h3>
-                <ul className="space-y-3 text-gray-700">
+                <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-700">
                   {categories.map((category) => (
                     <li key={category.name}>
                       <div className="flex justify-between items-center">
@@ -174,7 +174,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
                       {expandedCategories.includes(category.name) &&
                         category.subcategories.length > 0 && (
-                          <ul className="ml-4 mt-2 space-y-1 text-gray-600">
+                          <ul className="ml-3 sm:ml-4 mt-1.5 sm:mt-2 space-y-1 text-xs sm:text-sm text-gray-600">
                             {category.subcategories.map((sub) => (
                               <li
                                 key={sub}
@@ -193,10 +193,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t bg-gray-50">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-t bg-gray-50">
               <button
                 onClick={handleApplyFilters}
-                className="w-full rounded-md py-3 bg-primary-pink text-white font-semibold hover:bg-primary-pink/90 transition-colors"
+                className="w-full rounded-md py-2.5 sm:py-3 text-sm sm:text-base bg-primary-pink text-white font-semibold hover:bg-primary-pink/90 transition-colors"
               >
                 APPLY FILTER
               </button>
@@ -209,9 +209,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   // Desktop Sidebar View
   return (
-    <div className="min-w-[17rem]">
-      <div className="mb-12">
-        <h3 className="font-semibold pb-2 mb-4 border-b-2 border-black/30">
+    <div className="min-w-[15rem] sm:min-w-[17rem]">
+      <div className="mb-8 sm:mb-12">
+        <h3 className="text-sm sm:text-base font-semibold pb-2 mb-3 sm:mb-4 border-b-2 border-black/30">
           FILTER BY PRICE
         </h3>
 
@@ -244,8 +244,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="text-base text-gray-500 mt-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+          <div className="text-sm sm:text-base text-gray-500 mt-2">
             <span>
               <span className="font-bold">Price: </span>₹
               {filters.minPrice.toLocaleString("en-IN")} - ₹
@@ -255,7 +255,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
           <button
             onClick={onApplyFilters}
-            className="mt-3 px-12 rounded-md py-2 bg-primary-pink text-white hover:bg-primary-pink/80 cursor-pointer"
+            className="mt-3 px-8 sm:px-12 rounded-md py-2 text-sm sm:text-base bg-primary-pink text-white hover:bg-primary-pink/80 cursor-pointer"
           >
             FILTER
           </button>
@@ -263,22 +263,22 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       <div>
-        <h3 className="font-semibold pb-2 border-b-2 border-black/30 mb-4">
+        <h3 className="text-sm sm:text-base font-semibold pb-2 border-b-2 border-black/30 mb-3 sm:mb-4">
           FILTER BY CATEGORY
         </h3>
-        <ul className="space-y-3 text-gray-700">
+        <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-700">
           {categories.map((category) => (
             <li key={category.name}>
               <div className="flex justify-between items-center">
                 <span
                   onClick={() => toggleCategoryFilter(category.name)}
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:text-primary-pink transition-colors"
                 >
                   {category.name}
                 </span>
                 {category.subcategories.length > 0 && (
                   <button
-                    className="w-5 h-5 flex justify-center text-black/30 items-center font-bold border-1 border-black/10 rounded-full text-sm cursor-pointer"
+                    className="w-5 h-5 flex justify-center text-black/30 items-center font-bold border-1 border-black/10 rounded-full text-sm cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => toggleCategory(category.name)}
                   >
                     {expandedCategories.includes(category.name) ? "−" : "+"}
@@ -288,12 +288,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
               {expandedCategories.includes(category.name) &&
                 category.subcategories.length > 0 && (
-                  <ul className="ml-4 mt-2 space-y-1 text-gray-600">
+                  <ul className="ml-3 sm:ml-4 mt-1.5 sm:mt-2 space-y-1 text-xs sm:text-sm text-gray-600">
                     {category.subcategories.map((sub) => (
                       <li
                         key={sub}
                         onClick={() => toggleSubcategoryFilter(sub)}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:text-primary-pink transition-colors"
                       >
                         {sub}
                       </li>

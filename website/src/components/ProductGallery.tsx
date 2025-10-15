@@ -26,12 +26,12 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
       </div>
 
       {/* Thumbnails */}
-      <div className="w-full flex gap-2 mt-2">
+      <div className="w-full flex gap-1.5 sm:gap-2 mt-2">
         {images.map((img, index) => (
           <button
             key={index}
             onClick={() => setSelectedImageIndex(index)}
-            className={`w-36 aspect-[3/4] relative border-2 cursor-pointer transition-all duration-200 ${
+            className={`w-20 sm:w-28 md:w-32 lg:w-36 aspect-[3/4] relative border-2 cursor-pointer transition-all duration-200 ${
               selectedImageIndex === index
                 ? "border-primary-pink"
                 : "border-transparent"

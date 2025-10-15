@@ -50,9 +50,11 @@ const ProductList = ({
             )}
           </div>
 
-          <div className="py-2 sm:py-2.5 md:py-3 px-2 sm:px-3 md:px-4 lg:px-6 flex flex-col items-center text-xs sm:text-sm tracking-normal">
-            <p className="font-bold text-center">{product?.title}</p>
-            <p className="text-xs sm:text-sm">
+          <div className="py-2 sm:py-2.5 md:py-3 px-2 sm:px-3 md:px-4 lg:px-6 flex flex-col items-center">
+            <p className="font-bold text-center text-xs sm:text-sm md:text-base tracking-normal">
+              {product?.title}
+            </p>
+            <p className="text-xs sm:text-sm md:text-base mt-1">
               {formatPrice(
                 product?.variants?.[0].price.amount,
                 product?.variants?.[0].price.currencyCode

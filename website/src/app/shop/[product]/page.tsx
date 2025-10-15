@@ -32,7 +32,7 @@ export default async function ProductPage({
       <main className="padding pt-[3rem]">
         <Heading title="SHOP" subtitle="Our latest products" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 w-full justify-between gap-8 items-start mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full justify-between gap-6 sm:gap-8 lg:gap-12 items-start mb-12 sm:mb-16 lg:mb-20">
           <ProductGallery images={product.images} name={product.title} />
           <div className="flex lg:justify-end">
             <ProductDetails product={product} />
@@ -40,7 +40,7 @@ export default async function ProductPage({
         </div>
 
         <div>
-          <h1 className="text-xl font-semibold mb-6 uppercase tracking-wider">
+          <h1 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-6 uppercase tracking-wide sm:tracking-wider">
             Related Products
           </h1>
           <ProductList products={relatedProducts} />

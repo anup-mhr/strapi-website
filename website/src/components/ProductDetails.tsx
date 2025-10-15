@@ -31,11 +31,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   return (
     <div className="max-w-xl">
-      <div className="flex justify-between mb-8 border-b-2 border-black/30">
-        <h2 className="text-xl font-bold uppercase tracking-widest">
+      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8 pb-4 sm:pb-0 border-b-2 border-black/30">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-wide sm:tracking-widest mb-2 sm:mb-0">
           {product.title}
         </h2>
-        <p className="text-lg mb-4">
+        <p className="text-base sm:text-lg md:text-xl mb-2 sm:mb-4">
           {formatPrice(
             selectedVariant.price.amount,
             selectedVariant.price.currencyCode
@@ -43,12 +43,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </p>
       </div>
 
-      <div className="text-base text-gray-700 mb-6 space-y-8">
+      <div className="text-sm sm:text-base text-gray-700 mb-6 space-y-6 sm:space-y-8">
         <div className="space-y-2">
           {selectedVariant.selectedOptions.map((option, index) => (
             <p
               key={index}
-              className={`${option.name.toUpperCase() === "NOTE" && "mt-8"}`}
+              className={`text-sm sm:text-base ${
+                option.name.toUpperCase() === "NOTE" && "mt-6 sm:mt-8"
+              }`}
             >
               {option.name.toUpperCase() !== "NOTE" && (
                 <strong>{option.name}:</strong>
@@ -57,10 +59,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </p>
           ))}
         </div>
-        <p className="mt-4 text-gray-700">{product.description}</p>
-        <p>
+        <p className="mt-4 text-sm sm:text-base text-gray-700">
+          {product.description}
+        </p>
+        <p className="text-sm sm:text-base">
           Availability:{" "}
-          <span className="text-primary-pink">
+          <span className="text-primary-pink font-semibold">
             {selectedVariant.inventoryQuantity}
           </span>{" "}
           in stock
@@ -69,12 +73,15 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
       {product.variants.length > 1 && (
         <div className="mb-6">
-          <label htmlFor="variant" className="mr-3 font-semibold">
+          <label
+            htmlFor="variant"
+            className="mr-3 text-sm sm:text-base font-semibold"
+          >
             Select Variant
           </label>
           <select
             id="variant"
-            className="px-4 py-2 border rounded"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border rounded"
             value={selectedVariant.title}
             onChange={(e) => handleVariantChange(e.target.value)}
           >
@@ -87,15 +94,18 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </div>
       )}
 
-      <div className="flex items-center gap-4 md:gap-8 mt-15 xl:mt-44">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 md:gap-8 mt-8 sm:mt-15 xl:mt-44">
         {selectedVariant.inventoryQuantity > 0 && (
-          <div className="flex items-center gap-2 md:gap-8">
-            <label htmlFor="quantity" className="text-gray-700">
+          <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
+            <label
+              htmlFor="quantity"
+              className="text-sm sm:text-base text-gray-700"
+            >
               Quantity
             </label>
             <select
               id="quantity"
-              className="px-4 py-2 border border-primary-pink/30"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-primary-pink/30"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             >
@@ -111,7 +121,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           </div>
         )}
         <button
-          className="w-full bg-black text-white px-6 py-3 rounded-md cursor-pointer hover:opacity-90 disabled:opacity-90 disabled:cursor-not-allowed"
+          className="w-full bg-black text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-md cursor-pointer hover:opacity-90 disabled:opacity-90 disabled:cursor-not-allowed transition-opacity"
           disabled={
             !selectedVariant.availableForSale ||
             selectedVariant.inventoryQuantity === 0
