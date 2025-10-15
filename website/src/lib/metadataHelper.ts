@@ -1,4 +1,9 @@
-import { capitalize, getCategoryViaSlug, getImageUrl } from "@/lib/helper";
+import {
+  capitalize,
+  getCategoryViaSlug,
+  getImageUrl,
+  getPlainText,
+} from "@/lib/helper";
 import { fetchProductBySlug, fetchProjectBySlug } from "@/lib/strapiApiCall";
 
 // Universal SEO builder
@@ -60,7 +65,10 @@ export async function generateProjectMetadata(projectSlug: string) {
     const title = project?.title
       ? `Aku Zeliang - ${capitalize(project.title)}`
       : "Aku Zeliang - Our Projects";
-    const description = project?.description || "Checkout our latest projects";
+    const description = getPlainText(
+      project?.description,
+      "Checkout our latest projects"
+    );
     const image = project?.thumbnail ? getImageUrl(project.thumbnail) : "";
 
     return buildSEO({ title, description, image });
@@ -82,7 +90,10 @@ export async function generateProductMetadata(productSlug: string) {
       ? `Aku Zeliang - ${capitalize(product.name)}`
       : "Aku Zeliang - Our Projects";
 
-    const description = product?.description || "Checkout our latest products";
+    const description = getPlainText(
+      product?.description,
+      "Checkout our latest products"
+    );
 
     const image = product?.images?.[0] ? getImageUrl(product.images[0]) : "";
 

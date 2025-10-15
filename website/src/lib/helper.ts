@@ -3,6 +3,7 @@ import { CategoryMeta } from "@/types/category";
 import { File } from "@/types/heroslide";
 import { ProjectList } from "@/types/project";
 import { fetchProjectCategories } from "./strapiApiCall";
+import striptags from "striptags";
 
 export function getImageUrl(image: File): string {
   if (!image?.url) return "/images/placeholder.webp";
@@ -25,6 +26,11 @@ export function capitalize(string: string | null) {
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+export function getPlainText(html?: string, fallback = ""): string {
+  if (!html) return fallback;
+  return striptags(html).trim();
 }
 
 export function sortProjects(

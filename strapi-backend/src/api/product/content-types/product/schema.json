@@ -16,7 +16,11 @@
       "required": true
     },
     "description": {
-      "type": "text",
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultHtml"
+      },
       "required": false
     },
     "metadata": {
@@ -62,10 +66,7 @@
       "type": "media",
       "multiple": true,
       "required": true,
-      "allowedTypes": [
-        "images",
-        "videos"
-      ]
+      "allowedTypes": ["images", "videos"]
     },
     "Generate_Slug": {
       "type": "boolean",
