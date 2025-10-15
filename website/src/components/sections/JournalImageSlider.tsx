@@ -71,8 +71,8 @@ export default function JournalImageSlider({
               : "opacity-0 pointer-events-none absolute inset-0"
           }`}
         >
-          <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-12 items-center p-4">
-            <div className="relative w-full h-[25rem] lg:h-[30rem]">
+          <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-4 sm:gap-6 lg:gap-12 items-center p-3 sm:p-4">
+            <div className="relative w-full h-[20rem] sm:h-[22rem] md:h-[25rem] lg:h-[28rem] xl:h-[30rem]">
               <Image
                 src={img.image}
                 alt={img.title}
@@ -82,15 +82,22 @@ export default function JournalImageSlider({
               />
             </div>
 
-            <div className="flex flex-col gap-4 justify-center">
-              <h1 className="!text-black tagline font-semibold text-xl">
+            <div className="flex flex-col gap-3 sm:gap-4 justify-center px-2 sm:px-0">
+              <h1 className="!text-black tagline font-semibold text-base sm:text-lg md:text-xl">
                 {img.title}
               </h1>
               <div>
-                <h2 className="font-semibold">{img.subtitle}</h2>
-                <p className="font-extralight leading-6">{img.description}</p>
+                <h2 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">
+                  {img.subtitle}
+                </h2>
+                <p className="font-extralight leading-5 sm:leading-6 text-xs sm:text-sm md:text-base">
+                  {img.description}
+                </p>
               </div>
-              <LinkButton className="px-0 tracking-normal border-b-1 rounded-none py-0 text-black text-base">
+              <LinkButton
+                // href={`/journal/${img.slug || ""}`}
+                className="px-0 tracking-normal border-b-1 rounded-none py-0 text-black text-sm sm:text-base"
+              >
                 Read Story
               </LinkButton>
             </div>
@@ -101,16 +108,26 @@ export default function JournalImageSlider({
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="group-hover:block z-50 absolute top-1/2 left-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="group-hover:block z-50 absolute top-1/2 left-2 sm:left-3 md:left-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        aria-label="Previous story"
       >
-        <ChevronLeft size={32} strokeWidth={0.8} />
+        <ChevronLeft
+          size={24}
+          strokeWidth={0.8}
+          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+        />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute top-1/2 right-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="z-50 absolute top-1/2 right-2 sm:right-3 md:right-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        aria-label="Next story"
       >
-        <ChevronRight size={32} strokeWidth={0.8} />
+        <ChevronRight
+          size={24}
+          strokeWidth={0.8}
+          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+        />
       </button>
     </div>
   );

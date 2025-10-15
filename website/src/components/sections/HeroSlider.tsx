@@ -68,8 +68,8 @@ export default function HeroSlider({ images }: { images: ImageData[] }) {
             priority={index === 0}
           />
 
-          <div className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 ">
-            <p className="text-4xl font-semibold text-white tracking-widest mb-3 uppercase">
+          <div className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 px-4">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-white tracking-wide sm:tracking-wider md:tracking-widest mb-2 sm:mb-2.5 md:mb-3 uppercase text-center">
               BENREU COLLECTION
             </p>
             <LinkButton href="/shop" className="bg-black uppercase">
@@ -82,16 +82,26 @@ export default function HeroSlider({ images }: { images: ImageData[] }) {
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-50 absolute bottom-1/3 left-6 sm:left-12 md:left-24 lg:left-32 xl:left-48  bg-black/70 hover:bg-black/30 text-white p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="z-50 absolute bottom-1/3 left-4 sm:left-6 md:left-12 lg:left-24 xl:left-32 2xl:left-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        aria-label="Previous image"
       >
-        <ChevronLeft size={32} strokeWidth={0.8} />
+        <ChevronLeft
+          size={24}
+          strokeWidth={0.8}
+          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+        />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute bottom-1/3  right-6 sm:right-12 md:right-24 lg:right-32 xl:right-48 bg-black/70 hover:bg-black/30 text-white p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="z-50 absolute bottom-1/3 right-4 sm:right-6 md:right-12 lg:right-24 xl:right-32 2xl:right-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        aria-label="Next image"
       >
-        <ChevronRight size={32} strokeWidth={0.8} />
+        <ChevronRight
+          size={24}
+          strokeWidth={0.8}
+          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+        />
       </button>
 
       <div className="bg-black h-screen w-full absolute -z-10"></div>

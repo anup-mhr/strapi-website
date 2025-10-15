@@ -73,15 +73,18 @@ const Header = ({ className = "" }: { className?: string }) => {
   return (
     <header
       className={cn(
-        "fixed w-full z-50 transition-all duration-600 py-6",
+        "fixed w-full z-50 transition-all duration-600 py-4 sm:py-5 md:py-6",
         "flex items-center justify-between padding font-semibold",
         isScrolled
-          ? "bg-white/50 shadow-md backdrop-blur-md py-3"
-          : "bg-transparent ",
+          ? "bg-white/50 shadow-md backdrop-blur-md py-2 sm:py-2.5 md:py-3"
+          : "bg-transparent",
         className
       )}
     >
-      <Link href="/" className="w-40 lg:w-50 h-14 relative">
+      <Link
+        href="/"
+        className="w-32 sm:w-36 md:w-40 lg:w-50 h-12 sm:h-13 md:h-14 relative"
+      >
         <Image
           src="/images/logo.png"
           alt="Hierloom Naga Logo"
@@ -90,7 +93,7 @@ const Header = ({ className = "" }: { className?: string }) => {
         />
       </Link>
 
-      <ul className="hidden md:flex gap-6 text-primary">
+      <ul className="hidden md:flex gap-4 lg:gap-6 text-primary text-sm lg:text-base">
         {navLinks.map(({ label, href }) => (
           <li key={href}>
             <Link
@@ -121,36 +124,39 @@ const Header = ({ className = "" }: { className?: string }) => {
       <button
         className="md:hidden hamburger p-2 rounded-md focus:outline-none"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Toggle menu"
       >
-        <Menu size={24} />
+        <Menu size={20} className="sm:w-6 sm:h-6" />
       </button>
 
       {/* Mobile Menu */}
       <div
         className={cn(
-          "mobile-menu fixed top-0 right-0 w-screen h-screen bg-white shadow-lg transform transition-transform duration-600 md:hidden flex flex-col gap-6 text-sm",
+          "mobile-menu fixed top-0 right-0 w-screen h-screen bg-white shadow-lg transform transition-transform duration-600 md:hidden flex flex-col gap-4 sm:gap-6 text-xs sm:text-sm",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-        <div className="padding py-8 flex justify-between items-center pb-4 border-b-[1px] border-primary">
-          <h1 className="font-bold">MENU</h1>
+        <div className="padding py-6 sm:py-8 flex justify-between items-center pb-3 sm:pb-4 border-b-[1px] border-primary">
+          <h1 className="font-bold text-sm sm:text-base">MENU</h1>
           <button
             className="md:hidden hamburger p-2 rounded-md focus:outline-none"
             onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close menu"
           >
-            <X size={24} />
+            <X size={20} className="sm:w-6 sm:h-6" />
           </button>
         </div>
 
-        <div className="padding flex flex-col gap-8 py-8">
+        <div className="padding flex flex-col gap-6 sm:gap-8 py-6 sm:py-8">
           {navLinks.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
               className={cn(
-                "text-base font-semibold uppercase",
+                "text-sm sm:text-base font-semibold uppercase",
                 pathname === href && "text-primary-pink"
               )}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               {label}
             </Link>
@@ -158,9 +164,10 @@ const Header = ({ className = "" }: { className?: string }) => {
           <Link
             href={"/cart"}
             className={cn(
-              "text-base font-semibold uppercase",
+              "text-sm sm:text-base font-semibold uppercase",
               pathname === "/cart" && "text-primary-pink"
             )}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             CART <span>({cartItemCount})</span>
           </Link>

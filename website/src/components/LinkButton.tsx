@@ -17,7 +17,7 @@ const LinkButton = ({
     <Link
       href={href}
       className={cn(
-        "text-white font-semibold py-3 px-8 mt-2 w-max uppercase tracking-widest text-base rounded-md group",
+        "text-white font-semibold py-2 sm:py-2.5 md:py-3 px-6 sm:px-7 md:px-8 mt-2 w-max uppercase tracking-wide sm:tracking-wider md:tracking-widest text-xs md:text-sm rounded-md group",
         className
       )}
     >
