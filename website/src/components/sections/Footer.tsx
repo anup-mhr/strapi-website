@@ -3,66 +3,70 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <div>
-      <div className="flex flex-col gap-2 items-center mt-24">
+      <div className="flex flex-col gap-2 items-center mt-16 md:mt-20 lg:mt-24">
         <Image
           src={"/images/design.png"}
           alt={"design"}
           width={210}
           height={100}
-          className="w-[150px] sm:w-[180px] lg:w-[210px] mb-2"
+          className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[210px] mb-2"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-18 text-primary padding">
+      <div className="grid  md:grid-cols-3 gap-8 md:gap-10 lg:gap-12 mt-12 md:mt-16 lg:mt-18 text-primary padding">
         <div className="flex flex-col justify-center items-center md:items-start">
           <Image
             src="/images/logo.png"
             alt={"Hierloom Naga Logo"}
             width={200}
             height={96}
-            className="object-contain w-40 lg:w-50 h-24"
+            className="object-contain w-32 sm:w-36 md:w-40 lg:w-50 h-auto"
           />
         </div>
 
-        <div className="text-sm text-center mx-auto font-semibold ">
+        <div className="text-xs sm:text-sm text-center mx-auto font-semibold">
           FIND US ON
-          <div className="flex gap-4 lg:gap-6 mt-6">
+          <div className="flex gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-5 lg:mt-6">
             <Image
               src={"/images/socials/instagram.svg"}
               alt="instagram"
               width={44}
               height={44}
-              className="w-8 h-8 md:w-10 md:h-11 lg:w-12 lg:h-12"
+              className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
             />
             <Image
               src={"/images/socials/facebook.svg"}
               alt="facebook"
               width={44}
               height={44}
-              className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+              className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
             />
             <Image
               src={"/images/socials/x-twitter.svg"}
               alt="x-twitter"
               width={44}
               height={44}
-              className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+              className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
             />
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
-          <p className="text-sm font-semibold">HELP</p>
-          <ul className="text-xs text-gray-500 mt-6 space-y-1 flex flex-col items-center md:items-start">
-            <li>Returns & Refunds</li>
-            <li>Shipping</li>
-            <li>Privacy Policy</li>
-            <li>Terms & Conditions</li>
-          </ul>
+        <div className="flex flex-col items-center md:items-end">
+          <div>
+            <p className="text-xs sm:text-sm font-semibold text-center md:text-left">
+              HELP
+            </p>
+            <ul className="text-xs sm:text-sm text-gray-500 mt-4 sm:mt-5 lg:mt-6 space-y-1 sm:space-y-1.5 flex flex-col items-center md:items-start">
+              <li>Returns & Refunds</li>
+              <li>Shipping</li>
+              <li>Privacy Policy</li>
+              <li>Terms & Conditions</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="mx-auto w-full py-8 mt-5">
-        <p className="text-gray-500 text-xs text-center">
+      <div className="mx-auto w-full py-6 sm:py-7 md:py-8 mt-4 sm:mt-5">
+        <p className="text-gray-500 text-xs sm:text-sm text-center">
           © {new Date().getFullYear()} Heirloomnaga.com All rights reserved.
         </p>
       </div>

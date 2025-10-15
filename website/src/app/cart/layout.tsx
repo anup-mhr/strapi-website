@@ -7,7 +7,9 @@ function layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <Header />
 
-      <main className="py-12 padding">{children}</main>
+      <main className="pt-12 padding min-h-[45vh] md:min-h-[50vh] xl:min-h-[55vh]">
+        {children}
+      </main>
 
       <Footer />
     </div>

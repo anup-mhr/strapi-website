@@ -24,7 +24,7 @@ body {
 }
 
 .padding {
-  @apply px-6 sm:px-12 md:px-20 lg:px-28 xl:px-44;
+  @apply px-6 sm:px-12 md:px-14 lg:px-20 xl:px-40;
 }
 
 .nav {

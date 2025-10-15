@@ -9,7 +9,7 @@ export const formatPrice = (
   return new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: currencyCode,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(Number(amount));
 };

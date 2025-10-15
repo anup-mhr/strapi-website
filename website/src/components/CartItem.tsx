@@ -46,69 +46,54 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
   };
 
   return (
-    <div
-      className={`flex gap-4 p-6 bg-heirloom-ivory rounded-lg shadow-sm ${
-        isUpdating ? "opacity-50" : ""
-      }`}
-    >
-      {/* Product Image */}
-      <div className="relative w-24 h-24 flex-shrink-0">
+    <div className="flex items-center gap-4 md:gap-6">
+      <div className="relative w-40 md:w-48 h-60 flex-shrink-0">
         <Image
           src={item.image}
           alt={item.title}
           fill
-          className="object-cover rounded-md"
-          sizes="96px"
+          className="object-cover object-center"
         />
       </div>
-
-      {/* Product Details */}
-      <div className="flex-1">
-        <h3 className="text-lg font-semibold text-heirloom-charcoal mb-1">
-          {item.title}
-        </h3>
-        <p className="text-sm text-heirloom-charcoal/60 mb-2">
-          {item.product.productType}
-        </p>
-        <p className="text-lg font-semibold text-heirloom-charcoal">
-          ${item.price.toFixed(2)}
-        </p>
-      </div>
-
-      {/* Quantity Controls */}
-      <div className="flex flex-col items-center space-y-2">
-        <div className="flex items-center space-x-2">
+      <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col md:flex-row justify-between md:items-center md:gap-4">
+          <h3 className="text-sm md:text-base uppercase">{item.title}</h3>
+          <p className="text-sm md:text-base">
+            {formatPrice(item.price * item.quantity, "INR")}
+          </p>
+        </div>
+        <div className="text-xs md:text-sm">
+          <p className="mb-1">Size: 20 x 22</p>
+          <p>Materials: Cotton</p>
+        </div>
+        <div className="flex justify-between">
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => handleQuantityChange(item.quantity - 1)}
+              disabled={isUpdating || item.quantity <= 1}
+              className="p-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Minus className="w-3 h-3" />
+            </button>
+            <span className="w-4 text-sm md:text-base text-center">
+              {item.quantity}
+            </span>
+            <button
+              onClick={() => handleQuantityChange(item.quantity + 1)}
+              disabled={isUpdating}
+              className="p-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          </div>
           <button
-            onClick={() => handleQuantityChange(item.quantity - 1)}
-            disabled={isUpdating || item.quantity <= 1}
-            className="p-2 rounded-md border border-heirloom-charcoal/20 hover:bg-heirloom-charcoal/5 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Minus className="w-4 h-4" />
-          </button>
-          <span className="w-8 text-center font-medium">{item.quantity}</span>
-          <button
-            onClick={() => handleQuantityChange(item.quantity + 1)}
+            onClick={handleRemove}
             disabled={isUpdating}
-            className="p-2 rounded-md border border-heirloom-charcoal/20 hover:bg-heirloom-charcoal/5 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Plus className="w-4 h-4" />
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
-
-        <button
-          onClick={handleRemove}
-          disabled={isUpdating}
-          className="p-2 text-red-700 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* Item Total */}
-      <div className="text-right">
-        <p className="text-lg font-semibold text-heirloom-charcoal">
-          {formatPrice(item.price * item.quantity, "INR")}
-        </p>
       </div>
     </div>
   );

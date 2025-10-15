@@ -1,24 +1,17 @@
 "use client";
 
 import CartItem from "@/components/CartItem";
+import Loader from "@/components/common/Loader";
+import { formatPrice } from "@/lib/helper";
 import { shopifyService } from "@/lib/shopify-v2";
 import { Cart as CartType } from "@/types/shopify-v2";
-import {
-  ArrowLeft,
-  CreditCard,
-  Shield,
-  ShoppingBag,
-  Truck,
-} from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartType | null>(null);
   const [loading, setLoading] = useState(true);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     loadCart();
@@ -51,48 +44,30 @@ export default function CartPage() {
     }
   };
 
-  const handleClearCart = async () => {
-    if (!confirm("Are you sure you want to clear your cart?")) return;
-
-    try {
-      await shopifyService.clearCart();
-      loadCart();
-    } catch (error) {
-      console.error("Error clearing cart:", error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-heirloom-gold"></div>
+        <Loader />
       </div>
     );
   }
 
   if (!cart || cart.lineItems.length === 0) {
     return (
-      <div className="pt-20">
-        <div className="section-padding py-10">
-          <div className="max-w-2xl mx-auto text-center">
-            <ShoppingBag className="w-24 h-24 text-heirloom-charcoal/30 mx-auto mb-6" />
-            <h1 className="text-4xl font-bold text-heirloom-charcoal mb-4">
-              Your Cart is Empty
-            </h1>
-            <p className="text-lg text-heirloom-charcoal/70 mb-8">
-              Discover our curated collection of heirloom-quality pieces
-            </p>
-            <button
-              onClick={() => router.push("/shop")}
-              className="inline-flex items-center space-x-2 bg-heirloom-charcoal text-heirloom-ivory px-8 py-4 rounded-sm font-medium hover:bg-heirloom-gold transition-colors duration-300"
-            >
-              <Link
-                href={"/shop"}
-                className="hover:text-primary-pink transition-all duration-300"
-              >
-                Continue Shopping
+      <div className="pt-15">
+        <div className="flex flex-col lg:flex-row justify-between gap-10">
+          <div className="w-full space-y-6">
+            <div className="flex items-center justify-between w-full mb-8">
+              <h1 className="text-center md:text-left text-base md:text-lg font-semibold w-full mb-2">
+                Shopping Cart
+              </h1>
+            </div>
+            <div className="flex flex-col items-center mt-12">
+              <div className="mb-6 text-sm">Your cart is empty.</div>
+              <Link href="/shop" className="underline text-xs">
+                Explore the heirloom collections.
               </Link>
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -104,128 +79,70 @@ export default function CartPage() {
   const total = cart.totalPrice + shippingCost + tax;
 
   return (
-    <div className="pt-30">
-      <div className="section-padding py-12">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-4xl font-bold text-heirloom-charcoal mb-2">
-                Shopping Cart
-              </h1>
-              <p className="text-heirloom-charcoal/70">
-                {cart.lineItems.length}{" "}
-                {cart.lineItems.length === 1 ? "item" : "items"} in your cart
-              </p>
-            </div>
-            <button
-              onClick={() => router.push("/shop")}
-              className="flex items-center space-x-2 text-heirloom-charcoal hover:text-heirloom-gold transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <Link href={"/shop"}>Continue Shopping</Link>
-            </button>
+    <div className="pt-15">
+      <div className="flex flex-col lg:flex-row justify-between gap-10">
+        {/* Cart Items */}
+        <div className="w-full space-y-6">
+          <div className="flex items-center justify-between w-full mb-8">
+            <h1 className="text-center md:text-left text-base md:text-lg font-semibold w-full mb-2">
+              Shopping Cart
+            </h1>
           </div>
+          {cart.lineItems.map((item) => (
+            <CartItem key={item.id} item={item} onUpdate={loadCart} />
+          ))}
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-6">
-              {cart.lineItems.map((item) => (
-                <CartItem key={item.id} item={item} onUpdate={loadCart} />
-              ))}
+        {/* Cart Summary */}
+        <div className="self-end md:w-[25rem]">
+          <p className="text-xs text-black/60 mb-2">
+            Tax calculated at checkout.
+          </p>
+          <div className="flex justify-between items-center mb-6">
+            <span className="text-lg md:text-xl font-semibold">Total</span>
+            <span className="font-semibold text-base md:text-lg">
+              {formatPrice(total, "INR")}
+            </span>
+          </div>
+          <button
+            onClick={handleCheckout}
+            disabled={isCheckingOut}
+            className="w-full bg-black text-white py-3 cursor-pointer hover:bg-black/80 font-semibold text-sm md:text-base transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+          >
+            {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
+          </button>
 
-              <div className="flex justify-end">
-                <button
-                  onClick={handleClearCart}
-                  className="text-red-700 hover:text-red-800 text-sm font-medium cursor-pointer"
-                >
-                  Clear Cart
-                </button>
-              </div>
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-heirloom-cream rounded-lg p-6 sticky top-24">
-                <h2 className="text-2xl font-semibold text-heirloom-charcoal mb-6">
-                  Order Summary
-                </h2>
-
-                <div className="space-y-4 mb-6">
-                  <div className="flex justify-between">
-                    <span className="text-heirloom-charcoal/70">Subtotal</span>
-                    <span className="font-medium">
-                      ${cart.totalPrice.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-heirloom-charcoal/70">Shipping</span>
-                    <span className="font-medium">
-                      {shippingCost === 0
-                        ? "Free"
-                        : `$${shippingCost.toFixed(2)}`}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-heirloom-charcoal/70">Tax</span>
-                    <span className="font-medium">${tax.toFixed(2)}</span>
-                  </div>
-                  <div className="border-t border-heirloom-charcoal/20 pt-4">
-                    <div className="flex justify-between text-lg font-semibold">
-                      <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className="w-full bg-heirloom-charcoal text-heirloom-ivory py-4 rounded-sm font-semibold text-lg hover:bg-heirloom-gold transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
-                >
-                  {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
-                </button>
-
-                {/* Guarantees */}
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center space-x-3">
-                    <Shield className="w-4 h-4 text-heirloom-gold" />
-                    <span className="text-heirloom-charcoal/70">
-                      Secure Checkout
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Truck className="w-4 h-4 text-heirloom-gold" />
-                    <span className="text-heirloom-charcoal/70">
-                      Free shipping on orders over $100
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CreditCard className="w-4 h-4 text-heirloom-gold" />
-                    <span className="text-heirloom-charcoal/70">
-                      Multiple payment options
-                    </span>
-                  </div>
-                </div>
-
-                {/* Discount Code */}
-                <div className="mt-6 pt-6 border-t border-heirloom-charcoal/20">
-                  <h3 className="font-medium text-heirloom-charcoal mb-3">
-                    Discount Code
-                  </h3>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Enter code"
-                      className="flex-1 px-3 py-2 border border-heirloom-charcoal/20 rounded-sm bg-heirloom-ivory focus:outline-none focus:border-heirloom-gold"
-                    />
-                    <button className="px-4 py-2 bg-heirloom-charcoal/10 text-heirloom-charcoal rounded-sm hover:bg-heirloom-charcoal hover:text-heirloom-ivory transition-colors">
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="py-6 text-xs md:text-sm border-b border-black/10">
+            <p className="mb-3">Shipping</p>
+            <p>
+              Complimentary shipping on all orders worldwide. Please visit our{" "}
+              <Link href="/shipping-policy" className="underline">
+                Shipping Policy
+              </Link>{" "}
+              for more information.
+            </p>
+          </div>
+          <div className="py-6 text-xs md:text-sm border-b border-black/10">
+            <p className="mb-3">Contact Us</p>
+            <p>
+              Email us at{" "}
+              <Link href="mailto:info@heirloomnaga.com" className="underline">
+                info@heirloomnaga.com
+              </Link>
+            </p>
+            <p>Customer Service Hours: Monday to Friday 9am - 6pm EST</p>
+          </div>
+          <div className="py-6 text-xs md:text-sm">
+            <p className="mb-3">Return Policy</p>
+            <p>
+              Item purchased from khaite.com can be returned for a refund at no
+              charge, online or in store within 14 days from original ship date.
+              Please visit our{" "}
+              <Link href="/return-policy" className="underline">
+                Return Policy
+              </Link>
+              page for more information.
+            </p>
           </div>
         </div>
       </div>
