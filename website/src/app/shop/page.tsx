@@ -25,6 +25,7 @@ export default function ShopPage({
     category: "",
     subcategory: "",
     categoryHandle: "",
+    categoryId:"",
   });
 
   const cursor = searchParams?.cursor || null;
@@ -109,25 +110,6 @@ export default function ShopPage({
     fetchProducts();
   }, [cursor]);
 
-  // const handleCategoryClick = async (categoryName: string) => {
-  //   const { products } = await getProducts({
-  //     first: 9,
-  //     after: cursor,
-  //     collection: categoryName,
-  //   });
-  //   setProducts(products);
-  // };
-
-  // const handleSubcategoryClick = async (subcategoryName: string, categoryName: string) => {
-  //   const { products } = await getProducts({
-  //     first: 9,
-  //     after: cursor,
-  //     subcategory: subcategoryName,
-  //     collection: categoryName,
-  //   });
-  //   setProducts(products);
-  // };
-
   return (
     <div>
       <Header />
@@ -140,8 +122,6 @@ export default function ShopPage({
               filters={filters}
               setFilters={setFilters}
               onApplyFilters={handleApplyFilters}
-            // handleCategoryClick={handleCategoryClick}
-            // handleSubcategoryClick={handleSubcategoryClick}
             />
           </div>
 

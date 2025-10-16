@@ -9,9 +9,9 @@ import Image from "next/image";
 import { getProducts } from "@/lib/shopify";
 
 export default async function Home() {
-  const { products } = await getProducts({ first: 8 });
+  const { products } = await getProducts({ first: 8 ,count:false});
   
-  const { products: salesProducts } = await getProducts({ first: 4, collection: "sale" });
+  const { products: salesProducts } = await getProducts({ first: 4, collection: "sale", count:false});
 
   return (
     <div>
