@@ -4,8 +4,8 @@ import {
   ShopifyVariant,
 } from "@/types/shopify";
 import { GraphQLClient } from "graphql-request";
-import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
 import { productMapper } from "./helper";
+import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
@@ -74,7 +74,6 @@ export async function getInventoryQuantityByVariantId(
     return 0;
   }
 }
-
 
 export async function getTotalProductCount(): Promise<number> {
   try {
@@ -159,7 +158,6 @@ export async function getProductByHandle(
   };
 }
 
-
 export interface CategoryItem {
   title: string;
   handle: string;
@@ -169,7 +167,9 @@ export interface CategoryItem {
   }[];
 }
 
-export async function getCategories(menuHandle: string = "shop"): Promise<CategoryItem[]> {
+export async function getCategories(
+  menuHandle: string = "shop"
+): Promise<CategoryItem[]> {
   const query = `
     query getMenu($handle: String!) {
       menu(handle: $handle) {
@@ -186,7 +186,9 @@ export async function getCategories(menuHandle: string = "shop"): Promise<Catego
   `;
 
   try {
-    const data = await shopifyFetch<{ menu: { items: any[] } }>(query, { handle: menuHandle });
+    const data = await shopifyFetch<{ menu: { items: any[] } }>(query, {
+      handle: menuHandle,
+    });
     if (!data.menu?.items) return [];
 
     const categories: CategoryItem[] = data.menu.items.map((item) => ({
@@ -204,7 +206,6 @@ export async function getCategories(menuHandle: string = "shop"): Promise<Catego
     return [];
   }
 }
-
 
 export async function getRecommendedProducts(
   productId: string
@@ -253,11 +254,10 @@ export async function getRecommendedProducts(
 
     if (!data.productRecommendations) return [];
 
-    const recommendedProducts: ShopifyProductPreview[] = data.productRecommendations.map(
-      (node) => {
+    const recommendedProducts: ShopifyProductPreview[] =
+      data.productRecommendations.map((node) => {
         return productMapper(node);
-      }
-    );
+      });
 
     return recommendedProducts;
   } catch (error) {
@@ -287,11 +287,10 @@ export async function getProducts({
   const variables: Record<string, any> = { first, after };
   let query: string;
 
-
   let priceFilter = "";
 
   if (minPrice !== undefined && maxPrice !== undefined) {
-    priceFilter = `variants.price:>=${minPrice} AND variants.price:<=${maxPrice}`
+    priceFilter = `variants.price:>=${minPrice} AND variants.price:<=${maxPrice}`;
   }
 
   const hasFilters = !!subcategory || !!priceFilter;
@@ -371,10 +370,7 @@ export async function getProducts({
     variables.subcategory = subcategory || null;
     variables.minPrice = minPrice;
     variables.maxPrice = maxPrice;
-
-  }
-
-  else if (collection) {
+  } else if (collection) {
     console.log("only collection, no filters");
     query = `
       query getCollectionProducts($handle: String!, $first: Int!, $after: String) {
@@ -431,9 +427,7 @@ export async function getProducts({
       }
     `;
     variables.handle = collection;
-  }
-
-  else if (hasFilters) {
+  } else if (hasFilters) {
     console.log("no collection, but filters applied");
     query = `
       query getFilteredProducts($first: Int!, $after: String, $query: String!) {
@@ -482,9 +476,7 @@ export async function getProducts({
     if (subcategory) filters.push(`tag:'${subcategory}'`);
     if (priceFilter) filters.push(priceFilter);
     variables.query = filters.join(" AND ");
-  }
-
-  else {
+  } else {
     console.log("no collection, no filters");
     query = `
       query getAllProducts($first: Int!, $after: String) {
@@ -548,8 +540,7 @@ export async function getProducts({
     data.products?.edges ||
     [];
 
-  const pageInfo =
-    data.collection?.products?.pageInfo ||
+  const pageInfo = data.collection?.products?.pageInfo ||
     data.collectionByHandle?.products?.pageInfo ||
     data.products?.pageInfo || {
       hasNextPage: false,
@@ -565,11 +556,3 @@ export async function getProducts({
 
   return { products, pageInfo };
 }
-
-
-
-
-
-
-
-

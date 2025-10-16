@@ -2,13 +2,14 @@ import { ShopifyProductPreview } from "@/types/shopify";
 
 export const formatPrice = (
   amount: string | number | null,
-  currencyCode: string
+  currencyCode: string,
+  minimunFractionDigits?: number
 ) => {
   if (!amount) return "";
   return new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: currencyCode,
-    minimumFractionDigits: 2,
+    minimumFractionDigits: minimunFractionDigits || 0,
     maximumFractionDigits: 2,
   }).format(Number(amount));
 };

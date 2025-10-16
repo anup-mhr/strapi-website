@@ -8,46 +8,46 @@ function AboutPage() {
     <div className="min-h-screen flex flex-col text-gray-600">
       <Header />
 
-      <main className=" bg-white padding py-12">
+      <main className="bg-white padding py-8 sm:py-10 md:py-12">
         <Heading title="ABOUT" subtitle="Our Journey" />
 
         {/* Top Image Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-6 mb-14">
+        <div className="grid grid-cols-3 md:grid-cols-6 mb-8 sm:mb-10 md:mb-12 lg:mb-14 gap-0.5 sm:gap-1">
           <Image
             src="/images/hero.jpeg"
-            alt={""}
+            alt="Heirloom Naga heritage"
             width={600}
             height={600}
             className="w-full col-span-2 object-center object-cover h-full"
           />
           <Image
             src="/images/hero.jpeg"
-            alt={""}
+            alt="Traditional weaving"
             width={600}
             height={600}
-            className="w-full object-center object-cover h-[20rem] md:h-full"
+            className="w-full object-center object-cover h-[16rem] sm:h-[18rem] md:h-full"
           />
-          <div className="grid grid-rows-2 col-span-3">
+          <div className="grid grid-rows-2 col-span-3 gap-0.5 sm:gap-1">
             <Image
               src="/images/hero.jpeg"
-              alt={""}
+              alt="Naga textiles"
               width={600}
               height={600}
-              className="w-full object-cover object-center h-[10rem] md:h-96"
+              className="w-full object-cover object-center h-[8rem] sm:h-[9rem] md:h-80 lg:h-96"
             />
             <Image
               src="/images/hero.jpeg"
-              alt={""}
+              alt="Artisan craftsmanship"
               width={600}
               height={600}
-              className="w-full object-cover object-center h-[10rem] md:h-96"
+              className="w-full object-cover object-center h-[8rem] sm:h-[9rem] md:h-80 lg:h-96"
             />
           </div>
         </div>
 
         {/* Text Content */}
         <div className="max-w-7xl mx-auto">
-          <div className="leading-relaxed space-y-6 md:pr-10">
+          <div className="leading-relaxed space-y-4 sm:space-y-5 md:space-y-6 md:pr-10 text-sm sm:text-base">
             <p>
               What began as a single weaver&apos;s attempt to reimagine Naga
               textiles in 1993 quickly found resonance far beyond Nagaland.
@@ -69,10 +69,11 @@ function AboutPage() {
             </p>
             <p>
               Over the past two and a half decades, Heirloom Naga has placed
-              “Made in Nagaland” textiles on the global stage. By innovating
-              with braided tassels, reintroducing cotton and eri silk, and
-              staying committed to natural fibres, we sparked new trends while
-              restoring authenticity to the region’s weaving traditions.
+              &quot;Made in Nagaland&quot; textiles on the global stage. By
+              innovating with braided tassels, reintroducing cotton and eri
+              silk, and staying committed to natural fibres, we sparked new
+              trends while restoring authenticity to the region&apos;s weaving
+              traditions.
             </p>
             <p className="font-semibold">
               Today, we are more than a weaving collective — we are a movement
@@ -80,13 +81,13 @@ function AboutPage() {
             </p>
           </div>
 
-          <h3 className="uppercase mt-6 font-bold text-gray-500 tracking-wide">
+          <h3 className="uppercase mt-6 sm:mt-8 md:mt-10 font-bold text-gray-500 tracking-wide text-sm sm:text-base">
             Meet Jesmina Zeliang
           </h3>
 
           {/* Meet Jesmina Section */}
-          <section className="grid mt-6 lg:grid-cols-[1fr_24rem] gap-12 items-start">
-            <div className="space-y-6 leading-relaxed md:pr-10">
+          <section className="grid mt-4 sm:mt-5 md:mt-6 lg:grid-cols-[1fr_20rem] xl:grid-cols-[1fr_24rem] gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-start">
+            <div className="space-y-4 sm:space-y-5 md:space-y-6 leading-relaxed md:pr-10 text-sm sm:text-base">
               <p>
                 Founder Jesmina Zeliang has been reshaping the Naga textile
                 industry since launching her first collection in the early
@@ -123,7 +124,7 @@ function AboutPage() {
               alt="Jesmina Zeliang"
               width={500}
               height={500}
-              className="w-[24rem] mx-auto lg:w-full  object-cover shadow-md"
+              className="w-full max-w-sm sm:max-w-md lg:max-w-none mx-auto lg:w-full object-cover shadow-md"
             />
           </section>
         </div>
