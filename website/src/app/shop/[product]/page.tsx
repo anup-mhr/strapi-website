@@ -5,7 +5,7 @@ import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 
 import ProductDetails from "@/components/ProductDetails";
-import { getProductByHandle, getProducts } from "@/lib/shopify";
+import { getProductByHandle, getProducts, getRecommendedProducts } from "@/lib/shopify";
 import { GET_PRODUCTS } from "@/lib/shopifyQueries";
 
 export default async function ProductPage({
@@ -16,14 +16,13 @@ export default async function ProductPage({
   const handle = (await params).product;
   const product = await getProductByHandle(handle);
 
-  // update fetch for related products
-  const { products: relatedProducts } = await getProducts({
-    first: 9,
-    after: null,
-    query: GET_PRODUCTS,
-  });
-
   if (!product) return <div>Product not found</div>;
+
+  console.log("Fetched product:", product);
+  // update fetch for related products
+  const relatedProducts = await getRecommendedProducts(product.id)
+
+
 
   return (
     <div>

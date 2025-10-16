@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/helper";
 interface ProductDetailsProps {
   product: {
     title: string;
-    description: string;
+    descriptionHtml: string;
     variants: {
       title: string;
       availableForSale: boolean;
@@ -51,13 +51,13 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               className={`${option.name.toUpperCase() === "NOTE" && "mt-8"}`}
             >
               {option.name.toUpperCase() !== "NOTE" && (
-                <strong>{option.name}:</strong>
+                <strong>{option.name}: </strong>
               )}
               {option.value}
             </p>
           ))}
         </div>
-        <p className="mt-4 text-gray-700">{product.description}</p>
+        <div className="mt-4 text-gray-700" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
         <p>
           Availability:{" "}
           <span className="text-primary-pink">

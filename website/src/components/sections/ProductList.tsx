@@ -11,7 +11,6 @@ const ProductList = ({
   products: ShopifyProductPreview[];
   className?: string;
 }) => {
-  console.log(products);
   return (
     <div className={cn("grid gap-x-3 gap-y-8 w-full", className)}>
       {products.map((product, index) => (

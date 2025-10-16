@@ -26,7 +26,7 @@ export interface ShopifyProductPreview {
   id: string;
   handle: string;
   title: string;
-  description: string;
+  descriptionHtml: string;
   images: ShopifyImage[];
   variants: ShopifyVariantPreview[];
 }

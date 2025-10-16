@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SortProvider } from "@/context/SortContext";
 import type { ReactNode } from "react";
 
 
@@ -11,11 +10,9 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
     return (
         <div>
-            <SortProvider>
-                <main>
-                    {children}
-                </main>
-            </SortProvider>
+            <main>
+                {children}
+            </main>
         </div>
     );
 }
