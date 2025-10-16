@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hero-slide",
     "pluralName": "hero-slides",
-    "displayName": "Hero Slide"
+    "displayName": "Hero Slider"
   },
   "options": {
     "draftAndPublish": true
@@ -19,9 +19,6 @@
       "type": "component",
       "component": "utilities.link",
       "repeatable": false
-    },
-    "subTitle": {
-      "type": "string"
     },
     "backgroundImage": {
       "type": "media",

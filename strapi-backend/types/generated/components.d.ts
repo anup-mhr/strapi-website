@@ -65,12 +65,23 @@ export interface UtilitiesLink extends Struct.ComponentSchema {
   };
 }
 
+export interface UtilitiesTag extends Struct.ComponentSchema {
+  collectionName: 'components_utilities_tags';
+  info: {
+    displayName: 'tag';
+  };
+  attributes: {
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'shared.open-graph': SharedOpenGraph;
       'shared.seo': SharedSeo;
       'utilities.link': UtilitiesLink;
+      'utilities.tag': UtilitiesTag;
     }
   }
 }
