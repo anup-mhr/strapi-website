@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { formatPrice } from "@/lib/helper";
+import { useState } from "react";
 
 interface ProductDetailsProps {
   product: {
     title: string;
-    description: string;
+    descriptionHtml: string;
     variants: {
       title: string;
       availableForSale: boolean;
@@ -53,15 +53,17 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               }`}
             >
               {option.name.toUpperCase() !== "NOTE" && (
-                <strong>{option.name}:</strong>
+                <strong>{option.name}: </strong>
               )}
               {option.value}
             </p>
           ))}
         </div>
-        <p className="mt-4 text-sm sm:text-base text-gray-700">
-          {product.description}
-        </p>
+
+        <div
+          className="mt-4 text-sm sm:text-base text-gray-700"
+          dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+        />
         <p className="text-sm sm:text-base">
           Availability:{" "}
           <span className="text-primary-pink font-semibold">

@@ -1,13 +1,15 @@
 "use client";
-import { categories } from "@/constants/constants";
+
+import { CategoryItem, getCategories } from "@/lib/shopify";
 import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export interface Filters {
   minPrice: number;
   maxPrice: number;
-  selectedCategories: string[];
-  selectedSubcategories: string[];
+  category?: string;
+  subcategory?: string;
+  categoryHandle?: string;
 }
 
 interface FilterSidebarProps {
@@ -16,6 +18,8 @@ interface FilterSidebarProps {
   onApplyFilters: () => void;
   isMobile?: boolean;
   onClose?: () => void;
+  handleCategoryClick?: (category: string) => void;
+  handleSubcategoryClick?: (collection: string, subcategory: string) => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -23,11 +27,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   setFilters,
   onApplyFilters,
   isMobile = false,
+  handleCategoryClick = () => {},
+  handleSubcategoryClick = () => {},
   onClose = () => {},
 }) => {
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
-  // Prevent body scroll when mobile modal is open
   useEffect(() => {
     if (isMobile) {
       document.body.style.overflow = "hidden";
@@ -37,6 +43,15 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     }
   }, [isMobile]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const rawCategories = await getCategories();
+      setCategories(rawCategories);
+    };
+    fetchCategories();
+  }, []);
+
+  // Price range handlers
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), filters.maxPrice - 100);
     setFilters((prev) => ({ ...prev, minPrice: value }));
@@ -47,38 +62,20 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     setFilters((prev) => ({ ...prev, maxPrice: value }));
   };
 
-  const toggleCategory = (name: string) => {
+  // Expand/collapse category
+  const toggleCategory = (title: string) => {
     setExpandedCategories((prev) =>
-      prev.includes(name) ? prev.filter((cat) => cat !== name) : [...prev, name]
+      prev.includes(title)
+        ? prev.filter((cat) => cat !== title)
+        : [...prev, title]
     );
-  };
-
-  const toggleCategoryFilter = (category: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      selectedCategories: prev.selectedCategories.includes(category)
-        ? prev.selectedCategories.filter((c) => c !== category)
-        : [...prev.selectedCategories, category],
-    }));
-  };
-
-  const toggleSubcategoryFilter = (subcategory: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      selectedSubcategories: prev.selectedSubcategories.includes(subcategory)
-        ? prev.selectedSubcategories.filter((s) => s !== subcategory)
-        : [...prev.selectedSubcategories, subcategory],
-    }));
   };
 
   const handleApplyFilters = () => {
     onApplyFilters();
-    if (isMobile) {
-      onClose();
-    }
+    if (isMobile) onClose();
   };
 
-  // Mobile Popup View
   if (isMobile) {
     return (
       <>
@@ -87,7 +84,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onClick={onClose}
         />
 
-        {/* Modal */}
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col animate-slideUp">
             <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 border-b">
@@ -116,14 +112,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       right: `${100 - (filters.maxPrice / 10000) * 100}%`,
                     }}
                   />
-
                   <input
                     type="range"
                     min="100"
                     max="10000"
                     value={filters.minPrice}
                     onChange={handleMinChange}
-                    className="absolute top-1/2 w-full transform -translate-y-1/2 z-10 pointer-events-auto appearance-none bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow"
+                    className={`custom-slider-thumb ${
+                      filters.minPrice >= filters.maxPrice - 200
+                        ? "z-20"
+                        : "z-10"
+                    }`}
                   />
 
                   <input
@@ -132,7 +131,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     max="10000"
                     value={filters.maxPrice}
                     onChange={handleMaxChange}
-                    className="absolute top-1/2 w-full transform -translate-y-1/2 z-10 pointer-events-auto appearance-none bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow"
+                    className="custom-slider-thumb z-10"
                   />
                 </div>
 
@@ -152,36 +151,61 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </h3>
                 <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-700">
                   {categories.map((category) => (
-                    <li key={category.name}>
+                    <li key={category.title}>
                       <div className="flex justify-between items-center">
                         <span
-                          onClick={() => toggleCategoryFilter(category.name)}
-                          className="cursor-pointer hover:text-primary-pink transition-colors"
+                          onClick={() => {
+                            handleCategoryClick(category.handle);
+                            setFilters((prev) => ({
+                              ...prev,
+                              category: category.title,
+                              subcategory: "",
+                              categoryHandle: category.handle,
+                            }));
+                          }}
+                          className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                            filters.category === category.title &&
+                            "text-primary-pink"
+                          }`}
                         >
-                          {category.name}
+                          {category.title}
                         </span>
-                        {category.subcategories.length > 0 && (
+                        {category.subItems.length > 0 && (
                           <button
-                            className="w-5 h-5 flex justify-center text-black/30 items-center font-bold border-1 border-black/10 rounded-full text-sm cursor-pointer hover:bg-gray-100 transition-colors"
-                            onClick={() => toggleCategory(category.name)}
+                            className="w-5 h-5 flex justify-center items-center font-bold border border-black/10 rounded-full text-sm cursor-pointer hover:bg-gray-100 transition-colors"
+                            onClick={() => toggleCategory(category.title)}
                           >
-                            {expandedCategories.includes(category.name)
+                            {expandedCategories.includes(category.title)
                               ? "−"
                               : "+"}
                           </button>
                         )}
                       </div>
 
-                      {expandedCategories.includes(category.name) &&
-                        category.subcategories.length > 0 && (
+                      {expandedCategories.includes(category.title) &&
+                        category.subItems.length > 0 && (
                           <ul className="ml-3 sm:ml-4 mt-1.5 sm:mt-2 space-y-1 text-xs sm:text-sm text-gray-600">
-                            {category.subcategories.map((sub) => (
+                            {category.subItems.map((sub) => (
                               <li
-                                key={sub}
-                                onClick={() => toggleSubcategoryFilter(sub)}
-                                className="cursor-pointer hover:text-primary-pink transition-colors"
+                                key={sub.title}
+                                onClick={() => {
+                                  handleSubcategoryClick(
+                                    sub.title,
+                                    category.handle
+                                  );
+                                  setFilters((prev) => ({
+                                    ...prev,
+                                    category: category.title,
+                                    subcategory: sub.title,
+                                    categoryHandle: category.handle,
+                                  }));
+                                }}
+                                className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                                  filters.subcategory === sub.title &&
+                                  "text-primary-pink"
+                                }`}
                               >
-                                {sub}
+                                {sub.title}
                               </li>
                             ))}
                           </ul>
@@ -207,7 +231,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     );
   }
 
-  // Desktop Sidebar View
   return (
     <div className="min-w-[15rem] sm:min-w-[17rem]">
       <div className="mb-8 sm:mb-12">
@@ -224,23 +247,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               right: `${100 - (filters.maxPrice / 10000) * 100}%`,
             }}
           />
-
           <input
             type="range"
             min="100"
             max="10000"
             value={filters.minPrice}
             onChange={handleMinChange}
-            className="absolute top-1/2 w-full transform -translate-y-1/2 z-10 pointer-events-auto appearance-none bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow"
+            className="range-thumb absolute h-full top-1/2 w-full transform -translate-y-1/2 z-10"
           />
-
           <input
             type="range"
             min="100"
             max="10000"
             value={filters.maxPrice}
             onChange={handleMaxChange}
-            className="absolute top-1/2 w-full transform -translate-y-1/2 z-10 pointer-events-auto appearance-none bg-transparent [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow"
+            className="range-thumb absolute h-full top-1/2 w-full transform -translate-y-1/2 z-10"
           />
         </div>
 
@@ -262,40 +283,60 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
       </div>
 
+      {/* Category Filter */}
       <div>
         <h3 className="text-sm sm:text-base font-semibold pb-2 border-b-2 border-black/30 mb-3 sm:mb-4">
           FILTER BY CATEGORY
         </h3>
         <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-700">
           {categories.map((category) => (
-            <li key={category.name}>
+            <li key={category.title}>
               <div className="flex justify-between items-center">
                 <span
-                  onClick={() => toggleCategoryFilter(category.name)}
-                  className="cursor-pointer hover:text-primary-pink transition-colors"
+                  onClick={() =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      category: category.title,
+                      subcategory: "",
+                      categoryHandle: category.handle,
+                    }))
+                  }
+                  className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                    filters.category === category.title && "text-primary-pink"
+                  } `}
                 >
-                  {category.name}
+                  {category.title}
                 </span>
-                {category.subcategories.length > 0 && (
+                {category.subItems.length > 0 && (
                   <button
                     className="w-5 h-5 flex justify-center text-black/30 items-center font-bold border-1 border-black/10 rounded-full text-sm cursor-pointer hover:bg-gray-100 transition-colors"
-                    onClick={() => toggleCategory(category.name)}
+                    onClick={() => toggleCategory(category.title)}
                   >
-                    {expandedCategories.includes(category.name) ? "−" : "+"}
+                    {expandedCategories.includes(category.title) ? "−" : "+"}
                   </button>
                 )}
               </div>
 
-              {expandedCategories.includes(category.name) &&
-                category.subcategories.length > 0 && (
+              {expandedCategories.includes(category.title) &&
+                category.subItems.length > 0 && (
                   <ul className="ml-3 sm:ml-4 mt-1.5 sm:mt-2 space-y-1 text-xs sm:text-sm text-gray-600">
-                    {category.subcategories.map((sub) => (
+                    {category.subItems.map((sub) => (
                       <li
-                        key={sub}
-                        onClick={() => toggleSubcategoryFilter(sub)}
-                        className="cursor-pointer hover:text-primary-pink transition-colors"
+                        key={sub.title}
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            category: category.title,
+                            subcategory: sub.title,
+                            categoryHandle: category.handle,
+                          }))
+                        }
+                        className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                          filters.subcategory === sub.title &&
+                          "text-primary-pink"
+                        } `}
                       >
-                        {sub}
+                        {sub.title}
                       </li>
                     ))}
                   </ul>

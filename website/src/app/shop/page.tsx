@@ -1,13 +1,12 @@
 "use client";
-import { ProjectSorter } from "@/components/common/ProjectSorter";
-
+import { ProjectSorter, sortOptions } from "@/components/common/ProjectSorter";
 import Heading from "@/components/Heading";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
-import { GET_PRODUCTS } from "@/lib/shopifyQueries";
+import { ShopifyProductPreview } from "@/types/shopify";
 import { ChevronsRight, Filter } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
@@ -19,68 +18,73 @@ export default function ShopPage({
   searchParams: { page?: string; cursor?: string };
 }) {
   const [products, setProducts] = useState<any>([]);
-  const cursor = searchParams?.cursor || null;
-
-  useEffect(() => {
-    async function fetchProducts() {
-      const { products } = await getProducts({
-        first: 9,
-        after: cursor,
-        query: GET_PRODUCTS,
-      });
-      setProducts(products);
-    }
-    fetchProducts();
-  }, [cursor]);
 
   const [filters, setFilters] = useState<Filters>({
-    minPrice: 500,
+    minPrice: 0,
     maxPrice: 10000,
-    selectedCategories: [],
-    selectedSubcategories: [],
+    category: "",
+    subcategory: "",
+    categoryHandle: "",
   });
-  const [appliedFilters, setAppliedFilters] = useState<Filters>(filters);
-  const [sortBy, setSortBy] = useState<string>("default");
+
+  const cursor = searchParams?.cursor || null;
+
+  const [sortBy, setSortBy] = useState<string>(sortOptions[0].value);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
 
   const filteredAndSortedProducts = useMemo(() => {
-    const filtered = products.filter((product: any) => {
+    const filtered = products.filter((product: ShopifyProductPreview) => {
       const priceMatch =
-        product.price >= appliedFilters.minPrice &&
-        product.price <= appliedFilters.maxPrice;
-      const categoryMatch =
-        appliedFilters.selectedCategories.length === 0 ||
-        appliedFilters.selectedCategories.includes(product.category);
-      const subcategoryMatch =
-        appliedFilters.selectedSubcategories.length === 0 ||
-        appliedFilters.selectedSubcategories.includes(product.subcategory);
-      return priceMatch && categoryMatch && subcategoryMatch;
+        Number(
+          product.variants[0]?.compareAtPrice?.amount ||
+            product.variants[0].price.amount
+        ) >= filters.minPrice &&
+        Number(
+          product.variants[0]?.compareAtPrice?.amount ||
+            product.variants[0].price.amount
+        ) <= filters.maxPrice;
+      return priceMatch;
     });
 
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a: any, b: any) => a.price - b.price);
+        filtered.sort(
+          (a: ShopifyProductPreview, b: ShopifyProductPreview) =>
+            Number(
+              a.variants[0]?.compareAtPrice?.amount ||
+                a.variants[0].price.amount
+            ) -
+            Number(
+              b.variants[0]?.compareAtPrice?.amount ||
+                b.variants[0].price.amount
+            )
+        );
         break;
       case "price-high":
-        filtered.sort((a: any, b: any) => b.price - a.price);
+        filtered.sort(
+          (a: ShopifyProductPreview, b: ShopifyProductPreview) =>
+            Number(
+              b.variants[0]?.compareAtPrice?.amount ||
+                b.variants[0].price.amount
+            ) -
+            Number(
+              a.variants[0]?.compareAtPrice?.amount ||
+                a.variants[0].price.amount
+            )
+        );
         break;
       case "name":
-        filtered.sort((a: any, b: any) => a.title.localeCompare(b.title));
+        filtered.sort((a: ShopifyProductPreview, b: ShopifyProductPreview) =>
+          a.title.localeCompare(b.title)
+        );
         break;
       default:
         break;
     }
-
     return filtered;
-  }, [
-    appliedFilters.maxPrice,
-    appliedFilters.minPrice,
-    appliedFilters.selectedCategories,
-    appliedFilters.selectedSubcategories,
-    products,
-    sortBy,
-  ]);
+  }, [filters.maxPrice, filters.minPrice, products, sortBy]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -90,10 +94,48 @@ export default function ShopPage({
   );
 
   const handleApplyFilters = () => {
-    setAppliedFilters(filters);
+    fetchProducts();
     setCurrentPage(1);
     setIsMobileFilterOpen(false);
   };
+
+  async function fetchProducts() {
+    console.log("applying filers to applied", filters);
+    const query = {
+      first: 9,
+      after: cursor,
+      minPrice: filters.minPrice,
+      maxPrice: filters.maxPrice,
+      collection: filters.categoryHandle,
+      subcategory: filters.subcategory,
+    };
+
+    const { products } = await getProducts(query);
+    setProducts(products);
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, [cursor]);
+
+  // const handleCategoryClick = async (categoryName: string) => {
+  //   const { products } = await getProducts({
+  //     first: 9,
+  //     after: cursor,
+  //     collection: categoryName,
+  //   });
+  //   setProducts(products);
+  // };
+
+  // const handleSubcategoryClick = async (subcategoryName: string, categoryName: string) => {
+  //   const { products } = await getProducts({
+  //     first: 9,
+  //     after: cursor,
+  //     subcategory: subcategoryName,
+  //     collection: categoryName,
+  //   });
+  //   setProducts(products);
+  // };
 
   return (
     <div>
@@ -107,6 +149,8 @@ export default function ShopPage({
               filters={filters}
               setFilters={setFilters}
               onApplyFilters={handleApplyFilters}
+              // handleCategoryClick={handleCategoryClick}
+              // handleSubcategoryClick={handleSubcategoryClick}
             />
           </div>
 
@@ -152,9 +196,8 @@ export default function ShopPage({
                   of {filteredAndSortedProducts.length} results
                 </p>
               </div>
-
               <div className="flex items-center justify-end">
-                <ProjectSorter />
+                <ProjectSorter sortBy={sortBy} setSortBy={setSortBy} />
 
                 <Filter
                   className="h-4 w-4 md:w-5 md:h-5 ml-2 sm:hidden "
@@ -164,7 +207,7 @@ export default function ShopPage({
             </div>
 
             <ProductList
-              products={products}
+              products={filteredAndSortedProducts}
               className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
             />
 

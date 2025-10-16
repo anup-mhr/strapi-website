@@ -7,17 +7,11 @@ import ProductList from "@/components/sections/ProductList";
 import { heroImages, journal } from "@/constants/constants";
 import Image from "next/image";
 import { getProducts } from "@/lib/shopify";
-import { GET_PRODUCTS, GET_SALES } from "@/lib/shopifyQueries";
 
 export default async function Home() {
-  const { products } = await getProducts({ first: 8, query: GET_PRODUCTS });
-  const { products: salesProducts } = await getProducts({
-    first: 4,
-    query: GET_SALES,
-    variables: { handle: "sale" },
-  });
-
-  console.log("salesProducts", salesProducts);
+  const { products } = await getProducts({ first: 8 });
+  
+  const { products: salesProducts } = await getProducts({ first: 4, collection: "sale" });
 
   return (
     <div>

@@ -11,7 +11,6 @@ const ProductList = ({
   products: ShopifyProductPreview[];
   className?: string;
 }) => {
-  console.log(products);
   return (
     <div
       className={cn(

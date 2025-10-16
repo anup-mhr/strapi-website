@@ -1,4 +1,3 @@
-import { SortOption } from "@/context/SortContext";
 import { ShopifyProductPreview } from "@/types/shopify";
 
 export const formatPrice = (
@@ -22,43 +21,21 @@ export const formatDate = (dateString: string) => {
   });
 };
 
-export function sortProjects(
-  products: ShopifyProductPreview[],
-  sortOption: SortOption
-) {
-  const sorted = [...products];
-  console.log("sorted", sorted);
-
-  switch (sortOption) {
-    case "name-asc":
-      return sorted.sort((a, b) => a.title.localeCompare(b.title));
-
-    case "name-desc":
-      return sorted.sort((a, b) => b.title.localeCompare(a.title));
-
-    case "high-low":
-      return sorted.sort(
-        (a, b) =>
-          Number(
-            a.variants[0]?.compareAtPrice?.amount || a.variants[0].price.amount
-          ) -
-          Number(
-            b.variants[0]?.compareAtPrice?.amount || a.variants[0].price.amount
-          )
-      );
-
-    case "low-high":
-      return sorted.sort(
-        (a, b) =>
-          Number(
-            b.variants[0]?.compareAtPrice?.amount || a.variants[0].price.amount
-          ) -
-          Number(
-            a.variants[0]?.compareAtPrice?.amount || a.variants[0].price.amount
-          )
-      );
-
-    default:
-      return sorted;
-  }
-}
+export const productMapper = (node: any): ShopifyProductPreview => ({
+  id: node.id,
+  handle: node.handle,
+  title: node.title,
+  descriptionHtml: node.descriptionHtml,
+  images: node.images.edges.map((img: any) => ({ src: img.node.src })),
+  variants: node.variants.edges.map((v: any) => ({
+    price: {
+      amount: v.node.price?.amount,
+      currencyCode: v.node.price?.currencyCode,
+    },
+    compareAtPrice: {
+      amount: v.node.compareAtPrice?.amount || v.node.price?.amount,
+      currencyCode:
+        v.node.compareAtPrice?.currencyCode || v.node.price?.currencyCode,
+    },
+  })),
+});

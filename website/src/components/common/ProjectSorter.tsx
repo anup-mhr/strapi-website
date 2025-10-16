@@ -1,24 +1,27 @@
 "use client";
+
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-const sortOptions = [
+export const sortOptions = [
   { value: "price-low", label: "Price: Low to High" },
   { value: "price-high", label: "Price: High to Low" },
   { value: "newest", label: "Newest First" },
   { value: "name", label: "Name A-Z" },
 ];
 
-export function ProjectSorter() {
-  const [currentSort, setCurrentSort] = useState(sortOptions[0].value);
+interface ProjectSorterProps {
+  sortBy: string;
+  setSortBy: (value: string) => void;
+}
+
+export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const currentLabel = sortOptions.find(
-    (opt) => opt.value === currentSort
-  )?.label;
+  const currentLabel = sortOptions.find((opt) => opt.value === sortBy)?.label;
 
-  const handleSortChange = (sortOption: any) => {
-    setCurrentSort(sortOption);
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
     setIsOpen(false);
   };
 
@@ -43,7 +46,7 @@ export function ProjectSorter() {
               key={option.value}
               onClick={() => handleSortChange(option.value)}
               className={`block w-full px-3 sm:px-4 py-1.5 sm:py-2 text-2xs sm:text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
-                currentSort === option.value
+                sortBy === option.value
                   ? "bg-gray-100 text-black font-semibold"
                   : "text-gray-700"
               }`}
