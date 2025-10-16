@@ -58,7 +58,7 @@ export default function CartPage() {
         <div className="flex flex-col lg:flex-row justify-between gap-10">
           <div className="w-full space-y-6">
             <div className="flex items-center justify-between w-full mb-8">
-              <h1 className="text-center md:text-left text-base md:text-lg font-semibold w-full mb-2">
+              <h1 className="text-center text-primary italic md:text-left text-base md:text-lg font-semibold w-full mb-2">
                 Shopping Cart
               </h1>
             </div>
@@ -84,7 +84,7 @@ export default function CartPage() {
         {/* Cart Items */}
         <div className="w-full space-y-6">
           <div className="flex items-center justify-between w-full mb-8">
-            <h1 className="text-center md:text-left text-base md:text-lg font-semibold w-full mb-2">
+            <h1 className="text-center text-primary italic md:text-left text-base md:text-lg font-semibold w-full mb-2">
               Shopping Cart
             </h1>
           </div>

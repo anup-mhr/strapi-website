@@ -1,4 +1,4 @@
-import Heading from "@/components/Heading";
+import Heading from "@/components/common/Heading";
 import ContactForm from "@/components/sections/ContactForm";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
@@ -85,6 +85,7 @@ function ContactPage() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="Heirloom Naga Location"
+            aria-label="Heirloom Naga Location"
           ></iframe>
         </div>
 

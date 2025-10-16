@@ -1,4 +1,4 @@
-import Heading from "@/components/Heading";
+import Heading from "@/components/common/Heading";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import HeroSlider from "@/components/sections/HeroSlider";
@@ -10,8 +10,11 @@ import { getProducts } from "@/lib/shopify";
 
 export default async function Home() {
   const { products } = await getProducts({ first: 8 });
-  
-  const { products: salesProducts } = await getProducts({ first: 4, collection: "sale" });
+
+  const { products: salesProducts } = await getProducts({
+    first: 4,
+    collection: "sale",
+  });
 
   return (
     <div>

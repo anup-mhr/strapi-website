@@ -1,6 +1,6 @@
 "use client";
 import Loader from "@/components/common/Loader";
-import Heading from "@/components/Heading";
+import Heading from "@/components/common/Heading";
 import LinkButton from "@/components/LinkButton";
 import { ChevronsRight } from "lucide-react";
 import Image from "next/image";
