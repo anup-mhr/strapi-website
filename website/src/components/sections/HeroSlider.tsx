@@ -1,22 +1,24 @@
 "use client";
 
+import { getImageUrl } from "@/lib/helper";
+import { HeroSlide } from "@/types/heroSlider";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import LinkButton from "../LinkButton";
 
-type ImageData = {
-  url: string;
-};
+interface HeroSliderProps {
+  slides: HeroSlide[];
+}
 
-export default function HeroSlider({ images }: { images: ImageData[] }) {
+export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % slides.length);
   const prevImage = () =>
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
 
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -52,28 +54,31 @@ export default function HeroSlider({ images }: { images: ImageData[] }) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {images.map((img, index) => (
+      {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
             index === currentIndex ? "opacity-100 z-20" : "opacity-0 z-10"
           }`}
         >
           <Image
-            src={img.url}
-            alt="hero"
+            src={getImageUrl(slide.backgroundImage)}
+            alt={slide.backgroundImage.alternativeText ?? slide.title}
             fill
-            sizes="100vw"
-            className="object-cover"
+            className="object-cover object-center"
             priority={index === 0}
           />
 
           <div className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 px-4">
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-white tracking-wide sm:tracking-wider md:tracking-widest mb-2 sm:mb-2.5 md:mb-3 uppercase text-center">
-              BENREU COLLECTION
+              {slide.title}
             </p>
-            <LinkButton href="/shop" className="bg-black uppercase">
-              SHOP ALL
+            <LinkButton
+              href={slide?.CTA?.href}
+              newTab={slide?.CTA?.newTab}
+              className="bg-black uppercase"
+            >
+              {slide?.CTA?.label ?? "Shop All"}
             </LinkButton>
           </div>
         </div>

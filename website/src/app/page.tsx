@@ -4,12 +4,15 @@ import Header from "@/components/sections/Header";
 import HeroSlider from "@/components/sections/HeroSlider";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
-import { heroImages, journal } from "@/constants/constants";
-import Image from "next/image";
+import { journal } from "@/constants/constants";
 import { getProducts } from "@/lib/shopify";
+import { fetchHeroSlides } from "@/lib/strapiApiCall";
+import Image from "next/image";
 
 export default async function Home() {
   const { products } = await getProducts({ first: 8 });
+
+  const slides = await fetchHeroSlides();
 
   const { products: salesProducts } = await getProducts({
     first: 4,
@@ -19,7 +22,7 @@ export default async function Home() {
   return (
     <div>
       <Header className="text-primary" />
-      <HeroSlider images={heroImages} />
+      <HeroSlider slides={slides} />
 
       {/* Trending Section */}
       <div className="padding">

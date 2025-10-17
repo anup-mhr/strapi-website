@@ -384,9 +384,8 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    backgroundImage: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    backgroundImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -397,6 +396,8 @@ export interface ApiHeroSlideHeroSlide extends Struct.CollectionTypeSchema {
       'api::hero-slide.hero-slide'
     > &
       Schema.Attribute.Private;
+    mobileViewImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
