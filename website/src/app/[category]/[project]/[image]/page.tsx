@@ -68,16 +68,23 @@ async function page({
       </div>
 
       <div className="px-5 md:px-0">
-        {product.shopifyProductId && (
-          <ShopifyBuyButton productId={product.shopifyProductId} />
-        )}
-        {!product.shopifyProductId && (
+        {product.shopifyProductId ? (
+          <ShopifyBuyButton
+            productId={product.shopifyProductId}
+            className="w-full flex justify-start"
+          />
+        ) : product?.CTA?.href ? (
           <LinkButton
-            href={product?.CTA?.href}
-            newTab={product?.CTA?.newTab}
+            href={product.CTA.href}
+            newTab={product.CTA.newTab}
             className="py-3"
           >
-            {product?.CTA?.label ?? "Contact us"}
+            {product.CTA.label ?? "Contact us"}
+          </LinkButton>
+        ) : (
+          // Fallback if neither exists
+          <LinkButton href="/contact" className="py-3">
+            Contact us
           </LinkButton>
         )}
       </div>

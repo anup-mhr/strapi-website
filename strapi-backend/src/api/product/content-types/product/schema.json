@@ -66,7 +66,10 @@
       "type": "media",
       "multiple": true,
       "required": true,
-      "allowedTypes": ["images", "videos"]
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
     },
     "Generate_Slug": {
       "type": "boolean",
@@ -111,7 +114,8 @@
           ]
         }
       },
-      "required": true
+      "required": true,
+      "regex": "^[0-9]{10,20}$"
     }
   }
 }
