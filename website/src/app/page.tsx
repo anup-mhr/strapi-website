@@ -63,7 +63,7 @@ export default async function Home() {
           href="/journal"
         />
 
-        <JournalImageSlider images={journal} />
+        <JournalImageSlider journals={journal} />
       </div>
 
       <div className="padding">

@@ -13,17 +13,18 @@ type ImageData = {
 };
 
 export default function JournalImageSlider({
-  images,
+  journals,
 }: {
-  images: ImageData[];
+  journals: ImageData[];
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const interval = 5000;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const nextImage = () =>
+    setCurrentIndex((prev) => (prev + 1) % journals.length);
   const prevImage = () =>
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + journals.length) % journals.length);
 
   // Auto-slide
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function JournalImageSlider({
     setTouchEnd(null);
   };
 
-  if (images.length === 0) return null;
+  if (journals.length === 0) return null;
 
   return (
     <div
@@ -62,7 +63,7 @@ export default function JournalImageSlider({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {images.map((img, index) => (
+      {journals.map((img, index) => (
         <div
           key={index}
           className={`transition-opacity duration-1000 ease-in-out ${
@@ -77,7 +78,7 @@ export default function JournalImageSlider({
                 src={img.image}
                 alt={img.title}
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 priority={index === 0}
               />
             </div>
