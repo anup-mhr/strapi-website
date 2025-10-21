@@ -26,6 +26,28 @@ export async function shopifyFetch<T>(
   return client.request<T>(query, variables);
 }
 
+export async function shopifyAdminFetch<T>(
+  query: string,
+  queryString?: string
+): Promise<T> {
+  const res = await fetch("/api/shopify/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, queryString }),
+  });
+
+  const json = await res.json();
+
+  if (json.errors) {
+    console.error("Shopify Admin API errors:", json.errors);
+    throw new Error(JSON.stringify(json.errors));
+  }
+
+  return json.data;
+}
+
 export async function getInventoryQuantityByVariantId(
   variantId: string
 ): Promise<number> {
@@ -159,6 +181,7 @@ export async function getProductByHandle(
 }
 
 export interface CategoryItem {
+  id: string;
   title: string;
   handle: string;
   subItems: {
@@ -170,7 +193,7 @@ export interface CategoryItem {
 export async function getCategories(
   menuHandle: string = "shop"
 ): Promise<CategoryItem[]> {
-  const query = `
+  const menuQuery = `
     query getMenu($handle: String!) {
       menu(handle: $handle) {
         items {
@@ -185,21 +208,53 @@ export async function getCategories(
     }
   `;
 
+  const collectionQuery = `
+    query getCollectionId($handle: String!) {
+      collection(handle: $handle) {
+        id
+      }
+    }
+  `;
+
   try {
-    const data = await shopifyFetch<{ menu: { items: any[] } }>(query, {
+    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, {
       handle: menuHandle,
     });
-    if (!data.menu?.items) return [];
+    if (!menuData.menu?.items) return [];
 
-    const categories: CategoryItem[] = data.menu.items.map((item) => ({
-      title: item.title,
-      handle: item.url?.split("/").pop(),
-      subItems: (item.items || []).map((sub: any) => ({
-        title: sub.title,
-        handle: sub.url,
-      })),
-    }));
+    const categories: CategoryItem[] = await Promise.all(
+      menuData.menu.items.map(async (item) => {
+        const handle = item.url?.split("/").pop(); // extract handle from URL
+        let collectionId: string = "";
 
+        if (handle) {
+          try {
+            const collectionData = await shopifyFetch<{
+              collection: { id: string } | null;
+            }>(collectionQuery, { handle });
+            collectionId = collectionData.collection?.id.split("/").pop() || "";
+          } catch (err) {
+            console.warn(
+              `Failed to fetch collection ID for handle: ${handle}`,
+              err
+            );
+          }
+        }
+
+        return {
+          id: collectionId,
+          title: item.title,
+          handle,
+
+          subItems: (item.items || []).map((sub: any) => ({
+            title: sub.title,
+            handle: sub.url?.split("/").pop(),
+          })),
+        };
+      })
+    );
+
+    console.log("Categories with collection IDs:", categories);
     return categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -270,22 +325,27 @@ export async function getProducts({
   first = 9,
   after = null,
   collection,
+  collection_id,
   subcategory,
   minPrice,
   maxPrice,
+  count = true,
 }: {
   first?: number;
   after?: string | null;
   collection?: string;
+  collection_id?: string;
   subcategory?: string;
   minPrice?: number;
   maxPrice?: number;
+  count?: boolean;
 }): Promise<{
   products: ShopifyProductPreview[];
   pageInfo: any;
 }> {
   const variables: Record<string, any> = { first, after };
   let query: string;
+  let totalCountQuery: string;
 
   let priceFilter = "";
 
@@ -297,6 +357,14 @@ export async function getProducts({
 
   if (collection && hasFilters) {
     console.log("collection and filters applied");
+    totalCountQuery = `
+    query {
+  productsCount(query: "tag:${subcategory} AND price:>=${minPrice} AND price:<=${maxPrice}") {
+    count
+  }
+}
+    `;
+
     query = `
       query getCollectionFilteredProducts(
         $handle: String!,
@@ -372,6 +440,15 @@ export async function getProducts({
     variables.maxPrice = maxPrice;
   } else if (collection) {
     console.log("only collection, no filters");
+
+    totalCountQuery = `
+   query {
+  productsCount(query: $collection_id:${collection_id}) {
+    count
+  }
+}
+    `;
+
     query = `
       query getCollectionProducts($handle: String!, $first: Int!, $after: String) {
         collectionByHandle(handle: $handle) {
@@ -429,6 +506,27 @@ export async function getProducts({
     variables.handle = collection;
   } else if (hasFilters) {
     console.log("no collection, but filters applied");
+
+    if (subcategory?.length === 0) {
+      console.log("only filter");
+      totalCountQuery = `
+    query {
+  productsCount(query: "price:>=${minPrice} AND price:<=${maxPrice}") {
+    count
+  }
+}
+    `;
+    } else {
+      console.log("sub and filter");
+      totalCountQuery = `
+    query {
+  productsCount(query: "tag:${subcategory} AND price:>=${minPrice} AND price:<=${maxPrice}") {
+    count
+  }
+}
+    `;
+    }
+
     query = `
       query getFilteredProducts($first: Int!, $after: String, $query: String!) {
         products(first: $first, after: $after, query: $query) {
@@ -478,6 +576,14 @@ export async function getProducts({
     variables.query = filters.join(" AND ");
   } else {
     console.log("no collection, no filters");
+    totalCountQuery = `
+    query {
+  productsCount(query:) {
+    count
+  }
+}
+    `;
+
     query = `
       query getAllProducts($first: Int!, $after: String) {
         products(first: $first, after: $after) {
@@ -534,6 +640,14 @@ export async function getProducts({
 
   const data = await shopifyFetch<any>(query, variables);
 
+  let countData;
+
+  if (count) {
+    countData = await shopifyAdminFetch<any>(totalCountQuery);
+    console.log(totalCountQuery);
+    console.log("COUNTDATA", countData);
+  }
+
   const productEdges =
     data.collection?.products?.edges ||
     data.collectionByHandle?.products?.edges ||
@@ -555,4 +669,56 @@ export async function getProducts({
   );
 
   return { products, pageInfo };
+}
+
+export async function testFunc() {
+  const queryString = `tag:Bags AND price:>=500 AND price:<=1999`;
+
+  const query = `
+query FilteredProductsCountAndRange($queryString: String!) {
+  productsCount(query: $queryString) {
+    count
+  }
+
+  minPriceProduct: products(
+    first: 1
+    query: $queryString
+    sortKey: PRICE
+    reverse: false
+  ) {
+    edges {
+      node {
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+
+  maxPriceProduct: products(
+    first: 1
+    query: $queryString
+    sortKey: PRICE
+    reverse: true
+  ) {
+    edges {
+      node {
+        priceRangeV2 {
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+  const data = await shopifyAdminFetch<any>(query, queryString);
+  console.log("dataaaaa", data);
+  return data;
 }

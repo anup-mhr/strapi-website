@@ -10,6 +10,7 @@ export interface Filters {
   category?: string;
   subcategory?: string;
   categoryHandle?: string;
+  categoryId?: string;
 }
 
 interface FilterSidebarProps {
@@ -155,13 +156,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       <div className="flex justify-between items-center">
                         <span
                           onClick={() => {
-                            handleCategoryClick(category.handle);
-                            setFilters((prev) => ({
-                              ...prev,
-                              category: category.title,
-                              subcategory: "",
-                              categoryHandle: category.handle,
-                            }));
+                            // handleCategoryClick(category.handle);
+
+                            setFilters((prev) => {
+                              const isSameCategory =
+                                prev.category === category.title;
+                              return {
+                                ...prev,
+                                category: isSameCategory ? "" : category.title,
+                                subcategory: "",
+                                categoryHandle: isSameCategory
+                                  ? ""
+                                  : category.handle,
+                                categoryId: isSameCategory ? "" : category.id,
+                              };
+                            });
                           }}
                           className={`cursor-pointer hover:text-primary-pink transition-colors ${
                             filters.category === category.title &&
@@ -189,16 +198,30 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                               <li
                                 key={sub.title}
                                 onClick={() => {
-                                  handleSubcategoryClick(
-                                    sub.title,
-                                    category.handle
-                                  );
-                                  setFilters((prev) => ({
-                                    ...prev,
-                                    category: category.title,
-                                    subcategory: sub.title,
-                                    categoryHandle: category.handle,
-                                  }));
+                                  // handleSubcategoryClick(
+                                  //   sub.title,
+                                  //   category.handle
+                                  // );
+
+                                  setFilters((prev) => {
+                                    const isSameCategory =
+                                      prev.category === category.title;
+                                    return {
+                                      ...prev,
+                                      category: isSameCategory
+                                        ? ""
+                                        : category.title,
+                                      subcategory: isSameCategory
+                                        ? ""
+                                        : sub.title,
+                                      categoryHandle: isSameCategory
+                                        ? ""
+                                        : category.handle,
+                                      categoryId: isSameCategory
+                                        ? ""
+                                        : category.id,
+                                    };
+                                  });
                                 }}
                                 className={`cursor-pointer hover:text-primary-pink transition-colors ${
                                   filters.subcategory === sub.title &&
@@ -293,15 +316,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <li key={category.title}>
               <div className="flex justify-between items-center">
                 <span
-                  onClick={() =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      category: category.title,
-                      subcategory: "",
-                      categoryHandle: category.handle,
-                    }))
-                  }
-                  className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                  onClick={() => {
+                    setFilters((prev) => {
+                      const isSameCategory = prev.category === category.title;
+                      return {
+                        ...prev,
+                        category: isSameCategory ? "" : category.title,
+                        subcategory: "",
+                        categoryHandle: isSameCategory ? "" : category.handle,
+                        categoryId: isSameCategory ? "" : category.id,
+                      };
+                    });
+                  }}
+                  className={`cursor-pointer hover:text-primary-pink transition-colors${
                     filters.category === category.title && "text-primary-pink"
                   } `}
                 >
@@ -323,14 +350,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     {category.subItems.map((sub) => (
                       <li
                         key={sub.title}
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            category: category.title,
-                            subcategory: sub.title,
-                            categoryHandle: category.handle,
-                          }))
-                        }
+                        onClick={() => {
+                          setFilters((prev) => {
+                            const isSameCategory =
+                              prev.category === category.title;
+                            return {
+                              ...prev,
+                              category: isSameCategory ? "" : category.title,
+                              subcategory: isSameCategory ? "" : sub.title,
+                              categoryHandle: isSameCategory
+                                ? ""
+                                : category.handle,
+                              categoryId: isSameCategory ? "" : category.id,
+                            };
+                          });
+                        }}
                         className={`cursor-pointer hover:text-primary-pink transition-colors ${
                           filters.subcategory === sub.title &&
                           "text-primary-pink"

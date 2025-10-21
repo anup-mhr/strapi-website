@@ -10,13 +10,14 @@ import { fetchHeroSlides } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
 export default async function Home() {
-  const { products } = await getProducts({ first: 8 });
-
   const slides = await fetchHeroSlides();
+
+  const { products } = await getProducts({ first: 8, count: false });
 
   const { products: salesProducts } = await getProducts({
     first: 4,
     collection: "sale",
+    count: false,
   });
 
   return (

@@ -22,6 +22,7 @@ export default function ShopPage({
     category: "",
     subcategory: "",
     categoryHandle: "",
+    categoryId: "",
   });
 
   const cursor = searchParams?.cursor || null;
