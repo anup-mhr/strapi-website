@@ -21,20 +21,30 @@ export interface Product {
   availableForSale: boolean;
 }
 
+//for materials ,sizes
+export interface SelectedOption {
+  name: string;
+  value: string;
+}
+
 export interface CartItem {
   id: string;
-  product: Product;
-  variantId: string;
-  quantity: number;
+  merchandiseId:string;
   title: string;
+  quantity: number;
   price: number;
-  image: string;
+  currencyCode: string;
+  image?: string;
+  altText?: string;
+  selectedOptions?: SelectedOption[];
 }
 
 export interface Cart {
   id: string;
   checkoutUrl: string;
+  totalQuantity: number;
   totalPrice: number;
+  currencyCode: string;
   lineItems: CartItem[];
 }
 

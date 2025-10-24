@@ -6,9 +6,8 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
 } from "react";
-
-// -------------------- Types --------------------
 
 interface CartCost {
   subtotalAmount: { amount: string; currencyCode: string };
@@ -40,15 +39,11 @@ export interface Cart {
 
 interface CartContextType {
   cart: Cart | null;
+  cartCount: number;
   isLoading: boolean;
-  addToCart: (
-    variantId: string,
-    quantity?: number
-  ) => Promise<Cart | undefined>;
-  updateLineQuantity: (
-    lineId: string,
-    quantity: number
-  ) => Promise<Cart | undefined>;
+  refreshCart: () => Promise<void>;
+  addToCart: (variantId: string, quantity?: number) => Promise<Cart | undefined>;
+  updateLineQuantity: (lineId: string, quantity: number) => Promise<Cart | undefined>;
   removeFromCart: (lineId: string) => Promise<Cart | undefined>;
   clearCart: () => void;
 }
@@ -58,36 +53,41 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<Cart | null>({
-    id: "",
-    checkoutUrl: "",
-    totalQuantity: 1,
-    cost: {
-      subtotalAmount: { amount: "", currencyCode: "" },
-      totalAmount: { amount: "", currencyCode: "" },
-      totalTaxAmount: { amount: "", currencyCode: "" },
-    },
-    lines: {
-      edges: [
-        {
-          node: {
-            id: "",
-            quantity: 1,
-            merchandise: {
-              id: "",
-              title: "",
-              priceV2: { amount: "", currencyCode: "" },
-              product: {
-                title: "",
-                featuredImage: { url: "", altText: "" },
-              },
-            },
-          },
-        },
-      ],
-    },
-  });
+  const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const computeCount = (cartData: Cart | null) => {
+    if (!cartData) return 0;
+    return cartData.lines.edges.reduce(
+      (total, edge) => total + edge.node.quantity,
+      0
+    );
+  };
+
+  //Fetching the cart from Shopify by ID
+  const refreshCart = useCallback(async () => {
+    const cartId = getCartId();
+    if (!cartId) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/cart/get?cartId=${cartId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCart(data);
+      } else {
+        console.error("Failed to fetch cart:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error refreshing cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Create a new cart
   const createCart = useCallback(async (lines: any[] = []): Promise<Cart> => {
@@ -118,15 +118,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       try {
         const cartId = getCartId();
 
-        // If no cart, create one
         if (!cartId) {
-          const newCart = await createCart([
-            { merchandiseId: variantId, quantity },
-          ]);
+          const newCart = await createCart([{ merchandiseId: variantId, quantity }]);
           return newCart;
         }
 
-        // Add to existing cart
         const response = await fetch("/api/cart/add", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -150,64 +146,55 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   // Update item quantity
-  const updateLineQuantity = useCallback(
-    async (lineId: string, quantity: number): Promise<Cart | undefined> => {
-      setIsLoading(true);
-      try {
-        const cartId = getCartId();
-        if (!cartId) return;
+  const updateLineQuantity = useCallback(async (lineId: string, quantity: number): Promise<Cart | undefined> => {
+    setIsLoading(true);
+    try {
+      const cartId = getCartId();
+      if (!cartId) return;
 
-        const response = await fetch("/api/cart/update", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cartId,
-            lines: [{ id: lineId, quantity }],
-          }),
-        });
+      const response = await fetch("/api/cart/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cartId,
+          lines: [{ id: lineId, quantity }],
+        }),
+      });
 
-        const updatedCart: Cart = await response.json();
-        setCart(updatedCart);
-        return updatedCart;
-      } catch (error) {
-        console.error("Update cart error:", error);
-        throw error;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
+      const updatedCart: Cart = await response.json();
+      setCart(updatedCart);
+      return updatedCart;
+    } catch (error) {
+      console.error("Update cart error:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  // Remove item from cart
-  const removeFromCart = useCallback(
-    async (lineId: string): Promise<Cart | undefined> => {
-      setIsLoading(true);
-      try {
-        const cartId = getCartId();
-        if (!cartId) return;
+  // Remove item
+  const removeFromCart = useCallback(async (lineId: string): Promise<Cart | undefined> => {
+    setIsLoading(true);
+    try {
+      const cartId = getCartId();
+      if (!cartId) return;
 
-        const response = await fetch("/api/cart/remove", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cartId,
-            lineIds: [lineId],
-          }),
-        });
+      const response = await fetch("/api/cart/remove", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cartId, lineIds: [lineId] }),
+      });
 
-        const updatedCart: Cart = await response.json();
-        setCart(updatedCart);
-        return updatedCart;
-      } catch (error) {
-        console.error("Remove from cart error:", error);
-        throw error;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
+      const updatedCart: Cart = await response.json();
+      setCart(updatedCart);
+      return updatedCart;
+    } catch (error) {
+      console.error("Remove cart error:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Clear cart
   const clearCart = useCallback(() => {
@@ -215,9 +202,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCart(null);
   }, []);
 
+  useEffect(() => {
+    refreshCart();
+  }, [refreshCart]);
+
   const value: CartContextType = {
     cart,
+    cartCount: computeCount(cart),
     isLoading,
+    refreshCart,
     addToCart,
     updateLineQuantity,
     removeFromCart,
@@ -231,8 +224,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart(): CartContextType {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
+  if (!context) throw new Error("useCart must be used within a CartProvider");
   return context;
 }

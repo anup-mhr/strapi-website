@@ -1,23 +1,11 @@
 "use client";
 
-import { formatPrice } from "@/lib/helper";
 import { useState } from "react";
+import { formatPrice } from "@/lib/helper";
+import { ShopifyProduct } from "@/types/shopify";
+import AddToCartButton from "./cart-test/AddToCartButton";
 
-interface ProductDetailsProps {
-  product: {
-    title: string;
-    descriptionHtml: string;
-    variants: {
-      title: string;
-      availableForSale: boolean;
-      inventoryQuantity: number;
-      price: { amount: string; currencyCode: string };
-      selectedOptions: { name: string; value: string }[];
-    }[];
-  };
-}
-
-export default function ProductDetails({ product }: ProductDetailsProps) {
+export default function ProductDetails({ product }: { product: ShopifyProduct }) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
 
@@ -29,28 +17,41 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     }
   };
 
+  const price = Number(selectedVariant.price.amount);
+  const compareAtPrice = Number(selectedVariant.compareAtPrice?.amount ?? 0);
+  const isOnSale = compareAtPrice > 0 && compareAtPrice !== price;
+
   return (
-    <div className="max-w-xl">
-      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8 pb-4 sm:pb-0 border-b-2 border-black/30">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-wide sm:tracking-widest mb-2 sm:mb-0">
+    <div className="max-w-xl w-full">
+      <div className="flex justify-between items-start mb-8 border-b-2 border-black/30">
+        <h2 className="text-xl font-bold uppercase tracking-widest">
           {product.title}
         </h2>
-        <p className="text-base sm:text-lg md:text-xl mb-2 sm:mb-4">
-          {formatPrice(
-            selectedVariant.price.amount,
-            selectedVariant.price.currencyCode
+        <div className="text-lg mb-4 flex flex-col items-end">
+          {isOnSale ? (
+            <div className="flex gap-6 items-center">
+              <span className="text-gray-500 line-through text-base">
+                {formatPrice(compareAtPrice, selectedVariant.price.currencyCode)}
+              </span>
+              <span className="font-semibold text-lg">
+                {formatPrice(price, selectedVariant.price.currencyCode)}
+              </span>
+            </div>
+          ) : (
+            <span>
+              {formatPrice(price, selectedVariant.price.currencyCode)}
+            </span>
           )}
-        </p>
+        </div>
       </div>
 
-      <div className="text-sm sm:text-base text-gray-700 mb-6 space-y-6 sm:space-y-8">
+      {/* Product Details */}
+      <div className="text-base text-gray-700 mb-6 space-y-8">
         <div className="space-y-2">
           {selectedVariant.selectedOptions.map((option, index) => (
             <p
               key={index}
-              className={`text-sm sm:text-base ${
-                option.name.toUpperCase() === "NOTE" && "mt-6 sm:mt-8"
-              }`}
+              className={`${option.name.toUpperCase() === "NOTE" && "mt-8"}`}
             >
               {option.name.toUpperCase() !== "NOTE" && (
                 <strong>{option.name}: </strong>
@@ -59,15 +60,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </p>
           ))}
         </div>
-
         <div
-          className="mt-4 text-sm sm:text-base text-gray-700"
+          className="mt-4 text-gray-700"
           dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
         />
-        <p className="text-sm sm:text-base">
+        <p>
           Availability:{" "}
-          <span className="text-primary-pink font-semibold">
-            {selectedVariant.inventoryQuantity}
+          <span className="text-primary-pink">
+            {selectedVariant.quantityAvailable}
           </span>{" "}
           in stock
         </p>
@@ -75,15 +75,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
       {product.variants.length > 1 && (
         <div className="mb-6">
-          <label
-            htmlFor="variant"
-            className="mr-3 text-sm sm:text-base font-semibold"
-          >
+          <label htmlFor="variant" className="mr-3 font-semibold">
             Select Variant
           </label>
           <select
             id="variant"
-            className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border rounded"
+            className="px-4 py-2 border rounded"
             value={selectedVariant.title}
             onChange={(e) => handleVariantChange(e.target.value)}
           >
@@ -96,44 +93,34 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 md:gap-8 mt-8 sm:mt-15 xl:mt-44">
-        {selectedVariant.inventoryQuantity > 0 && (
-          <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
-            <label
-              htmlFor="quantity"
-              className="text-sm sm:text-base text-gray-700"
-            >
-              Quantity
-            </label>
-            <select
-              id="quantity"
-              className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-primary-pink/30"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            >
-              {Array.from(
-                { length: selectedVariant.inventoryQuantity ?? 1 },
-                (_, i) => i + 1
-              ).map((q) => (
-                <option key={q} value={q}>
-                  {q}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        <button
-          className="w-full bg-black text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-md cursor-pointer hover:opacity-90 disabled:opacity-90 disabled:cursor-not-allowed transition-opacity"
-          disabled={
-            !selectedVariant.availableForSale ||
-            selectedVariant.inventoryQuantity === 0
-          }
-        >
-          {selectedVariant.availableForSale &&
-          selectedVariant.inventoryQuantity !== 0
-            ? "ADD TO CART"
-            : "OUT OF STOCK"}
-        </button>
+      <div className="flex items-center gap-4 md:gap-8 mt-15 xl:mt-44">
+        <div className="flex items-center gap-2 md:gap-8">
+          <label htmlFor="quantity" className="text-gray-700">
+            Quantity
+          </label>
+          <select
+            id="quantity"
+            className="px-4 py-2 border border-primary-pink/30"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          >
+            {Array.from(
+              { length: selectedVariant.quantityAvailable ?? 1 },
+              (_, i) => i + 1
+            ).map((q) => (
+              <option key={q} value={q}>
+                {q}
+              </option>
+            ))}
+          </select>
+        </div>
+
+
+        {
+          selectedVariant.availableForSale ? <AddToCartButton variantId={selectedVariant.id} quantity={quantity} />
+            : <button className="w-full bg-black text-white px-6 py-3 rounded-md">OUT OF STOCK</button>
+        }
+
       </div>
     </div>
   );

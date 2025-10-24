@@ -5,6 +5,7 @@ import LinkButton from "@/components/LinkButton";
 import { ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { fetchJournals } from "@/lib/strapiApiCall";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -65,6 +66,8 @@ function JournalPage() {
     };
 
     // fetchJournal();
+
+    fetchJournals()
   }, []);
 
   // Filter and sort journal entries

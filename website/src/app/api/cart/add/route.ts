@@ -20,6 +20,8 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("data",data)
+
     if (data.cartLinesAdd.userErrors.length > 0) {
       return NextResponse.json(
         { error: data.cartLinesAdd.userErrors[0].message },

@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { shopifyService } from "@/lib/shopify-v2";
+import { useCart } from "../cart-test/CartProvider";
 
 const navLinks = [
   { label: "SHOP", href: "/shop" },
@@ -19,22 +20,8 @@ const Header = ({ className = "" }: { className?: string }) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
 
-  useEffect(() => {
-    const updateCartCount = async () => {
-      const cart = await shopifyService.getCart();
-      const count = cart.lineItems.reduce(
-        (total, item) => total + item.quantity,
-        0
-      );
-      setCartItemCount(count);
-    };
-
-    updateCartCount();
-    const interval = setInterval(updateCartCount, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const { cartCount } = useCart();
 
   // Scroll listener
   useEffect(() => {
@@ -115,7 +102,7 @@ const Header = ({ className = "" }: { className?: string }) => {
               pathname.startsWith("/cart") && "text-primary-pink"
             )}
           >
-            CART <span>({cartItemCount})</span>
+            CART <span>({cartCount})</span>
           </Link>
         </li>
       </ul>
@@ -169,7 +156,7 @@ const Header = ({ className = "" }: { className?: string }) => {
             )}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            CART <span>({cartItemCount})</span>
+            CART <span>({cartCount})</span>
           </Link>
         </div>
       </div>

@@ -46,27 +46,37 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
   };
 
   return (
-    <div className="flex items-center gap-4 md:gap-6">
+    <div className="flex items-center gap-4 md:gap-6 border-b border-black/10 py-4">
+      {/* Product Image */}
       <div className="relative w-40 md:w-48 h-60 flex-shrink-0">
         <Image
-          src={item.image}
-          alt={item.title}
+          src={item.image || ""}
+          alt={item.altText || item.title}
           fill
           className="object-cover object-center"
         />
       </div>
-      <div className="flex flex-col gap-6 w-full">
+
+      {/* Product Info */}
+      <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col md:flex-row justify-between md:items-center md:gap-4">
           <h3 className="text-sm md:text-base uppercase">{item.title}</h3>
-          <p className="text-sm md:text-base">
-            {formatPrice(item.price * item.quantity, "INR")}
+          <p className="text-sm md:text-base font-semibold">
+            {formatPrice(item.price * item.quantity, item.currencyCode)}
           </p>
         </div>
-        <div className="text-xs md:text-sm">
-          <p className="mb-1">Size: 20 x 22</p>
-          <p>Materials: Cotton</p>
+
+        {/* Selected Options */}
+        <div className="text-xs md:text-sm text-gray-700 space-y-2">
+          {item.selectedOptions?.map((option) => option.name !== "Note" && (
+            <p key={option.name}>
+              {option.name}: {option.value}
+            </p>
+          ))}
         </div>
-        <div className="flex justify-between">
+
+        {/* Quantity Controls and Remove */}
+        <div className="flex justify-between items-center mt-2">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => handleQuantityChange(item.quantity - 1)}
@@ -75,7 +85,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
             >
               <Minus className="w-3 h-3" />
             </button>
-            <span className="w-4 text-sm md:text-base text-center">
+            <span className="w-6 text-sm md:text-base text-center">
               {item.quantity}
             </span>
             <button

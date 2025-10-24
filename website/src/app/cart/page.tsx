@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/components/cart-test/CartProvider";
 import CartItem from "@/components/CartItem";
 import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/lib/helper";
@@ -9,9 +10,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
+  const { refreshCart } = useCart();
   const [cart, setCart] = useState<CartType | null>(null);
   const [loading, setLoading] = useState(true);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   useEffect(() => {
     loadCart();
@@ -20,7 +23,9 @@ export default function CartPage() {
   const loadCart = async () => {
     try {
       const cartData = await shopifyService.getCart();
+      await refreshCart();
       setCart(cartData);
+      console.log(cartData)
     } catch (error) {
       console.error("Error loading cart:", error);
     } finally {
@@ -32,18 +37,33 @@ export default function CartPage() {
     if (!cart || cart.lineItems.length === 0) return;
 
     setIsCheckingOut(true);
+    setCheckoutError(null);
+
     try {
-      // In a real implementation, this would create a Shopify checkout
-      // For now, we'll show a success message
-      alert("Redirecting to secure checkout...");
-      // router.push('/checkout');
+      const lines = cart.lineItems.map(item => ({
+        merchandiseId: item.merchandiseId,
+        quantity: item.quantity,
+      }));
+
+      const response = await fetch("/api/cart/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lines }), 
+      });
+
+      const data = await response.json();
+      if (response.ok && data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        setCheckoutError(data.error || "Failed to create checkout");
+      }
     } catch (error) {
-      console.error("Error during checkout:", error);
+      console.error("Checkout error:", error);
+      setCheckoutError("An unexpected error occurred during checkout.");
     } finally {
       setIsCheckingOut(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -74,13 +94,14 @@ export default function CartPage() {
     );
   }
 
-  const shippingCost = cart.totalPrice > 100 ? 0 : 15;
-  const tax = cart.totalPrice * 0.08;
-  const total = cart.totalPrice + shippingCost + tax;
+  // const shippingCost = cart.totalPrice > 100 ? 0 : 15;
+  // const tax = cart.totalPrice * 0.08;
+  // const total = cart.totalPrice + shippingCost + tax;
+  const total = cart.totalPrice;
 
   return (
     <div className="pt-15">
-      <div className="flex flex-col lg:flex-row justify-between gap-10">
+      <div className="flex flex-col lg:flex-row justify-between gap-18">
         {/* Cart Items */}
         <div className="w-full space-y-6">
           <div className="flex items-center justify-between w-full mb-8">
@@ -95,9 +116,10 @@ export default function CartPage() {
 
         {/* Cart Summary */}
         <div className="self-end md:w-[25rem]">
-          <p className="text-xs text-black/60 mb-2">
-            Tax calculated at checkout.
-          </p>
+          {checkoutError && (
+            <p className="text-red-600 text-sm mb-2">{checkoutError}</p>
+          )}
+          <p className="text-xs text-black/60 mb-2">Tax calculated at checkout.</p>
           <div className="flex justify-between items-center mb-6">
             <span className="text-lg md:text-xl font-semibold">Total</span>
             <span className="font-semibold text-base md:text-lg">
@@ -140,7 +162,7 @@ export default function CartPage() {
               Please visit our{" "}
               <Link href="/return-policy" className="underline">
                 Return Policy
-              </Link>
+              </Link>{" "}
               page for more information.
             </p>
           </div>

@@ -1,229 +1,362 @@
 "use client";
-import { ProjectSorter, sortOptions } from "@/components/common/ProjectSorter";
+
+import { ProjectSorter } from "@/components/common/ProjectSorter";
+import Heading from "@/components/common/Heading";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
+import Footer from "@/components/sections/Footer";
+import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
-import { ChevronsRight, Filter } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const itemsPerPage = 9;
 
-export default function ShopPage({
-  searchParams,
-}: {
-  searchParams: { page?: string; cursor?: string };
-}) {
-  const [products, setProducts] = useState<any>([]);
+function resolveSortOption(sortBy: string) {
+  switch (sortBy) {
+    case "PRICE_ASC":
+      return { sortKey: "PRICE", reverse: false };
+    case "PRICE_DESC":
+      return { sortKey: "PRICE", reverse: true };
+    case "CREATED":
+      return { sortKey: "CREATED_AT", reverse: true };
+    case "TITLE_ASC":
+      return { sortKey: "TITLE", reverse: false };
+    case "TITLE_DESC":
+      return { sortKey: "TITLE", reverse: true };
+    default:
+      return { sortKey: "PRICE", reverse: false };
+  }
+}
 
-  const [filters, setFilters] = useState<Filters>({
-    minPrice: 0,
-    maxPrice: 10000,
-    category: "",
-    subcategory: "",
-    categoryHandle: "",
-    categoryId: "",
+export default function ShopPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([null]);
+
+  const [products, setProducts] = useState<ShopifyProductPreview[]>([]);
+  const [priceRange, setPriceRange] = useState<{ min: number | undefined; max: number | undefined }>({
+    min: undefined,
+    max: undefined,
+  });
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [pageInfo, setPageInfo] = useState<{
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    endCursor: string | null;
+    startCursor: string | null;
+  }>({
+    hasNextPage: false,
+    hasPreviousPage: false,
+    endCursor: null,
+    startCursor: null,
   });
 
-  const cursor = searchParams?.cursor || null;
-
-  const [sortBy, setSortBy] = useState<string>(sortOptions[0].value);
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const filteredAndSortedProducts = useMemo(() => {
-    const filtered = products.filter((product: ShopifyProductPreview) => {
-      const priceMatch =
-        Number(
-          product.variants[0]?.compareAtPrice?.amount ||
-            product.variants[0].price.amount
-        ) >= filters.minPrice &&
-        Number(
-          product.variants[0]?.compareAtPrice?.amount ||
-            product.variants[0].price.amount
-        ) <= filters.maxPrice;
-      return priceMatch;
+  const rawSortBy = searchParams.get("sort");
+  const sortBy = rawSortBy || "PRICE_ASC";
+  const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
+  const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
+  const category = searchParams.get("category") || "";
+  const subcategory = searchParams.get("subcategory") || "";
+
+  const filters: Filters = { minPrice, maxPrice, category, subcategory };
+
+  const prevFiltersRef = useRef<string>("");
+  const filterKey = `${category}-${subcategory}-${minPrice}-${maxPrice}-${sortBy}`;
+
+  const updateURL = (updates: Record<string, string | number | undefined | null>, resetPage = false) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (resetPage) params.delete("page");
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === undefined || value === "" || value === null) params.delete(key);
+      else params.set(key, String(value));
     });
 
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort(
-          (a: ShopifyProductPreview, b: ShopifyProductPreview) =>
-            Number(
-              a.variants[0]?.compareAtPrice?.amount ||
-                a.variants[0].price.amount
-            ) -
-            Number(
-              b.variants[0]?.compareAtPrice?.amount ||
-                b.variants[0].price.amount
-            )
-        );
-        break;
-      case "price-high":
-        filtered.sort(
-          (a: ShopifyProductPreview, b: ShopifyProductPreview) =>
-            Number(
-              b.variants[0]?.compareAtPrice?.amount ||
-                b.variants[0].price.amount
-            ) -
-            Number(
-              a.variants[0]?.compareAtPrice?.amount ||
-                a.variants[0].price.amount
-            )
-        );
-        break;
-      case "name":
-        filtered.sort((a: ShopifyProductPreview, b: ShopifyProductPreview) =>
-          a.title.localeCompare(b.title)
-        );
-        break;
-      default:
-        break;
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+
+async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+  setIsLoading(true);
+  const sortingOption = resolveSortOption(sortBy);
+
+  const query = {
+    first: itemsPerPage,
+    after: cursor,
+    minPrice,
+    maxPrice,
+    collection: category,
+    subcategory,
+    sortBy: sortingOption,
+  };
+
+  try {
+    const { 
+      products, 
+      priceRange: fetchedRange, 
+      totalCount, 
+      pageInfo,
+      pageCursors  // ← Get the cursors!
+    } = await getProducts(query);
+    
+    setProducts(products);
+    setTotalCount(totalCount);
+    setPageInfo(pageInfo);
+    setAllPageCursors(pageCursors); // ← Store them!
+
+    if (!options?.skipPriceRange && fetchedRange?.min !== undefined && fetchedRange?.max !== undefined)
+      setPriceRange(fetchedRange);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  } finally {
+    setIsLoading(false);
+  }
+}
+
+// Now you can jump to any page!
+const handlePageClick = (page: number) => {
+  if (page === currentPage) return;
+  
+  const targetCursor = allPageCursors[page - 1]; // ← Use the stored cursor!
+  setCursor(targetCursor);
+  setCurrentPage(page);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    if (prevFiltersRef.current !== filterKey) {
+      setCursor(null);
+      setCursorHistory([null]);
+      setCurrentPage(1);
+      prevFiltersRef.current = filterKey;
     }
-    return filtered;
-  }, [filters.maxPrice, filters.minPrice, products, sortBy]);
+  }, [filterKey]);
 
-  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedProducts = filteredAndSortedProducts.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  useEffect(() => {
+    fetchProducts({ skipPriceRange: true });
+  }, [minPrice, maxPrice, sortBy, cursor, currentPage, category, subcategory]);
 
-  const handleApplyFilters = () => {
-    fetchProducts();
+  // Refresh price range when category/subcategory changes
+  useEffect(() => {
+    async function refreshPriceRange() {
+      try {
+        const sortingOption = resolveSortOption(sortBy);
+        const query = {
+          first: 1,
+          after: null,
+          collection: category,
+          subcategory,
+          sortBy: sortingOption,
+        };
+
+        const { priceRange: newRange } = await getProducts(query);
+
+        if (newRange?.min !== undefined && newRange?.max !== undefined)
+          setPriceRange(newRange);
+      } catch (error) {
+        console.error("Error refreshing price range:", error);
+      }
+    }
+
+    refreshPriceRange();
+  }, [category, subcategory]);
+
+  const handleCategoryChange = (newCategory: string, newSubcategory: string) => {
+    setCursor(null);
+    setCursorHistory([null]);
     setCurrentPage(1);
+    updateURL(
+      { category: newCategory, subcategory: newSubcategory, minPrice: undefined, maxPrice: undefined },
+      true
+    );
+  };
+
+  const handleApplyPriceFilter = (newMinPrice?: number, newMaxPrice?: number) => {
+    setCursor(null);
+    setCursorHistory([null]);
+    setCurrentPage(1);
+    updateURL({ minPrice: newMinPrice, maxPrice: newMaxPrice }, true);
     setIsMobileFilterOpen(false);
   };
 
-  async function fetchProducts() {
-    console.log("applying filers to applied", filters);
-    const query = {
-      first: 9,
-      after: cursor,
-      minPrice: filters.minPrice,
-      maxPrice: filters.maxPrice,
-      collection: filters.categoryHandle,
-      subcategory: filters.subcategory,
-    };
+  const handleSortChange = (newSort: string) => {
+    setCursor(null);
+    setCursorHistory([null]);
+    setCurrentPage(1);
+    updateURL({ sort: newSort }, true);
+  };
 
-    const { products } = await getProducts(query);
-    setProducts(products);
-  }
+  const handleNextPage = () => {
+    if (pageInfo.hasNextPage && pageInfo.endCursor) {
+      setCursorHistory((prev) => [...prev, pageInfo.endCursor]);
+      setCursor(pageInfo.endCursor);
+      setCurrentPage((p) => p + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
-  useEffect(() => {
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor]);
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      const prevCursor = cursorHistory[newPage - 1] || null;
+      setCursor(prevCursor);
+      setCurrentPage(newPage);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + products.length, totalCount);
+
+  // Compute pagination buttons (show up to 4)
+  const getVisiblePages = () => {
+    const pages: number[] = [];
+    const maxVisible = 4;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else if (currentPage <= 2) {
+      pages.push(1, 2, 3, 4);
+    } else if (currentPage >= totalPages - 1) {
+      pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(currentPage - 1, currentPage, currentPage + 1, currentPage + 2);
+    }
+
+    return pages.filter((p) => p >= 1 && p <= totalPages);
+  };
+
+  const visiblePages = getVisiblePages();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-6 md:gap-8 xl:gap-[4rem]">
-      <div className="hidden lg:block">
-        <FilterSidebar
-          filters={filters}
-          setFilters={setFilters}
-          onApplyFilters={handleApplyFilters}
-          // handleCategoryClick={handleCategoryClick}
-          // handleSubcategoryClick={handleSubcategoryClick}
-        />
-      </div>
-
-      {isMobileFilterOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setIsMobileFilterOpen(false)}
-        >
-          <div
-            className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white p-4 sm:p-6 overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
+    <div>
+      <main className="py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-[2rem] xl:gap-[4rem]">
+          {/* Sidebar */}
+          <div className="hidden lg:block">
             <FilterSidebar
               filters={filters}
-              setFilters={setFilters}
-              onApplyFilters={handleApplyFilters}
-              isMobile={true}
-              onClose={() => setIsMobileFilterOpen(false)}
+              onCategoryChange={handleCategoryChange}
+              onApplyPriceFilter={handleApplyPriceFilter}
+              priceRange={priceRange}
             />
           </div>
-        </div>
-      )}
 
-      <div>
-        <div className="flex gap-0.5 sm:gap-0 justify-between items-center mb-6 sm:mb-8 md:mb-10">
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-            <button
-              onClick={() => setIsMobileFilterOpen(true)}
-              className="hidden md:flex lg:hidden items-center gap-2 px-4 py-2 border border-black/20 rounded-md"
+          {/* Mobile Filter Overlay */}
+          {isMobileFilterOpen && (
+            <div
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+              onClick={() => setIsMobileFilterOpen(false)}
             >
-              <Filter className="w-4 h-4" />
-              <span className="hidden md:block text-sm font-medium">
-                FILTERS
-              </span>
-            </button>
-
-            <p className="text-2xs sm:text-xs text-gray-600 uppercase">
-              Showing {startIndex + 1}-
-              {Math.min(
-                startIndex + itemsPerPage,
-                filteredAndSortedProducts.length
-              )}{" "}
-              of {filteredAndSortedProducts.length} results
-            </p>
-          </div>
-          <div className="flex items-center justify-end">
-            <ProjectSorter sortBy={sortBy} setSortBy={setSortBy} />
-
-            <Filter
-              className="h-4 w-4 md:w-5 md:h-5 ml-2 sm:hidden "
-              onClick={() => setIsMobileFilterOpen(true)}
-            />
-          </div>
-        </div>
-
-        <ProductList
-          products={filteredAndSortedProducts}
-          className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
-        />
-
-        {filteredAndSortedProducts.length === 0 && (
-          <div className="text-center py-8 sm:py-10 md:py-12">
-            <p className="text-gray-500 text-sm sm:text-base md:text-lg">
-              No products found matching your filters.
-            </p>
-          </div>
-        )}
-
-        {/* Pagination */}
-        {totalPages > 1 && filteredAndSortedProducts.length > 0 && (
-          <div className="flex justify-start items-center space-x-1.5 sm:space-x-2 mt-8 sm:mt-9 md:mt-10">
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full cursor-pointer text-xs sm:text-sm transition-colors duration-200 ${
-                  currentPage === i + 1
-                    ? "bg-primary-pink text-white"
-                    : "border border-black/20 text-gray-600 hover:bg-gray-50"
-                }`}
+              <div
+                className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white p-6 overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
               >
-                {i + 1}
-              </button>
-            ))}
-            {currentPage < totalPages && (
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                className="text-gray-600 cursor-pointer hover:text-black transition-colors duration-200 p-1"
-                aria-label="Next page"
-              >
-                <ChevronsRight className="w-5 h-5 sm:w-6 sm:h-6" />
-              </button>
+                <FilterSidebar
+                  filters={filters}
+                  onCategoryChange={handleCategoryChange}
+                  onApplyPriceFilter={handleApplyPriceFilter}
+                  isMobile={true}
+                  onClose={() => setIsMobileFilterOpen(false)}
+                  priceRange={priceRange}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Product List + Sorting */}
+          <div>
+            <div className="flex justify-between items-center mb-10">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="hidden md:flex lg:hidden items-center gap-2 px-4 py-2 border border-black/20 rounded-md"
+                >
+                  <Filter className="w-4 h-4" />
+                  <span className="text-sm font-medium">FILTERS</span>
+                </button>
+                <p className="text-xs text-gray-600 uppercase">
+                  SHOWING {products.length > 0 ? startIndex + 1 : 0}-{endIndex} OF {totalCount} RESULTS
+                </p>
+              </div>
+
+              <div className="flex items-center">
+                <ProjectSorter sortBy={sortBy} setSortBy={handleSortChange} />
+                <Filter
+                  className="w-5 h-5 ml-2 sm:hidden cursor-pointer"
+                  onClick={() => setIsMobileFilterOpen(true)}
+                />
+              </div>
+            </div>
+
+            {isLoading ? (
+              <div className="text-center py-12 text-gray-500 text-lg">Loading products...</div>
+            ) : (
+              <>
+                <ProductList
+                  products={products}
+                  className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+                />
+                {products.length === 0 && (
+                  <div className="text-center py-12 text-gray-500 text-lg">
+                    No products found matching your filters.
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && !isLoading && (
+              <div className="flex justify-start items-center space-x-2 mt-10">
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${currentPage === 1 && "opacity-50 cursor-not-allowed"
+                    }`}
+                >
+                  <ChevronsLeft />
+                </button>
+
+                {visiblePages.map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageClick(page)}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${currentPage === page
+                      ? "bg-primary-pink text-white border-primary-pink"
+                      : "border-black/20 text-gray-600 hover:bg-gray-100"
+                      }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={handleNextPage}
+                  disabled={!pageInfo.hasNextPage}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${!pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
+                    }`}
+                >
+                  <ChevronsRight />
+                </button>
+              </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }

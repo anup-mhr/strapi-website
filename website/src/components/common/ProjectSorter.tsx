@@ -4,21 +4,22 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 export const sortOptions = [
-  { value: "price-low", label: "Price: Low to High" },
-  { value: "price-high", label: "Price: High to Low" },
-  { value: "newest", label: "Newest First" },
-  { value: "name", label: "Name A-Z" },
+  { value: "PRICE_ASC", label: "Price: Low to High" },
+  { value: "PRICE_DESC", label: "Price: High to Low" },
+  { value: "CREATED", label: "Newest First" },
+  { value: "TITLE_ASC", label: "Name A-Z" },
+  { value: "TITLE_DESC", label: "Name Z-A" },
 ];
 
 interface ProjectSorterProps {
-  sortBy: string;
+  sortBy: string | null;
   setSortBy: (value: string) => void;
 }
 
 export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const currentLabel = sortOptions.find((opt) => opt.value === sortBy)?.label;
+  const effectiveSortBy = sortBy || sortOptions[0].value;
+  const currentLabel = sortOptions.find(opt => opt.value === effectiveSortBy)?.label;
 
   const handleSortChange = (value: string) => {
     setSortBy(value);
@@ -29,11 +30,11 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
     <div className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between cursor-pointer px-3 sm:px-4 py-1.5 sm:py-2 uppercase text-2xs sm:text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[120px] sm:min-w-[150px]"
+        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
       >
-        <span className="truncate">{currentLabel}</span>
+        <span>{currentLabel}</span>
         <ChevronDown
-          className={`ml-1 sm:ml-2 h-4 w-4 md:h-5 md:w-5 flex-shrink-0 transition-transform duration-200 ${
+          className={`ml-2 h-4 w-4 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -41,12 +42,12 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
 
       {isOpen && (
         <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 shadow-lg z-30">
-          {sortOptions.map((option) => (
+          {sortOptions.map(option => (
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}
-              className={`block w-full px-3 sm:px-4 py-1.5 sm:py-2 text-2xs sm:text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
-                sortBy === option.value
+              className={`block w-full px-4 py-2 text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
+                effectiveSortBy === option.value
                   ? "bg-gray-100 text-black font-semibold"
                   : "text-gray-700"
               }`}

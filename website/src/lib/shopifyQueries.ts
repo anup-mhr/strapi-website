@@ -119,6 +119,7 @@ export const GET_PRODUCT_BY_HANDLE = `
             node {
               id
               title
+              quantityAvailable
               availableForSale
               selectedOptions {
                 name
@@ -128,6 +129,10 @@ export const GET_PRODUCT_BY_HANDLE = `
                 value
               }
               price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
                 amount
                 currencyCode
               }
