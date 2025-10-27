@@ -54,7 +54,7 @@ export default function JournalImageSlider({
 
   return (
     <div
-      className="group relative w-full overflow-hidden"
+      className="group relative w-full overflow-hidden lg:overflow-visible"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -93,7 +93,7 @@ export default function JournalImageSlider({
               </div>
               <LinkButton
                 href={`/journal/${journal.slug || ""}`}
-                className="px-0! tracking-normal capitalize border-b-1 rounded-none py-0!  text-black text-sm sm:text-base"
+                className="px-0! tracking-normal capitalize border-b-1 rounded-none py-0! text-black text-sm sm:text-base"
               >
                 Read Story
               </LinkButton>
@@ -105,27 +105,34 @@ export default function JournalImageSlider({
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="group-hover:block z-50 absolute top-1/2 left-2 sm:left-3 md:left-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="hidden lg:flex z-10 absolute top-1/2 left-0 lg:-left-8 xl:left-4 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full items-center justify-center transition-all duration-300 ease-in-out cursor-pointer backdrop-blur-sm shadow-lg"
         aria-label="Previous story"
       >
-        <ChevronLeft
-          size={24}
-          strokeWidth={0.8}
-          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
-        />
+        <ChevronLeft size={28} strokeWidth={1.5} className="lg:w-6 lg:h-6" />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-50 absolute top-1/2 right-2 sm:right-3 md:right-4 -translate-y-1/2 bg-black/50 hover:bg-black/40 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="hidden lg:flex z-10 absolute top-1/2 right-0 lg:-right-8 xl:right-4 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full items-center justify-center transition-all duration-300 ease-in-out cursor-pointer backdrop-blur-sm shadow-lg"
         aria-label="Next story"
       >
-        <ChevronRight
-          size={24}
-          strokeWidth={0.8}
-          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
-        />
+        <ChevronRight size={28} strokeWidth={1.5} className="lg:w-6 lg:h-6" />
       </button>
+
+      <div className="flex lg:hidden justify-center gap-2 mt-4 pb-2">
+        {journals.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentIndex
+                ? "bg-black w-6"
+                : "bg-black/30 hover:bg-black/50"
+            }`}
+            aria-label={`Go to journal ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

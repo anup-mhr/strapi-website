@@ -23,6 +23,13 @@ export const formatDate = (dateString: string) => {
   });
 };
 
+export const getMonthYear = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+  });
+};
+
 export function getImageUrl(image: File): string {
   if (!image?.url) return "/images/placeholder.webp";
 
@@ -56,3 +63,31 @@ export const productMapper = (node: any): ShopifyProductPreview => ({
     },
   })),
 });
+
+export function calculateReadingTime(
+  articleContent: any,
+  wordsPerMinute = 200
+) {
+  // 1. Get and clean the content (assuming articleContent is a string or innerHTML)
+  const cleanedContent = articleContent.replace(/<[^>]*>/g, ""); // Remove HTML tags if present
+
+  // 2. Calculate the word count
+  const wordCount = cleanedContent.trim().split(/\s+/).length;
+
+  // 3. Calculate the raw reading time in minutes
+  const rawMinutes = wordCount / wordsPerMinute;
+
+  // 4. Format the reading time
+  const minutes = Math.floor(rawMinutes);
+  const seconds = Math.round((rawMinutes - minutes) * 60);
+
+  if (minutes === 0 && seconds === 0) {
+    return "Less than a minute";
+  } else if (minutes === 0) {
+    return `${seconds} sec read`;
+  } else if (seconds === 0) {
+    return `${minutes} min read`;
+  } else {
+    return `${minutes} min ${seconds} sec`;
+  }
+}

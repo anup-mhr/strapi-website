@@ -21,7 +21,7 @@ export async function fetchStrapi(
   endpoint: string,
   queryOptions: IQueryOptions = {},
   options: IOptions = {
-    revalidate: 60,
+    revalidate: 0,
   }
 ) {
   const query = qs.stringify(queryOptions, { encodeValuesOnly: true });
@@ -48,6 +48,5 @@ export async function fetchStrapi(
     throw new Error(`Strapi errors: ${JSON.stringify(data.errors)}`);
   }
 
-  console.log("fetched data", data);
   return data;
 }

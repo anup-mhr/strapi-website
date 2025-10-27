@@ -1,71 +1,42 @@
-"use client";
-
-import { formatDate } from "@/lib/helper";
-import { journalService } from "@/lib/journal";
-import { JournalPost } from "@/types/shopify-v2";
+import {
+  calculateReadingTime,
+  formatDate,
+  getImageUrl,
+  getMonthYear,
+} from "@/lib/helper";
+import htmlToPlainText from "@/lib/htmlToPlainText";
+import { fetchJournalBySlug, fetchJournals } from "@/lib/strapiApiCall";
 import { ArrowLeft, Calendar, Clock, Share2, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 interface JournalPostPageProps {
-  params: { id: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default function JournalPostPage({ params }: JournalPostPageProps) {
-  const [post, setPost] = useState<JournalPost | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<JournalPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const loadPost = async () => {
-      try {
-        const postData = await journalService.getPost(params.id);
-        if (postData) {
-          setPost(postData);
-          const related = await journalService.getRelatedPosts(params.id, 3);
-          setRelatedPosts(related);
-        } else {
-          router.push("/journal");
-        }
-      } catch (error) {
-        console.error("Error loading post:", error);
-        router.push("/journal");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPost();
-  }, [params.id, router]);
-
-  const handleShare = async () => {
-    if (navigator.share && post) {
-      try {
-        await navigator.share({
-          title: post.title,
-          text: post.excerpt,
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-heirloom-gold"></div>
-      </div>
-    );
-  }
+export default async function JournalPostPage({
+  params,
+}: JournalPostPageProps) {
+  const { slug } = await params;
+  const post = await fetchJournalBySlug(slug);
+  const relatedPosts = await fetchJournals(3);
+  // const handleShare = async () => {
+  //   if (navigator.share && post) {
+  //     try {
+  //       await navigator.share({
+  //         title: post.title,
+  //         text: post.slug,
+  //         url: window.location.href,
+  //       });
+  //     } catch (error) {
+  //       console.error("Error sharing:", error);
+  //     }
+  //   } else {
+  //     // Fallback: copy to clipboard
+  //     navigator.clipboard.writeText(window.location.href);
+  //     alert("Link copied to clipboard!");
+  //   }
+  // };
 
   if (!post) {
     return null;
@@ -76,13 +47,13 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
       <div className="section-padding ">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
-          <button
-            onClick={() => router.back()}
+          <Link
+            href="/journal"
             className="flex items-center space-x-2 text-heirloom-charcoal hover:text-heirloom-gold transition-colors mb-8 cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Journal</span>
-          </button>
+          </Link>
 
           {/* Article Header */}
           <header className="mb-12">
@@ -90,18 +61,18 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
             <div className="flex items-center flex-wrap gap-4 text-sm text-heirloom-charcoal/60 mb-6">
               <div className="flex items-center space-x-1">
                 <Calendar className="w-4 h-4" />
-                <span>{formatDate(post.date)}</span>
+                <span>{formatDate(post.published_date)}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Clock className="w-4 h-4" />
-                <span>{post.readTime}</span>
+                <span>{calculateReadingTime(post.content)}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <User className="w-4 h-4" />
-                <span>{post.author}</span>
+                <span>Heirloom</span>
               </div>
               <button
-                onClick={handleShare}
+                // onClick={handleShare}
                 className="flex items-center space-x-1 hover:text-heirloom-gold transition-colors cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
@@ -116,19 +87,19 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
 
             {/* Excerpt */}
             <p className="text-xl text-heirloom-charcoal/80 leading-relaxed mb-6">
-              {post.excerpt}
+              {post.sub_title}
             </p>
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
                 <Link
-                  key={tag}
-                  href={`/journal?tag=${tag}`}
-                  className="inline-flex items-center space-x-1 px-3 py-1 bg-heirloom-gold/10 text-heirloom-gold text-sm rounded-full hover:bg-heirloom-gold hover:text-heirloom-ivory transition-colors"
+                  key={tag.id}
+                  href={`/journal?tag=${tag.name}`}
+                  className="inline-flex items-center capitalize space-x-1 px-3 py-1 bg-heirloom-gold/10 text-heirloom-gold text-sm rounded-full hover:bg-heirloom-gold hover:text-heirloom-ivory transition-colors"
                 >
                   <Tag className="w-3 h-3" />
-                  <span>{tag}</span>
+                  <span>{tag.name}</span>
                 </Link>
               ))}
             </div>
@@ -137,19 +108,20 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
           {/* Featured Image */}
           <div className="relative aspect-video mb-12 rounded-lg overflow-hidden">
             <Image
-              src={post.image}
+              src={getImageUrl(post.profile_image)}
               alt={post.title}
               fill
-              className="object-cover"
+              className="object-cover object-centers"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
 
           {/* Article Content */}
           <article className="prose prose-lg max-w-none mb-16">
-            <div className="text-heirloom-charcoal leading-relaxed whitespace-pre-line">
-              {post.content}
-            </div>
+            <div
+              className="text-heirloom-charcoal leading-relaxed whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           </article>
 
           {/* Related Posts */}
@@ -166,7 +138,7 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
                   >
                     {/* <div className="relative h-40 w-full overflow-hidden"> */}
                     <Image
-                      src={relatedPost.image}
+                      src={getImageUrl(relatedPost.profile_image)}
                       alt={relatedPost.title}
                       width={600}
                       height={600}
@@ -181,12 +153,14 @@ export default function JournalPostPage({ params }: JournalPostPageProps) {
                         </Link>
                       </h3>
                       <p className="text-sm text-heirloom-charcoal/70 mb-3">
-                        {relatedPost.excerpt.substring(0, 100)}...
+                        {htmlToPlainText(relatedPost.content).slice(0, 150)}...
                       </p>
-                      <div className="flex items-center justify-between mt-auto text-heirloom-charcoal/60">
-                        <span className="text-primary-pink">Media</span>
+                      <div className="flex items-center justify-between mt-auto text-heirloom-charcoal/60 capitalize">
+                        <span className="text-primary-pink">
+                          {relatedPost.tags.map((tag) => tag.name).join(" ")}
+                        </span>
                         <span className="text-sm font-medium uppercase">
-                          april 2025
+                          {getMonthYear(relatedPost.published_date)}
                         </span>
                       </div>
                     </div>

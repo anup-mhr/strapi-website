@@ -30,22 +30,21 @@ export interface IJournal {
   profile_image: File;
   slug: string;
   content: string;
-  tags: any[];
+  tags: { id: number; name: string }[];
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
 }
 
-async function fetchJournals(): Promise<IJournal[] | []> {
+async function fetchJournals(pageSize?: number): Promise<IJournal[] | []> {
   try {
     const queryOptions = {
-      fields: ["title", "sub_title", "published_date", "slug", "content"],
       populate: {
         profile_image: true,
         tags: true,
       },
       pagination: {
-        pageSize: 5,
+        pageSize: pageSize ?? 5,
       },
       sort: ["published_date:desc"],
     };
@@ -63,11 +62,8 @@ export async function fetchJournalBySlug(
 ): Promise<IJournal | null> {
   try {
     const queryOptions = {
-      filters: {
-        slug: {
-          $eq: slug,
-        },
-      },
+      filters: { slug: { $eq: slug } },
+      fields: ["slug", "title", "sub_title", "published_date", "content"],
       populate: {
         profile_image: true,
         tags: true,
@@ -79,6 +75,8 @@ export async function fetchJournalBySlug(
     if (!data.data || data.data.length === 0) {
       return null;
     }
+
+    // console.log("data from slug journal", data.data);
 
     return data.data[0];
   } catch (error) {
