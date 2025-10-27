@@ -1,3 +1,4 @@
+import ShareButton from "@/components/ShareButton";
 import {
   calculateReadingTime,
   formatDate,
@@ -5,43 +6,23 @@ import {
   getMonthYear,
 } from "@/lib/helper";
 import htmlToPlainText from "@/lib/htmlToPlainText";
-import { fetchJournalBySlug, fetchJournals } from "@/lib/strapiApiCall";
-import { ArrowLeft, Calendar, Clock, Share2, Tag, User } from "lucide-react";
+import { fetchJournalBySlug, fetchRelatedJournals } from "@/lib/strapiApiCall";
+import { ArrowLeft, Calendar, Clock, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-interface JournalPostPageProps {
-  params: Promise<{ slug: string }>;
-}
+async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id: slug } = await params;
 
-export default async function JournalPostPage({
-  params,
-}: JournalPostPageProps) {
-  const { slug } = await params;
   const post = await fetchJournalBySlug(slug);
-  const relatedPosts = await fetchJournals(3);
-  // const handleShare = async () => {
-  //   if (navigator.share && post) {
-  //     try {
-  //       await navigator.share({
-  //         title: post.title,
-  //         text: post.slug,
-  //         url: window.location.href,
-  //       });
-  //     } catch (error) {
-  //       console.error("Error sharing:", error);
-  //     }
-  //   } else {
-  //     // Fallback: copy to clipboard
-  //     navigator.clipboard.writeText(window.location.href);
-  //     alert("Link copied to clipboard!");
-  //   }
-  // };
 
   if (!post) {
     return notFound();
   }
+  const relatedPosts = await fetchRelatedJournals(
+    post.tags.map((tag: any) => tag.name)
+  );
 
   return (
     <div className="min-h-screen bg-heirloom-ivory pt-12 sm:pt-16 lg:pt-20">
@@ -72,10 +53,7 @@ export default async function JournalPostPage({
                 <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>Heirloom</span>
               </div>
-              <button className="flex items-center space-x-1 hover:text-heirloom-gold transition-colors cursor-pointer">
-                <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span>Share</span>
-              </button>
+              <ShareButton post={post} />
             </div>
 
             {/* Title */}
@@ -108,16 +86,17 @@ export default async function JournalPostPage({
           </header>
 
           {/* Featured Image */}
-          <div className="relative aspect-video mb-8 sm:mb-10 lg:mb-12 rounded-md sm:rounded-lg overflow-hidden">
-            <Image
-              src={getImageUrl(post.profile_image)}
-              alt={post.title}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
-              priority
-            />
-          </div>
+          {/* <div className="relative aspect-video mb-8 sm:mb-10 lg:mb-12 rounded-md sm:rounded-lg overflow-hidden"> */}
+          <Image
+            src={getImageUrl(post.profile_image)}
+            alt={post.title}
+            width={600}
+            height={600}
+            className="object-cover object-center w-full mb-8 sm:mb-10 lg:mb-12 rounded-md sm:rounded-lg"
+            // sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
+            priority
+          />
+          {/* </div> */}
 
           {/* Article Content */}
           <article className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-12 sm:mb-14 lg:mb-16">
@@ -153,7 +132,7 @@ export default async function JournalPostPage({
                     {/* Overlay Content */}
                     <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 sm:bg-white/20 sm:backdrop-blur-sm h-[85%] sm:h-[80%] w-[90%] sm:w-[85%] rounded-lg opacity-0 scale-100 sm:scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 sm:duration-400 ease-in-out p-4 sm:p-5 lg:p-6">
                       <h3 className="text-sm sm:text-base font-semibold leading-tight text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors line-clamp-2">
-                        <Link href={`/journal/${relatedPost.id}`}>
+                        <Link href={`/journal/${relatedPost.slug}`}>
                           {relatedPost.title}
                         </Link>
                       </h3>
@@ -179,3 +158,5 @@ export default async function JournalPostPage({
     </div>
   );
 }
+
+export default Page;

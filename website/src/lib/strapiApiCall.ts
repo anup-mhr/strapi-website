@@ -57,13 +57,14 @@ async function fetchJournals(pageSize?: number): Promise<IJournal[] | []> {
   }
 }
 
-export async function fetchJournalBySlug(
-  slug: string
-): Promise<IJournal | null> {
+async function fetchJournalBySlug(slug: string): Promise<IJournal | null> {
   try {
     const queryOptions = {
-      filters: { slug: { $eq: slug } },
-      fields: ["slug", "title", "sub_title", "published_date", "content"],
+      filters: {
+        slug: {
+          $eq: slug,
+        },
+      },
       populate: {
         profile_image: true,
         tags: true,
@@ -76,13 +77,49 @@ export async function fetchJournalBySlug(
       return null;
     }
 
-    // console.log("data from slug journal", data.data);
-
-    return data.data[1];
+    return data.data[0];
   } catch (error) {
     console.error(`Error fetching journal with slug "${slug}"`, error);
     return null;
   }
 }
 
-export { fetchHeroSlides, fetchJournals };
+async function fetchRelatedJournals(tags: string[]): Promise<IJournal[] | []> {
+  try {
+    const queryOptions = {
+      filters: {
+        tags: {
+          name: {
+            $in: tags,
+          },
+        },
+      },
+      populate: {
+        profile_image: true,
+        tags: true,
+      },
+      pagination: {
+        pageSize: 4,
+      },
+      // sort: ["published_date:desc"],
+    };
+
+    const data = await fetchStrapi("/api/journals", queryOptions);
+
+    if (!data.data || data.data.length === 0) {
+      return [];
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error(`Error fetching journal with tags "${tags}"`, error);
+    return [];
+  }
+}
+
+export {
+  fetchHeroSlides,
+  fetchJournals,
+  fetchJournalBySlug,
+  fetchRelatedJournals,
+};
