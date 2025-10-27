@@ -2,8 +2,8 @@ import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 
 const client = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!,
-  apiVersion: "2024-10",
-  publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+  apiVersion: "2025-10",
+  publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!,
 });
 
 // ----------------- GraphQL Fragments & Queries -----------------
@@ -185,7 +185,7 @@ export async function shopifyFetch<T = any>({
       variables,
     })) as ShopifyResponse<T>;
 
-    console.log("data,errros",data,errors);
+    console.log("data,errros", data, errors);
     if (errors && errors.length > 0) {
       console.error("Shopify API errors:", errors);
       throw new Error(errors[0].message || "Shopify API error");

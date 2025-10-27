@@ -1,4 +1,4 @@
-import { ApiResponse, HeroSlide } from "@/types/heroSlider";
+import { ApiResponse, File, HeroSlide } from "@/types/heroSlider";
 import { fetchStrapi } from "./strapi";
 
 async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
@@ -21,33 +21,31 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   }
 }
 
-
-interface Journal {
+export interface IJournal {
   id: number;
-  attributes: {
-    title: string;
-    sub_title?: string;
-    published_date: string;
-    profile_image: any;
-    slug: string;
-    content: string;
-    tags: any[];
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-  };
+  documentId: string;
+  title: string;
+  sub_title?: string;
+  published_date: string;
+  profile_image: File;
+  slug: string;
+  content: string;
+  tags: any[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
 }
 
-async function fetchJournals(): Promise<Journal[] | []> {
+async function fetchJournals(): Promise<IJournal[] | []> {
   try {
     const queryOptions = {
-      fields: ["title", "sub_title", "published_date", "slug"],
+      fields: ["title", "sub_title", "published_date", "slug", "content"],
       populate: {
         profile_image: true,
         tags: true,
       },
       pagination: {
-        pageSize: 10,
+        pageSize: 5,
       },
       sort: ["published_date:desc"],
     };
@@ -60,26 +58,9 @@ async function fetchJournals(): Promise<Journal[] | []> {
   }
 }
 
-
-
-interface Journal {
-  id: number;
-  attributes: {
-    title: string;
-    sub_title?: string;
-    published_date: string;
-    slug: string;
-    content: string;
-    profile_image: any;
-    tags: any[];
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-  };
-}
-
-
-export async function fetchJournalBySlug(slug: string): Promise<Journal | null> {
+export async function fetchJournalBySlug(
+  slug: string
+): Promise<IJournal | null> {
   try {
     const queryOptions = {
       filters: {
@@ -106,4 +87,4 @@ export async function fetchJournalBySlug(slug: string): Promise<Journal | null> 
   }
 }
 
-export { fetchHeroSlides , fetchJournals };
+export { fetchHeroSlides, fetchJournals };

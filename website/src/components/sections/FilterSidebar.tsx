@@ -15,7 +15,10 @@ export interface Filters {
 interface FilterSidebarProps {
   filters: Filters;
   onCategoryChange: (category: string, subcategory: string) => void;
-  onApplyPriceFilter: (minPrice: number | undefined, maxPrice: number | undefined) => void;
+  onApplyPriceFilter: (
+    minPrice: number | undefined,
+    maxPrice: number | undefined
+  ) => void;
   isMobile?: boolean;
   onClose?: () => void;
   priceRange: { min: number | undefined; max: number | undefined };
@@ -29,12 +32,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onApplyPriceFilter,
   isMobile = false,
   priceRange,
-  onClose = () => { },
+  onClose = () => {},
 }) => {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [localMinPrice, setLocalMinPrice] = useState<number | undefined>(filters.minPrice);
-  const [localMaxPrice, setLocalMaxPrice] = useState<number | undefined>(filters.maxPrice);
+  const [localMinPrice, setLocalMinPrice] = useState<number | undefined>(
+    filters.minPrice
+  );
+  const [localMaxPrice, setLocalMaxPrice] = useState<number | undefined>(
+    filters.maxPrice
+  );
 
   useEffect(() => {
     if (isMobile) {
@@ -67,12 +74,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   useEffect(() => {
     if (filters.category) {
-      const category = categories.find((cat) => cat.handle === filters.category);
+      const category = categories.find(
+        (cat) => cat.handle === filters.category
+      );
       if (category && !expandedCategories.includes(category.handle)) {
         setExpandedCategories((prev) => [...prev, category.handle]);
       }
     }
-  }, [filters.category, categories]);
+  }, [filters.category, categories, expandedCategories]);
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMin = Number(e.target.value);
@@ -102,7 +111,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const toggleCategory = (handle: string) => {
     setExpandedCategories((prev) =>
-      prev.includes(handle) ? prev.filter((cat) => cat !== handle) : [...prev, handle]
+      prev.includes(handle)
+        ? prev.filter((cat) => cat !== handle)
+        : [...prev, handle]
     );
   };
 
@@ -115,9 +126,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     }
   };
 
-  const handleSubcategoryClick = (category: CategoryItem, subItem: { title: string }) => {
+  const handleSubcategoryClick = (
+    category: CategoryItem,
+    subItem: { title: string }
+  ) => {
     const isSameSubcategory =
-      filters.category === category.handle && filters.subcategory === subItem.title;
+      filters.category === category.handle &&
+      filters.subcategory === subItem.title;
     if (isSameSubcategory) {
       onCategoryChange(category.handle, "");
     } else {
@@ -125,28 +140,31 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     }
   };
 
-
   const safeMin = localMinPrice ?? priceRange.min ?? 0;
   const safeMax = localMaxPrice ?? priceRange.max ?? 0;
   const totalMax = priceRange.max ?? 1;
 
   const renderPriceSlider = () => (
     <div className="mb-12">
-      <h3 className="font-semibold pb-2 mb-4 border-b-2 border-black/30">FILTER BY PRICE</h3>
+      <h3 className="font-semibold pb-2 mb-4 border-b-2 border-black/30">
+        FILTER BY PRICE
+      </h3>
 
       <div className="relative h-6 mt-2">
         <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 rounded-full transform -translate-y-1/2" />
         <div
           className="absolute top-1/2 h-1 bg-primary-pink rounded-full transform -translate-y-1/2 pointer-events-none"
           style={{
-            left: `${((safeMin - (priceRange.min ?? 0)) /
+            left: `${
+              ((safeMin - (priceRange.min ?? 0)) /
                 ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
               100
-              }%`,
-            width: `${((safeMax - safeMin) /
+            }%`,
+            width: `${
+              ((safeMax - safeMin) /
                 ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
               100
-              }%`,
+            }%`,
           }}
         />
 
@@ -166,13 +184,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onChange={handleMaxChange}
           className="range-thumb absolute w-full top-0 h-6 appearance-none bg-transparent pointer-events-auto z-10"
         />
-
       </div>
       <div className="flex items-center justify-between mt-4">
         <div className="text-base text-gray-500">
           <span>
             <span className="font-bold">Price: </span>₹
-            {safeMin.toLocaleString("en-IN")} - ₹{safeMax.toLocaleString("en-IN")}
+            {safeMin.toLocaleString("en-IN")} - ₹
+            {safeMax.toLocaleString("en-IN")}
           </span>
         </div>
 
@@ -188,15 +206,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const renderCategoryFilter = () => (
     <div>
-      <h3 className="font-semibold pb-2 border-b-2 border-black/30 mb-4">FILTER BY CATEGORY</h3>
+      <h3 className="font-semibold pb-2 border-b-2 border-black/30 mb-4">
+        FILTER BY CATEGORY
+      </h3>
       <ul className="space-y-3 text-gray-700">
         {categories.map((category) => (
           <li key={category.handle}>
             <div className="flex justify-between items-center">
               <span
                 onClick={() => handleCategoryClick(category)}
-                className={`cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle && "text-primary-pink font-semibold"
-                  }`}
+                className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                  filters.category === category.handle &&
+                  "text-primary-pink font-semibold"
+                }`}
               >
                 {category.title}
               </span>
@@ -210,22 +232,24 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               )}
             </div>
 
-            {expandedCategories.includes(category.handle) && category.subItems.length > 0 && (
-              <ul className="ml-4 mt-2 space-y-1 text-gray-600">
-                {category.subItems.map((sub) => (
-                  <li
-                    key={sub.title}
-                    onClick={() => handleSubcategoryClick(category, sub)}
-                    className={`cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle &&
-                      filters.subcategory === sub.title &&
-                      "text-primary-pink font-semibold"
+            {expandedCategories.includes(category.handle) &&
+              category.subItems.length > 0 && (
+                <ul className="ml-4 mt-2 space-y-1 text-gray-600">
+                  {category.subItems.map((sub) => (
+                    <li
+                      key={sub.title}
+                      onClick={() => handleSubcategoryClick(category, sub)}
+                      className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                        filters.category === category.handle &&
+                        filters.subcategory === sub.title &&
+                        "text-primary-pink font-semibold"
                       }`}
-                  >
-                    {sub.title}
-                  </li>
-                ))}
-              </ul>
-            )}
+                    >
+                      {sub.title}
+                    </li>
+                  ))}
+                </ul>
+              )}
           </li>
         ))}
       </ul>
@@ -235,7 +259,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   if (isMobile) {
     return (
       <>
-        <div className="fixed inset-0 bg-black/50 z-40 animate-fadeIn" onClick={onClose} />
+        <div
+          className="fixed inset-0 bg-black/50 z-40 animate-fadeIn"
+          onClick={onClose}
+        />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col animate-slideUp">
             <div className="flex justify-between items-center px-6 py-4 border-b">
@@ -269,7 +296,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <div className="min-w-[17rem]">
-      {priceRange.min !== undefined && priceRange.max !== undefined && renderPriceSlider()}
+      {priceRange.min !== undefined &&
+        priceRange.max !== undefined &&
+        renderPriceSlider()}
       {renderCategoryFilter()}
     </div>
   );

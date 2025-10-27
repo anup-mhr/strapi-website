@@ -19,7 +19,9 @@ interface ProjectSorterProps {
 export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const effectiveSortBy = sortBy || sortOptions[0].value;
-  const currentLabel = sortOptions.find(opt => opt.value === effectiveSortBy)?.label;
+  const currentLabel = sortOptions.find(
+    (opt) => opt.value === effectiveSortBy
+  )?.label;
 
   const handleSortChange = (value: string) => {
     setSortBy(value);
@@ -27,10 +29,10 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block min-w-48 text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
+        className="inline-flex w-full items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"
       >
         <span>{currentLabel}</span>
         <ChevronDown
@@ -42,7 +44,7 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
 
       {isOpen && (
         <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 shadow-lg z-30">
-          {sortOptions.map(option => (
+          {sortOptions.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}

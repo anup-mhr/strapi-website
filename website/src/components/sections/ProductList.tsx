@@ -19,7 +19,7 @@ const ProductList = ({
         const compareAtPrice = Number(variant?.compareAtPrice?.amount);
         const currency = variant?.price?.currencyCode;
 
-        const isOnSale =compareAtPrice > 0 && compareAtPrice !== price;
+        const isOnSale = compareAtPrice > 0 && compareAtPrice !== price;
 
         return (
           <Link href={`/shop/${product?.handle}`} key={index}>

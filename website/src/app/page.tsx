@@ -4,9 +4,8 @@ import Header from "@/components/sections/Header";
 import HeroSlider from "@/components/sections/HeroSlider";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
-import { journal } from "@/constants/constants";
 import { getProducts } from "@/lib/shopify";
-import { fetchHeroSlides } from "@/lib/strapiApiCall";
+import { fetchHeroSlides, fetchJournals } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
 export default async function Home() {
@@ -18,6 +17,9 @@ export default async function Home() {
     first: 4,
     collection: "sale",
   });
+
+  const journals = await fetchJournals();
+  console.log("journals", journals);
 
   return (
     <div>
@@ -63,7 +65,7 @@ export default async function Home() {
           href="/journal"
         />
 
-        <JournalImageSlider journals={journal} />
+        <JournalImageSlider journals={journals} />
       </div>
 
       <div className="padding">

@@ -4,18 +4,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import LinkButton from "../LinkButton";
-
-type ImageData = {
-  image: string;
-  title: string;
-  subtitle: string;
-  description: string;
-};
+import { IJournal } from "@/lib/strapiApiCall";
+import { formatDate, getImageUrl } from "@/lib/helper";
+import htmlToPlainText from "@/lib/htmlToPlainText";
 
 export default function JournalImageSlider({
   journals,
 }: {
-  journals: ImageData[];
+  journals: IJournal[];
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const interval = 5000;
@@ -63,7 +59,7 @@ export default function JournalImageSlider({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {journals.map((img, index) => (
+      {journals.map((journal, index) => (
         <div
           key={index}
           className={`transition-opacity duration-1000 ease-in-out ${
@@ -75,8 +71,8 @@ export default function JournalImageSlider({
           <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-4 sm:gap-6 lg:gap-12 items-center p-3 sm:p-4">
             <div className="relative w-full h-[20rem] sm:h-[22rem] md:h-[25rem] lg:h-[28rem] xl:h-[30rem]">
               <Image
-                src={img.image}
-                alt={img.title}
+                src={getImageUrl(journal.profile_image)}
+                alt={journal.title}
                 fill
                 className="object-cover object-center"
                 priority={index === 0}
@@ -85,19 +81,19 @@ export default function JournalImageSlider({
 
             <div className="flex flex-col gap-3 sm:gap-4 justify-center px-2 sm:px-0">
               <h1 className="!text-black tagline font-semibold text-base sm:text-lg md:text-xl">
-                {img.title}
+                {journal.title} | {formatDate(journal.published_date)}
               </h1>
               <div>
-                <h2 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">
-                  {img.subtitle}
-                </h2>
-                <p className="font-extralight leading-5 sm:leading-6 text-xs sm:text-sm md:text-base">
-                  {img.description}
+                {/* <h2 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">
+                  {journal.sub_title}
+                </h2> */}
+                <p className="leading-5 sm:leading-6 text-xs sm:text-sm md:text-base">
+                  {htmlToPlainText(journal.content).slice(0, 200) + "..."}
                 </p>
               </div>
               <LinkButton
-                // href={`/journal/${img.slug || ""}`}
-                className="px-0 tracking-normal border-b-1 rounded-none py-0 text-black text-sm sm:text-base"
+                href={`/journal/${journal.slug || ""}`}
+                className="px-0! tracking-normal capitalize border-b-1 rounded-none py-0!  text-black text-sm sm:text-base"
               >
                 Read Story
               </LinkButton>

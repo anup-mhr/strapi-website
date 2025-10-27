@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { formatPrice } from "@/lib/helper";
 import { ShopifyProduct } from "@/types/shopify";
+import { useState } from "react";
 import AddToCartButton from "./cart-test/AddToCartButton";
 
-export default function ProductDetails({ product }: { product: ShopifyProduct }) {
+export default function ProductDetails({
+  product,
+}: {
+  product: ShopifyProduct;
+}) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
 
@@ -31,7 +35,10 @@ export default function ProductDetails({ product }: { product: ShopifyProduct })
           {isOnSale ? (
             <div className="flex gap-6 items-center">
               <span className="text-gray-500 line-through text-base">
-                {formatPrice(compareAtPrice, selectedVariant.price.currencyCode)}
+                {formatPrice(
+                  compareAtPrice,
+                  selectedVariant.price.currencyCode
+                )}
               </span>
               <span className="font-semibold text-lg">
                 {formatPrice(price, selectedVariant.price.currencyCode)}
@@ -115,12 +122,13 @@ export default function ProductDetails({ product }: { product: ShopifyProduct })
           </select>
         </div>
 
-
-        {
-          selectedVariant.availableForSale ? <AddToCartButton variantId={selectedVariant.id} quantity={quantity} />
-            : <button className="w-full bg-black text-white px-6 py-3 rounded-md">OUT OF STOCK</button>
-        }
-
+        {selectedVariant.availableForSale ? (
+          <AddToCartButton variantId={selectedVariant.id} quantity={quantity} />
+        ) : (
+          <button className="w-full bg-black text-white px-6 py-3 rounded-md">
+            OUT OF STOCK
+          </button>
+        )}
       </div>
     </div>
   );
