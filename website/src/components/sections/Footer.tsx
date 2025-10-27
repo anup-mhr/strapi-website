@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -59,10 +60,10 @@ const Footer = () => {
               HELP
             </p>
             <ul className="text-xs sm:text-sm text-gray-500 mt-4 sm:mt-5 lg:mt-6 space-y-1 sm:space-y-1.5 flex flex-col items-center md:items-start">
-              <li>Returns & Refunds</li>
-              <li>Shipping</li>
-              <li>Privacy Policy</li>
-              <li>Terms & Conditions</li>
+              <Link href="/return-refund-policy">Returns & Refunds</Link>
+              <Link href="/shipping">Shipping</Link>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+              <Link href="/terms">Terms & Conditions</Link>
             </ul>
           </div>
         </div>

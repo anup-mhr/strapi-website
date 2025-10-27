@@ -20,6 +20,7 @@ export default async function JournalPostPage({
   const { slug } = await params;
   const post = await fetchJournalBySlug(slug);
   const relatedPosts = await fetchJournals(3);
+
   // const handleShare = async () => {
   //   if (navigator.share && post) {
   //     try {
@@ -41,6 +42,7 @@ export default async function JournalPostPage({
   if (!post) {
     return null;
   }
+  console.log("Journal Post:", post?.content);
 
   return (
     <div className="min-h-screen bg-heirloom-ivory pt-20">
@@ -117,7 +119,7 @@ export default async function JournalPostPage({
           </div>
 
           {/* Article Content */}
-          <article className="prose prose-lg max-w-none mb-16">
+          <article className="prose max-w-none mb-16">
             <div
               className="text-heirloom-charcoal leading-relaxed whitespace-pre-line"
               dangerouslySetInnerHTML={{ __html: post.content }}
@@ -143,7 +145,7 @@ export default async function JournalPostPage({
                       width={600}
                       height={600}
                       className="object-cover object-center transition-transform w-full h-92 duration-500 group-hover:scale-110"
-                      // sizes="(max-width: 768px) 100vw, 33vw"
+                    // sizes="(max-width: 768px) 100vw, 33vw"
                     />
                     {/* </div> */}
                     <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/20 h-[80%] w-[80%] backdrop-blur-sm rounded-lg opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-400 ease-in-out  p-6">

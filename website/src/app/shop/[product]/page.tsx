@@ -29,7 +29,7 @@ export default async function ProductPage({
           <h1 className="text-xl font-semibold mb-6 uppercase tracking-wider">
             Related Products
           </h1>
-          <ProductList products={relatedProducts} />
+          <ProductList products={relatedProducts.slice(0,4)} />
         </div>
       </main>
     </div>

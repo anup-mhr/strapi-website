@@ -35,10 +35,10 @@ function ContactPage() {
             <h4 className="font-bold mb-3 sm:mb-4 text-black uppercase text-sm sm:text-base">
               EMAIL
             </h4>
-            <div className="space-y-1.5 sm:space-y-2 uppercase text-xs sm:text-sm break-words">
-              <p>HEIRLOOMNAGA@GMAIL.COM</p>
-              <p>INFO.HEIRLOOMNAGA@GMAIL.COM</p>
-              <p>JESMINAZELIANG@GMAIL.COM</p>
+            <div className="space-y-1.5 sm:space-y-2 uppercase text-xs sm:text-sm break-words flex flex-col">
+              <a href="mailto:heirloomnaga@gmail.com">HEIRLOOMNAGA@GMAIL.COM</a>
+              <a href="mailto:info.heirloomnaga@gmail.com">INFO.HEIRLOOMNAGA@GMAIL.COM</a>
+              <a href="mailto:jesminazeliang@gmail.com">JESMINAZELIANG@GMAIL.COM</a>
             </div>
             <h4 className="font-bold mt-8 sm:mt-9 md:mt-10 mb-3 sm:mb-4 text-black uppercase text-sm sm:text-base">
               CALL
