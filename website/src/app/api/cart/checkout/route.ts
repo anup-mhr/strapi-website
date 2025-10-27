@@ -1,7 +1,7 @@
 import { CREATE_CART_MUTATION, shopifyFetch } from "@/lib/cart-shopify";
 import { NextResponse } from "next/server";
 
-export async function POST(request:Request) {
+export async function POST(request: Request) {
   try {
     const { lines } = await request.json();
     console.log("lines:", lines);
@@ -15,7 +15,7 @@ export async function POST(request:Request) {
 
     const data = await shopifyFetch({
       query: CREATE_CART_MUTATION,
-      variables: { input: { lines } }, 
+      variables: { input: { lines } },
     });
 
     if (data?.cartCreate?.userErrors.length > 0) {

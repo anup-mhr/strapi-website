@@ -1,11 +1,11 @@
 "use client";
-import Loader from "@/components/common/Loader";
 import Heading from "@/components/common/Heading";
+import Loader from "@/components/common/Loader";
 import LinkButton from "@/components/LinkButton";
+import { fetchJournals } from "@/lib/strapiApiCall";
 import { ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { fetchJournals } from "@/lib/strapiApiCall";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -67,7 +67,7 @@ function JournalPage() {
 
     // fetchJournal();
 
-    fetchJournals()
+    fetchJournals();
   }, []);
 
   // Filter and sort journal entries

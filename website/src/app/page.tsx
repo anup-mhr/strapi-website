@@ -14,8 +14,11 @@ export default async function Home() {
 
   const { products } = await getProducts({ first: 8 });
 
-  const { products: salesProducts } = await getProducts({ first: 4, collection: "sale" });
-  
+  const { products: salesProducts } = await getProducts({
+    first: 4,
+    collection: "sale",
+  });
+
   return (
     <div>
       <Header className="text-primary" />

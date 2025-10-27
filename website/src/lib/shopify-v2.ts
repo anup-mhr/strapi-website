@@ -39,7 +39,7 @@ export const shopifyService = {
   },
 
   async addToCart(variantId: string, quantity = 1): Promise<Cart> {
-    let cartId = getCartId();
+    const cartId = getCartId();
 
     if (!cartId) {
       // Create a new cart if none exists
@@ -117,7 +117,7 @@ export const shopifyService = {
     }
 
     const cartData = await response.json();
-    console.log("cartData",cartData)
+    console.log("cartData", cartData);
     return this.normalizeCart(cartData);
   },
 
@@ -134,7 +134,7 @@ export const shopifyService = {
         return {
           id: node.id,
           title: node.merchandise.product.title,
-          merchandiseId:node.merchandise.id,
+          merchandiseId: node.merchandise.id,
           quantity: node.quantity,
           price: parseFloat(node.merchandise.priceV2.amount),
           currencyCode: node.merchandise.priceV2.currencyCode,
@@ -157,6 +157,5 @@ export const shopifyService = {
       currencyCode,
       lineItems,
     };
-  }
-
+  },
 };

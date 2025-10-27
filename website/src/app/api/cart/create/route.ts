@@ -1,5 +1,5 @@
+import { CREATE_CART_MUTATION, shopifyFetch } from "@/lib/cart-shopify";
 import { NextResponse } from "next/server";
-import { shopifyFetch, CREATE_CART_MUTATION } from "@/lib/cart-shopify";
 
 // Define the expected request body
 interface CreateCartRequestBody {

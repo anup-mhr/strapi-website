@@ -1,16 +1,14 @@
 "use client";
 
 import { ProjectSorter } from "@/components/common/ProjectSorter";
-import Heading from "@/components/common/Heading";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import Footer from "@/components/sections/Footer";
-import Header from "@/components/sections/Header";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
 import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 const itemsPerPage = 9;
 
@@ -34,10 +32,15 @@ function resolveSortOption(sortBy: string) {
 export default function ShopPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([null]);
+  const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([
+    null,
+  ]);
 
   const [products, setProducts] = useState<ShopifyProductPreview[]>([]);
-  const [priceRange, setPriceRange] = useState<{ min: number | undefined; max: number | undefined }>({
+  const [priceRange, setPriceRange] = useState<{
+    min: number | undefined;
+    max: number | undefined;
+  }>({
     min: undefined,
     max: undefined,
   });
@@ -62,8 +65,12 @@ export default function ShopPage() {
 
   const rawSortBy = searchParams.get("sort");
   const sortBy = rawSortBy || "PRICE_ASC";
-  const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
-  const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
+  const minPrice = searchParams.get("minPrice")
+    ? parseFloat(searchParams.get("minPrice")!)
+    : undefined;
+  const maxPrice = searchParams.get("maxPrice")
+    ? parseFloat(searchParams.get("maxPrice")!)
+    : undefined;
   const category = searchParams.get("category") || "";
   const subcategory = searchParams.get("subcategory") || "";
 
@@ -72,66 +79,73 @@ export default function ShopPage() {
   const prevFiltersRef = useRef<string>("");
   const filterKey = `${category}-${subcategory}-${minPrice}-${maxPrice}-${sortBy}`;
 
-  const updateURL = (updates: Record<string, string | number | undefined | null>, resetPage = false) => {
+  const updateURL = (
+    updates: Record<string, string | number | undefined | null>,
+    resetPage = false
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (resetPage) params.delete("page");
 
     Object.entries(updates).forEach(([key, value]) => {
-      if (value === undefined || value === "" || value === null) params.delete(key);
+      if (value === undefined || value === "" || value === null)
+        params.delete(key);
       else params.set(key, String(value));
     });
 
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+    setIsLoading(true);
+    const sortingOption = resolveSortOption(sortBy);
 
-async function fetchProducts(options?: { skipPriceRange?: boolean }) {
-  setIsLoading(true);
-  const sortingOption = resolveSortOption(sortBy);
+    const query = {
+      first: itemsPerPage,
+      after: cursor,
+      minPrice,
+      maxPrice,
+      collection: category,
+      subcategory,
+      sortBy: sortingOption,
+    };
 
-  const query = {
-    first: itemsPerPage,
-    after: cursor,
-    minPrice,
-    maxPrice,
-    collection: category,
-    subcategory,
-    sortBy: sortingOption,
-  };
+    try {
+      const {
+        products,
+        priceRange: fetchedRange,
+        totalCount,
+        pageInfo,
+        pageCursors, // ← Get the cursors!
+      } = await getProducts(query);
 
-  try {
-    const { 
-      products, 
-      priceRange: fetchedRange, 
-      totalCount, 
-      pageInfo,
-      pageCursors  // ← Get the cursors!
-    } = await getProducts(query);
-    
-    setProducts(products);
-    setTotalCount(totalCount);
-    setPageInfo(pageInfo);
-    setAllPageCursors(pageCursors); // ← Store them!
+      setProducts(products);
+      setTotalCount(totalCount);
+      setPageInfo(pageInfo);
+      setAllPageCursors(pageCursors); // ← Store them!
 
-    if (!options?.skipPriceRange && fetchedRange?.min !== undefined && fetchedRange?.max !== undefined)
-      setPriceRange(fetchedRange);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-  } finally {
-    setIsLoading(false);
+      if (
+        !options?.skipPriceRange &&
+        fetchedRange?.min !== undefined &&
+        fetchedRange?.max !== undefined
+      )
+        setPriceRange(fetchedRange);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
-}
 
-// Now you can jump to any page!
-const handlePageClick = (page: number) => {
-  if (page === currentPage) return;
-  
-  const targetCursor = allPageCursors[page - 1]; // ← Use the stored cursor!
-  setCursor(targetCursor);
-  setCurrentPage(page);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+  // Now you can jump to any page!
+  const handlePageClick = (page: number) => {
+    if (page === currentPage) return;
+
+    const targetCursor = allPageCursors[page - 1]; // ← Use the stored cursor!
+    setCursor(targetCursor);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Reset pagination when filters change
   useEffect(() => {
@@ -172,17 +186,28 @@ const handlePageClick = (page: number) => {
     refreshPriceRange();
   }, [category, subcategory]);
 
-  const handleCategoryChange = (newCategory: string, newSubcategory: string) => {
+  const handleCategoryChange = (
+    newCategory: string,
+    newSubcategory: string
+  ) => {
     setCursor(null);
     setCursorHistory([null]);
     setCurrentPage(1);
     updateURL(
-      { category: newCategory, subcategory: newSubcategory, minPrice: undefined, maxPrice: undefined },
+      {
+        category: newCategory,
+        subcategory: newSubcategory,
+        minPrice: undefined,
+        maxPrice: undefined,
+      },
       true
     );
   };
 
-  const handleApplyPriceFilter = (newMinPrice?: number, newMaxPrice?: number) => {
+  const handleApplyPriceFilter = (
+    newMinPrice?: number,
+    newMaxPrice?: number
+  ) => {
     setCursor(null);
     setCursorHistory([null]);
     setCurrentPage(1);
@@ -216,7 +241,6 @@ const handlePageClick = (page: number) => {
     }
   };
 
-
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + products.length, totalCount);
@@ -233,7 +257,12 @@ const handlePageClick = (page: number) => {
     } else if (currentPage >= totalPages - 1) {
       pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
     } else {
-      pages.push(currentPage - 1, currentPage, currentPage + 1, currentPage + 2);
+      pages.push(
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        currentPage + 2
+      );
     }
 
     return pages.filter((p) => p >= 1 && p <= totalPages);
@@ -289,7 +318,8 @@ const handlePageClick = (page: number) => {
                   <span className="text-sm font-medium">FILTERS</span>
                 </button>
                 <p className="text-xs text-gray-600 uppercase">
-                  SHOWING {products.length > 0 ? startIndex + 1 : 0}-{endIndex} OF {totalCount} RESULTS
+                  SHOWING {products.length > 0 ? startIndex + 1 : 0}-{endIndex}{" "}
+                  OF {totalCount} RESULTS
                 </p>
               </div>
 
@@ -303,7 +333,9 @@ const handlePageClick = (page: number) => {
             </div>
 
             {isLoading ? (
-              <div className="text-center py-12 text-gray-500 text-lg">Loading products...</div>
+              <div className="text-center py-12 text-gray-500 text-lg">
+                Loading products...
+              </div>
             ) : (
               <>
                 <ProductList
@@ -324,8 +356,9 @@ const handlePageClick = (page: number) => {
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${currentPage === 1 && "opacity-50 cursor-not-allowed"
-                    }`}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
+                    currentPage === 1 && "opacity-50 cursor-not-allowed"
+                  }`}
                 >
                   <ChevronsLeft />
                 </button>
@@ -334,10 +367,11 @@ const handlePageClick = (page: number) => {
                   <button
                     key={page}
                     onClick={() => handlePageClick(page)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${currentPage === page
-                      ? "bg-primary-pink text-white border-primary-pink"
-                      : "border-black/20 text-gray-600 hover:bg-gray-100"
-                      }`}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                      currentPage === page
+                        ? "bg-primary-pink text-white border-primary-pink"
+                        : "border-black/20 text-gray-600 hover:bg-gray-100"
+                    }`}
                   >
                     {page}
                   </button>
@@ -346,8 +380,9 @@ const handlePageClick = (page: number) => {
                 <button
                   onClick={handleNextPage}
                   disabled={!pageInfo.hasNextPage}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${!pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
-                    }`}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
+                    !pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
+                  }`}
                 >
                   <ChevronsRight />
                 </button>

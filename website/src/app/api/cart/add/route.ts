@@ -1,4 +1,4 @@
-import { shopifyFetch, ADD_TO_CART_MUTATION } from "@/lib/cart-shopify";
+import { ADD_TO_CART_MUTATION, shopifyFetch } from "@/lib/cart-shopify";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log("data",data)
+    console.log("data", data);
 
     if (data.cartLinesAdd.userErrors.length > 0) {
       return NextResponse.json(

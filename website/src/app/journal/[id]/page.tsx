@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
+import { formatDate } from "@/lib/helper";
 import { journalService } from "@/lib/journal";
 import { JournalPost } from "@/types/shopify-v2";
-import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from "lucide-react";
-import { formatDate } from "@/lib/helper";
+import { ArrowLeft, Calendar, Clock, Share2, Tag, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface JournalPostPageProps {
   params: { id: string };

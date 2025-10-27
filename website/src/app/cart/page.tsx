@@ -25,7 +25,7 @@ export default function CartPage() {
       const cartData = await shopifyService.getCart();
       await refreshCart();
       setCart(cartData);
-      console.log(cartData)
+      console.log(cartData);
     } catch (error) {
       console.error("Error loading cart:", error);
     } finally {
@@ -40,7 +40,7 @@ export default function CartPage() {
     setCheckoutError(null);
 
     try {
-      const lines = cart.lineItems.map(item => ({
+      const lines = cart.lineItems.map((item) => ({
         merchandiseId: item.merchandiseId,
         quantity: item.quantity,
       }));
@@ -48,7 +48,7 @@ export default function CartPage() {
       const response = await fetch("/api/cart/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines }), 
+        body: JSON.stringify({ lines }),
       });
 
       const data = await response.json();
@@ -119,7 +119,9 @@ export default function CartPage() {
           {checkoutError && (
             <p className="text-red-600 text-sm mb-2">{checkoutError}</p>
           )}
-          <p className="text-xs text-black/60 mb-2">Tax calculated at checkout.</p>
+          <p className="text-xs text-black/60 mb-2">
+            Tax calculated at checkout.
+          </p>
           <div className="flex justify-between items-center mb-6">
             <span className="text-lg md:text-xl font-semibold">Total</span>
             <span className="font-semibold text-base md:text-lg">

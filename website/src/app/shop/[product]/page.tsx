@@ -1,7 +1,7 @@
+import ProductDetails from "@/components/ProductDetails";
 import ProductGallery from "@/components/ProductGallery";
 import ProductList from "@/components/sections/ProductList";
-import ProductDetails from "@/components/ProductDetails";
-import { getProductByHandle, getProducts, getRecommendedProducts } from "@/lib/shopify";
+import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
 
 export default async function ProductPage({
   params,
@@ -13,12 +13,11 @@ export default async function ProductPage({
 
   if (!product) return <div>Product not found</div>;
 
-  const relatedProducts = await getRecommendedProducts(product.id)
+  const relatedProducts = await getRecommendedProducts(product.id);
 
   return (
     <div>
       <main className="py-12">
-
         <div className="grid grid-cols-1 lg:grid-cols-2 w-full justify-between gap-8 items-start mb-20">
           <ProductGallery images={product.images} name={product.title} />
           <div className="flex lg:justify-end">

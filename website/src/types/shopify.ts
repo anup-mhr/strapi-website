@@ -13,14 +13,14 @@ export interface ShopifyVariantPreview {
 }
 
 export interface ShopifyVariant {
-  id:string;
+  id: string;
   title: string;
   availableForSale: boolean;
   selectedOptions: { name: string; value: string }[];
   note: string | null;
   price: ShopifyPrice;
   compareAtPrice?: ShopifyPrice;
-  quantityAvailable: number,
+  quantityAvailable: number;
 }
 
 export interface ShopifyProductPreview {
@@ -29,9 +29,11 @@ export interface ShopifyProductPreview {
   title: string;
   images: ShopifyImage[];
   variants: ShopifyVariantPreview[];
+  descriptionHtml: any;
 }
 
-export interface ShopifyProduct extends Omit<ShopifyProductPreview, "variants"> {
+export interface ShopifyProduct
+  extends Omit<ShopifyProductPreview, "variants"> {
   descriptionHtml: string;
   variants: ShopifyVariant[];
 }
