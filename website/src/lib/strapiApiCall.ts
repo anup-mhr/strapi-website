@@ -78,7 +78,7 @@ export async function fetchJournalBySlug(
 
     // console.log("data from slug journal", data.data);
 
-    return data.data[0];
+    return data.data[1];
   } catch (error) {
     console.error(`Error fetching journal with slug "${slug}"`, error);
     return null;

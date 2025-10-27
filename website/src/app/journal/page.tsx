@@ -225,7 +225,7 @@ function JournalPage() {
                 alt={item.title}
                 width={600}
                 height={600}
-                className="aspect-[3/3.7] w-full transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-95"
+                className="aspect-[3/3.4] md:aspect-[3/3.7] w-full transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-95"
               />
             </div>
 
