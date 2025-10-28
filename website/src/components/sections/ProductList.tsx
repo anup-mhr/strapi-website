@@ -45,7 +45,7 @@ const ProductList = ({
 
               {/* Sale badge */}
               {isOnSale && (
-                <div className="absolute bottom-5 right-5 z-30 bg-primary-pink w-14 h-14 flex justify-center items-center text-white text-base font-semibold rounded-full">
+                <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4 lg:bottom-5 lg:right-5 z-30 bg-primary-pink w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex justify-center items-center text-white text-xs sm:text-sm md:text-base font-semibold rounded-full shadow-md">
                   Sale
                 </div>
               )}
@@ -53,7 +53,7 @@ const ProductList = ({
 
             {/* Product info */}
             <div className="py-3 px-4 md:px-6 flex flex-col items-center text-sm tracking-normal">
-              <p className="font-bold">{product?.title}</p>
+              <p className="text-center font-bold">{product?.title}</p>
               <div className="flex items-center gap-2">
                 {isOnSale && (
                   <span className="text-gray-600 line-through text-sm">

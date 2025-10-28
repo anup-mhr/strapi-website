@@ -124,6 +124,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     } else {
       onCategoryChange(category.handle, "");
     }
+    setTimeout(() => {
+      onClose();
+    }, 300);
   };
 
   const handleSubcategoryClick = (
@@ -138,19 +141,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     } else {
       onCategoryChange(category.handle, subItem.title);
     }
+    setTimeout(() => {
+      onClose();
+    }, 300);
   };
 
   const safeMin = localMinPrice ?? priceRange.min ?? 0;
   const safeMax = localMaxPrice ?? priceRange.max ?? 0;
-  const totalMax = priceRange.max ?? 1;
 
   const renderPriceSlider = () => (
-    <div className="mb-12">
-      <h3 className="font-semibold pb-2 mb-4 border-b-2 border-black/30">
+    <div className="mb-8 sm:mb-10 lg:mb-12">
+      <h3 className="text-sm sm:text-base font-semibold pb-2 mb-3 sm:mb-4 border-b-2 border-black/30">
         FILTER BY PRICE
       </h3>
 
-      <div className="relative h-6 mt-2">
+      <div className="relative h-5 sm:h-6 mt-2">
         <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 rounded-full transform -translate-y-1/2" />
         <div
           className="absolute top-1/2 h-1 bg-primary-pink rounded-full transform -translate-y-1/2 pointer-events-none"
@@ -174,7 +179,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           max={priceRange.max}
           value={safeMin}
           onChange={handleMinChange}
-          className="range-thumb absolute w-full top-0 h-6 appearance-none bg-transparent pointer-events-auto z-20"
+          className="range-thumb absolute w-full top-0 h-5 sm:h-6 appearance-none bg-transparent pointer-events-auto z-20"
         />
         <input
           type="range"
@@ -182,11 +187,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           max={priceRange.max}
           value={safeMax}
           onChange={handleMaxChange}
-          className="range-thumb absolute w-full top-0 h-6 appearance-none bg-transparent pointer-events-auto z-10"
+          className="range-thumb absolute w-full top-0 h-5 sm:h-6 appearance-none bg-transparent pointer-events-auto z-10"
         />
       </div>
-      <div className="flex items-center justify-between mt-4">
-        <div className="text-base text-gray-500">
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mt-3 sm:mt-4">
+        <div className="text-xs sm:text-sm lg:text-base text-gray-500">
           <span>
             <span className="font-bold">Price: </span>₹
             {safeMin.toLocaleString("en-IN")} - ₹
@@ -196,7 +202,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <button
           onClick={handleApplyFilter}
-          className="mt-3 px-8 rounded-md py-2 bg-primary-pink text-white hover:bg-primary-pink/80 cursor-pointer transition-colors"
+          className="w-full sm:w-auto px-6 sm:px-8 rounded-md py-2 text-xs sm:text-sm font-medium bg-primary-pink text-white hover:bg-primary-pink/80 cursor-pointer transition-colors"
         >
           APPLY
         </button>
@@ -206,16 +212,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const renderCategoryFilter = () => (
     <div>
-      <h3 className="font-semibold pb-2 border-b-2 border-black/30 mb-4">
+      <h3 className="text-sm sm:text-base font-semibold pb-2 border-b-2 border-black/30 mb-3 sm:mb-4">
         FILTER BY CATEGORY
       </h3>
-      <ul className="space-y-3 text-gray-700">
+      <ul className="space-y-2 sm:space-y-3 text-gray-700">
         {categories.map((category) => (
           <li key={category.handle}>
             <div className="flex justify-between items-center">
               <span
                 onClick={() => handleCategoryClick(category)}
-                className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                className={`text-sm sm:text-base cursor-pointer hover:text-primary-pink transition-colors ${
                   filters.category === category.handle &&
                   "text-primary-pink font-semibold"
                 }`}
@@ -224,7 +230,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               </span>
               {category.subItems.length > 0 && (
                 <button
-                  className="w-5 h-5 flex justify-center items-center font-bold border border-black/10 rounded-full text-sm cursor-pointer hover:bg-gray-100 transition-colors"
+                  className="w-5 h-5 sm:w-6 sm:h-6 flex justify-center items-center font-bold border border-black/10 rounded-full text-xs sm:text-sm cursor-pointer hover:bg-gray-100 transition-colors shrink-0"
                   onClick={() => toggleCategory(category.handle)}
                 >
                   {expandedCategories.includes(category.handle) ? "−" : "+"}
@@ -234,12 +240,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
             {expandedCategories.includes(category.handle) &&
               category.subItems.length > 0 && (
-                <ul className="ml-4 mt-2 space-y-1 text-gray-600">
+                <ul className="ml-3 sm:ml-4 mt-1.5 sm:mt-2 space-y-1 text-gray-600">
                   {category.subItems.map((sub) => (
                     <li
                       key={sub.title}
                       onClick={() => handleSubcategoryClick(category, sub)}
-                      className={`cursor-pointer hover:text-primary-pink transition-colors ${
+                      className={`text-xs sm:text-sm cursor-pointer hover:text-primary-pink transition-colors ${
                         filters.category === category.handle &&
                         filters.subcategory === sub.title &&
                         "text-primary-pink font-semibold"
@@ -263,30 +269,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           className="fixed inset-0 bg-black/50 z-40 animate-fadeIn"
           onClick={onClose}
         />
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 animate-fadeIn">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col animate-slideUp">
-            <div className="flex justify-between items-center px-6 py-4 border-b">
-              <h2 className="text-xl font-bold">Filters</h2>
+            <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 border-b">
+              <h2 className="text-lg sm:text-xl font-bold">Filters</h2>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-6">
+            <div className="flex-1 overflow-y-auto max-h-[calc(90vh-200px)] px-4 sm:px-6 py-4 sm:py-6">
               {renderPriceSlider()}
               {renderCategoryFilter()}
-            </div>
-
-            <div className="px-6 py-4 border-t bg-gray-50">
-              <button
-                onClick={handleApplyFilter}
-                className="w-full rounded-md py-3 bg-primary-pink text-white font-semibold hover:bg-primary-pink/90 transition-colors"
-              >
-                APPLY FILTER
-              </button>
             </div>
           </div>
         </div>

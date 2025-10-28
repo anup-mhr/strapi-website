@@ -21,10 +21,12 @@ export default function AddToCartButton({ variantId, quantity = 1 }: any) {
     <button
       onClick={handleAddToCart}
       disabled={isLoading}
-      className="flex w-full items-center justify-center bg-black gap-6 text-white px-6 py-3 rounded-md hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      className="flex w-full items-center justify-center bg-black gap-3 sm:gap-4 md:gap-6 text-white px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 md:py-3.5 rounded-md text-sm sm:text-base font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 active:scale-95"
     >
-      <ShoppingCart size={20} />
-      {success ? "Added!" : isLoading ? "Adding..." : "ADD TO CART"}
+      <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+      <span className="whitespace-nowrap">
+        {success ? "Added!" : isLoading ? "Adding..." : "ADD TO CART"}
+      </span>
     </button>
   );
 }

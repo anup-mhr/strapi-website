@@ -9,7 +9,7 @@ import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const itemsPerPage = 6;
+const itemsPerPage = 12;
 
 function resolveSortOption(sortBy: string) {
   switch (sortBy) {
@@ -308,14 +308,14 @@ export default function ShopPage() {
 
           {/* Product List + Sorting */}
           <div>
-            <div className="flex justify-between items-center mb-10">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-6 sm:mb-8 md:mb-10">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setIsMobileFilterOpen(true)}
-                  className="hidden md:flex lg:hidden items-center gap-2 px-4 py-2 border border-black/20 rounded-md"
+                  className="hidden md:flex lg:hidden items-center gap-2  cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
                 >
                   <Filter className="w-4 h-4" />
-                  <span className="text-sm font-medium">FILTERS</span>
+                  <span className="text-xs font-medium">FILTERS</span>
                 </button>
                 <p className="text-xs text-gray-600 uppercase">
                   SHOWING {products.length > 0 ? startIndex + 1 : 0}-{endIndex}{" "}
@@ -340,7 +340,7 @@ export default function ShopPage() {
               <>
                 <ProductList
                   products={products}
-                  className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+                  className="grid-cols-2 xl:grid-cols-3"
                 />
                 {products.length === 0 && (
                   <div className="text-center py-12 text-gray-500 text-lg">
@@ -352,12 +352,14 @@ export default function ShopPage() {
 
             {/* Pagination */}
             {totalPages > 1 && !isLoading && (
-              <div className="flex justify-start items-center space-x-2 mt-10">
+              <div className="flex justify-center lg:justify-start items-center space-x-2 mt-10">
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
-                    currentPage === 1 && "opacity-50 cursor-not-allowed"
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500  ${
+                    currentPage === 1
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
                   }`}
                 >
                   <ChevronsLeft />
@@ -367,7 +369,7 @@ export default function ShopPage() {
                   <button
                     key={page}
                     onClick={() => handlePageClick(page)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center border cursor-pointer ${
                       currentPage === page
                         ? "bg-primary-pink text-white border-primary-pink"
                         : "border-black/20 text-gray-600 hover:bg-gray-100"
@@ -381,7 +383,9 @@ export default function ShopPage() {
                   onClick={handleNextPage}
                   disabled={!pageInfo.hasNextPage}
                   className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
-                    !pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
+                    pageInfo.hasNextPage
+                      ? "cursor-pointer"
+                      : "opacity-50 cursor-not-allowed"
                   }`}
                 >
                   <ChevronsRight />

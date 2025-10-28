@@ -29,7 +29,7 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   };
 
   return (
-    <div className="relative inline-block min-w-48 text-left">
+    <div className="relative inline-block w-full md:min-w-48 text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex w-full items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"

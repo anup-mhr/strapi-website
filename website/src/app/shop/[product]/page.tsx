@@ -2,6 +2,7 @@ import ProductDetails from "@/components/ProductDetails";
 import ProductGallery from "@/components/ProductGallery";
 import ProductList from "@/components/sections/ProductList";
 import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
+import { notFound } from "next/navigation";
 
 export default async function ProductPage({
   params,
@@ -11,7 +12,7 @@ export default async function ProductPage({
   const handle = (await params).product;
   const product = await getProductByHandle(handle);
 
-  if (!product) return <div>Product not found</div>;
+  if (!product) return notFound();
 
   const relatedProducts = await getRecommendedProducts(product.id);
 
@@ -29,7 +30,7 @@ export default async function ProductPage({
           <h1 className="text-xl font-semibold mb-6 uppercase tracking-wider">
             Related Products
           </h1>
-          <ProductList products={relatedProducts.slice(0,4)} />
+          <ProductList products={relatedProducts.slice(0, 4)} />
         </div>
       </main>
     </div>
