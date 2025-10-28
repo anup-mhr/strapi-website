@@ -33,7 +33,7 @@ const Footer = () => {
             FIND US ON
             <div className="flex gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-5 lg:mt-6">
               <Link
-                href="https://www.instagram.com/hierloomnaga/"
+                href="https://www.instagram.com/heirloom.naga/"
                 target="_blank"
               >
                 <Image
@@ -44,10 +44,7 @@ const Footer = () => {
                   className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
                 />
               </Link>
-              <Link
-                href="https://www.facebook.com/hierloomnaga"
-                target="_blank"
-              >
+              <Link href="/" target="_blank">
                 <Image
                   src={"/images/socials/facebook.svg"}
                   alt="facebook"
@@ -56,7 +53,7 @@ const Footer = () => {
                   className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
                 />
               </Link>
-              <Link href="https://twitter.com/hierloomnaga" target="_blank">
+              <Link href="/" target="_blank">
                 <Image
                   src={"/images/socials/x-twitter.svg"}
                   alt="x-twitter"
