@@ -1,18 +1,7 @@
-<<<<<<< Updated upstream
-import {
-  ShopifyProduct,
-  ShopifyProductPreview,
-} from "@/types/shopify";
-import { GraphQLClient } from "graphql-request";
-import { productMapper } from "./helper";
-import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
-import { productMapper } from "./helper";
-=======
 import { ShopifyProduct, ShopifyProductPreview } from "@/types/shopify";
 import { productMapper } from "./helper";
 import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
 import { itemsPerPage } from "@/components/ShopPage";
->>>>>>> Stashed changes
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 
@@ -20,17 +9,7 @@ const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
 
 const endpoint = `https://${domain}/api/2025-10/graphql.json`;
 
-<<<<<<< Updated upstream
-const client = new GraphQLClient(endpoint, {
-  headers: {
-    "X-Shopify-Storefront-Access-Token": token,
-  },
-});
-
-export async function shopifyFetch<T>(
-=======
 async function shopifyFetch<T>(
->>>>>>> Stashed changes
   query: string,
   variables: Record<string, any> = {},
   revalidate?: number // optional
@@ -117,9 +96,9 @@ export async function getProductByHandle(
       },
       compareAtPrice: node.compareAtPrice
         ? {
-            amount: node.compareAtPrice.amount,
-            currencyCode: node.compareAtPrice.currencyCode,
-          }
+          amount: node.compareAtPrice.amount,
+          currencyCode: node.compareAtPrice.currencyCode,
+        }
         : undefined,
       quantityAvailable: node.quantityAvailable ?? 0,
     })),
@@ -163,13 +142,9 @@ async function getCategories(
   `;
 
   try {
-<<<<<<< Updated upstream
-    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, { handle: menuHandle });
-=======
     const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, {
       handle: menuHandle,
-    },60);
->>>>>>> Stashed changes
+    }, 60);
     if (!menuData.menu?.items) return [];
 
     const categories: CategoryItem[] = await Promise.all(
@@ -271,14 +246,8 @@ async function getRecommendedProducts(
   }
 }
 
-<<<<<<< Updated upstream
-
-export async function getProducts({
-  first = 9,
-=======
 async function getProducts({
   first = itemsPerPage,
->>>>>>> Stashed changes
   after = null,
   collection,
   subcategory,
@@ -417,12 +386,8 @@ async function getProducts({
     // Collection-based query
     const sortKeyType = "ProductCollectionSortKeys";
     query = `
-<<<<<<< Updated upstream
-      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ', $minPrice: Float!, $maxPrice: Float!' : ''}) {
-=======
       query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
       }) {
->>>>>>> Stashed changes
         collectionByHandle(handle: $handle) {
           ${buildProductsFragment(sortKeyType)}
         }
@@ -516,7 +481,6 @@ async function getProducts({
 
 export {
   getCategories,
-  getProductByHandle,
   getProducts,
   getRecommendedProducts,
   shopifyFetch,
