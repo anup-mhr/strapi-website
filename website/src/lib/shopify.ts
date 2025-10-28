@@ -1,10 +1,7 @@
-import {
-  ShopifyProduct,
-  ShopifyProductPreview,
-} from "@/types/shopify";
+import { ShopifyProduct, ShopifyProductPreview } from "@/types/shopify";
 import { GraphQLClient } from "graphql-request";
-import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
 import { productMapper } from "./helper";
+import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
@@ -17,14 +14,14 @@ const client = new GraphQLClient(endpoint, {
   },
 });
 
-export async function shopifyFetch<T>(
+async function shopifyFetch<T>(
   query: string,
   variables: Record<string, any> = {}
 ): Promise<T> {
   return client.request<T>(query, variables);
 }
 
-export async function getProductByHandle(
+async function getProductByHandle(
   handle: string
 ): Promise<ShopifyProduct | null> {
   const data = await shopifyFetch<{
@@ -63,7 +60,7 @@ export async function getProductByHandle(
       src: img.node.src,
     })),
     variants: product.variants.edges.map(({ node }) => ({
-      id: node.id, 
+      id: node.id,
       title: node.title,
       availableForSale: node.availableForSale,
       selectedOptions: node.selectedOptions,
@@ -74,18 +71,16 @@ export async function getProductByHandle(
       },
       compareAtPrice: node.compareAtPrice
         ? {
-          amount: node.compareAtPrice.amount,
-          currencyCode: node.compareAtPrice.currencyCode,
-        }
+            amount: node.compareAtPrice.amount,
+            currencyCode: node.compareAtPrice.currencyCode,
+          }
         : undefined,
       quantityAvailable: node.quantityAvailable ?? 0,
     })),
   };
 }
 
-
-
-export interface CategoryItem {
+interface CategoryItem {
   id: string;
   title: string;
   handle: string;
@@ -95,7 +90,9 @@ export interface CategoryItem {
   }[];
 }
 
-export async function getCategories(menuHandle: string = "shop"): Promise<CategoryItem[]> {
+async function getCategories(
+  menuHandle: string = "shop"
+): Promise<CategoryItem[]> {
   const menuQuery = `
     query getMenu($handle: String!) {
       menu(handle: $handle) {
@@ -120,7 +117,9 @@ export async function getCategories(menuHandle: string = "shop"): Promise<Catego
   `;
 
   try {
-    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, { handle: menuHandle });
+    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, {
+      handle: menuHandle,
+    });
     if (!menuData.menu?.items) return [];
 
     const categories: CategoryItem[] = await Promise.all(
@@ -130,14 +129,15 @@ export async function getCategories(menuHandle: string = "shop"): Promise<Catego
 
         if (handle) {
           try {
-            const collectionData = await shopifyFetch<{ collection: { id: string } | null }>(
-              collectionQuery,
-              { handle }
-            );
-            collectionId = collectionData.collection?.id.split('/').pop() || "";
-
+            const collectionData = await shopifyFetch<{
+              collection: { id: string } | null;
+            }>(collectionQuery, { handle });
+            collectionId = collectionData.collection?.id.split("/").pop() || "";
           } catch (err) {
-            console.warn(`Failed to fetch collection ID for handle: ${handle}`, err);
+            console.warn(
+              `Failed to fetch collection ID for handle: ${handle}`,
+              err
+            );
           }
         }
 
@@ -162,8 +162,7 @@ export async function getCategories(menuHandle: string = "shop"): Promise<Catego
   }
 }
 
-
-export async function getRecommendedProducts(
+async function getRecommendedProducts(
   productId: string
 ): Promise<ShopifyProductPreview[]> {
   const query = `
@@ -210,11 +209,10 @@ export async function getRecommendedProducts(
 
     if (!data.productRecommendations) return [];
 
-    const recommendedProducts: ShopifyProductPreview[] = data.productRecommendations.map(
-      (node) => {
+    const recommendedProducts: ShopifyProductPreview[] =
+      data.productRecommendations.map((node) => {
         return productMapper(node);
-      }
-    );
+      });
 
     return recommendedProducts;
   } catch (error) {
@@ -223,15 +221,14 @@ export async function getRecommendedProducts(
   }
 }
 
-
-export async function getProducts({
+async function getProducts({
   first = 9,
   after = null,
   collection,
   subcategory,
   minPrice,
   maxPrice,
-  sortBy = { sortKey: "PRICE", reverse: false }
+  sortBy = { sortKey: "PRICE", reverse: false },
 }: {
   first?: number;
   after?: string | null;
@@ -265,7 +262,9 @@ export async function getProducts({
     const filters: string[] = [];
     if (hasValidSubcategory) filters.push(`tag:${subcategory}`);
     if (hasPriceFilter && useProductSearch) {
-      filters.push(`variants.price:>=${minPrice} AND variants.price:<=${maxPrice}`);
+      filters.push(
+        `variants.price:>=${minPrice} AND variants.price:<=${maxPrice}`
+      );
     }
     return filters.join(" AND ");
   };
@@ -299,10 +298,11 @@ export async function getProducts({
 
   // Build the products fragment with all queries
   const buildProductsFragment = (sortKeyType: string) => {
-    const priceFilterArg = hasPriceFilter && useCollection
-      ? ', filters: {price: {min: $minPrice, max: $maxPrice}}'
-      : '';
-    const queryArg = useProductSearch ? ', query: $query' : '';
+    const priceFilterArg =
+      hasPriceFilter && useCollection
+        ? ", filters: {price: {min: $minPrice, max: $maxPrice}}"
+        : "";
+    const queryArg = useProductSearch ? ", query: $query" : "";
 
     return `
       products(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse${priceFilterArg}${queryArg}) {
@@ -359,9 +359,11 @@ export async function getProducts({
 
   if (useCollection) {
     // Collection-based query
-    const sortKeyType = 'ProductCollectionSortKeys';
+    const sortKeyType = "ProductCollectionSortKeys";
     query = `
-      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ', $minPrice: Float!, $maxPrice: Float!' : ''}) {
+      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${
+      hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+    }) {
         collectionByHandle(handle: $handle) {
           ${buildProductsFragment(sortKeyType)}
         }
@@ -374,7 +376,7 @@ export async function getProducts({
     }
   } else {
     // Product basedd query
-    const sortKeyType = 'ProductSortKeys';
+    const sortKeyType = "ProductSortKeys";
     const filterQuery = buildFilterQuery();
 
     query = `
@@ -452,120 +454,12 @@ export async function getProducts({
     pageCursors,
   };
 }
-// export async function testFunc() {
 
-//   const products = await getProducts({first:9,collection:"bags"})
-//   console.log("prducts:",products)
-// }
-//just for testing
-export async function testFunc() {
-  const query = `
-    query searchProductsWithValues {
-      productsSearch: search(
-        query: "collection: bags"
-        first: 9
-        types: [PRODUCT]
-        productFilters: {
-          price: {
-            min: 0
-            max: 5000
-          }
-        }
-        sortKey: PRICE
-        reverse: true
-      ) {
-        totalCount
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        edges {
-          node {
-            ... on Product {
-              id
-              handle
-              title
-              descriptionHtml
-              tags
-              images(first: 1) {
-                edges {
-                  node {
-                    src: url
-                  }
-                }
-              }
-              variants(first: 1) {
-                edges {
-                  node {
-                    price {
-                      amount
-                      currencyCode
-                    }
-                    compareAtPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-              }
-              priceRange {
-                minVariantPrice {
-                  amount
-                }
-                maxVariantPrice {
-                  amount
-                }
-              }
-            }
-          }
-        }
-      }
-
-      minPriceSearch: search(
-        query: "collection: bags"
-        first: 1
-        types: [PRODUCT]
-        sortKey: PRICE
-        reverse: false
-      ) {
-        edges {
-          node {
-            ... on Product {
-              priceRange {
-                minVariantPrice {
-                  amount
-                }
-              }
-            }
-          }
-        }
-      }
-
-      maxPriceSearch: search(
-        query: "collection: bags"
-        first: 1
-        types: [PRODUCT]
-        sortKey: PRICE
-        reverse: true
-      ) {
-        edges {
-          node {
-            ... on Product {
-              priceRange {
-                maxVariantPrice {
-                  amount
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-  const data = await shopifyFetch<any>(query);
-  console.log("dataaaaa", data.productsSearch.totalCount);
-  return data;
-}
-
-
-
+export {
+  getCategories,
+  getProductByHandle,
+  getProducts,
+  getRecommendedProducts,
+  shopifyFetch,
+};
+export type { ShopifyProduct, ShopifyProductPreview, CategoryItem };
