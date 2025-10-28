@@ -24,10 +24,12 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
     post.tags.map((tag: any) => tag.name)
   );
 
+  console.log("content", post.content);
+
   return (
     <div className="min-h-screen bg-heirloom-ivory pt-12 sm:pt-16 lg:pt-20">
       <div className="section-padding">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
           {/* Back Button */}
           <Link
             href="/journal"
@@ -112,11 +114,11 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
               <h2 className="text-lg sm:text-xl font-semibold uppercase tracking-wider mb-6 sm:mb-8 text-heirloom-charcoal">
                 Related Articles
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <article
                     key={relatedPost.id}
-                    className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+                    className="group relative rounded-md md:rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                   >
                     {/* Image Container */}
                     <div className="relative w-full aspect-4/5 sm:aspect-square overflow-hidden">
