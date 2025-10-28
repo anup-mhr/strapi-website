@@ -101,7 +101,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
           {/* Article Content */}
           <article className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-12 sm:mb-14 lg:mb-16">
             <div
-              className="text-heirloom-charcoal leading-relaxed [&_p]:mb-4 sm:[&_p]:mb-6 [&_h2]:text-xl [&_h2]:sm:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-lg [&_h3]:sm:text-xl [&_h3]:lg:text-2xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:my-4 [&_ul]:ml-4 [&_ol]:my-4 [&_ol]:ml-4 [&_li]:mb-2 [&_*]:!text-heirloom-charcoal [&_*]:!font-inherit"
+              className="text-heirloom-charcoal leading-relaxed [&_p]:mb-4 sm:[&_p]:mb-6 [&_h2]:text-xl [&_h2]:sm:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-lg [&_h3]:sm:text-xl [&_h3]:lg:text-2xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:my-4 [&_ul]:ml-4 [&_ol]:my-4 [&_ol]:ml-4 [&_li]:mb-2 **:text-heirloom-charcoal! **:font-inherit!"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </article>
@@ -119,7 +119,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
                     className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                   >
                     {/* Image Container */}
-                    <div className="relative w-full aspect-[4/5] sm:aspect-square overflow-hidden">
+                    <div className="relative w-full aspect-4/5 sm:aspect-square overflow-hidden">
                       <Image
                         src={getImageUrl(relatedPost.profile_image)}
                         alt={relatedPost.title}

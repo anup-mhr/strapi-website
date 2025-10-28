@@ -12,37 +12,14 @@ function AboutPage() {
         <Heading title="ABOUT" subtitle="Our Journey" />
 
         {/* Top Image Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-6 mb-8 sm:mb-10 md:mb-12 lg:mb-14 gap-0.5 sm:gap-1">
+        <div className="b-8 sm:mb-10 md:mb-12 lg:mb-14 gap-0.5 sm:gap-1">
           <Image
-            src="/images/hero.jpeg"
+            src="/images/about/heirloomnaga.jpg"
             alt="Heirloom Naga heritage"
-            width={600}
-            height={600}
-            className="w-full col-span-2 object-center object-cover h-full"
+            width={1200}
+            height={800}
+            className="w-full object-center object-cover h-full"
           />
-          <Image
-            src="/images/hero.jpeg"
-            alt="Traditional weaving"
-            width={600}
-            height={600}
-            className="w-full object-center object-cover h-[16rem] sm:h-[18rem] md:h-full"
-          />
-          <div className="grid grid-rows-2 col-span-3 gap-0.5 sm:gap-1">
-            <Image
-              src="/images/hero.jpeg"
-              alt="Naga textiles"
-              width={600}
-              height={600}
-              className="w-full object-cover object-center h-[8rem] sm:h-[9rem] md:h-80 lg:h-96"
-            />
-            <Image
-              src="/images/hero.jpeg"
-              alt="Artisan craftsmanship"
-              width={600}
-              height={600}
-              className="w-full object-cover object-center h-[8rem] sm:h-[9rem] md:h-80 lg:h-96"
-            />
-          </div>
         </div>
 
         {/* Text Content */}
