@@ -122,7 +122,7 @@ const Header = ({ className = "" }: { className?: string }) => {
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-        <div className="padding py-6 sm:py-8 flex justify-between items-center pb-3 sm:pb-4 border-b-[1px] border-primary">
+        <div className="padding py-6 sm:py-8 flex justify-between items-center pb-3 sm:pb-4 border-b border-primary">
           <h1 className="font-bold text-sm sm:text-base">MENU</h1>
           <button
             className="md:hidden hamburger p-2 rounded-md focus:outline-none"

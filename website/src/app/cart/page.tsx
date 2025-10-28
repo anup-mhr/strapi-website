@@ -18,6 +18,7 @@ export default function CartPage() {
 
   useEffect(() => {
     loadCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadCart = async () => {
@@ -115,7 +116,7 @@ export default function CartPage() {
         </div>
 
         {/* Cart Summary */}
-        <div className="self-end md:w-[25rem]">
+        <div className="self-end md:w-100">
           {checkoutError && (
             <p className="text-red-600 text-sm mb-2">{checkoutError}</p>
           )}

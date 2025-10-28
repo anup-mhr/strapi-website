@@ -273,7 +273,7 @@ export default function ShopPage() {
   return (
     <div>
       <main className="py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-[2rem] xl:gap-[4rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-8 xl:gap-16">
           {/* Sidebar */}
           <div className="hidden lg:block">
             <FilterSidebar

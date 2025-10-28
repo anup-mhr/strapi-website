@@ -15,7 +15,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
   return (
     <div className="w-full h-full flex flex-col items-center">
       {/* Main Image */}
-      <div className="w-full aspect-[3/4] lg:aspect-[3/3.5] relative">
+      <div className="w-full aspect-3/4 lg:aspect-[3/3.5] relative">
         <Image
           src={images[selectedImageIndex].src}
           alt={name}
@@ -31,7 +31,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
           <button
             key={index}
             onClick={() => setSelectedImageIndex(index)}
-            className={`w-20 sm:w-28 md:w-32 lg:w-36 aspect-[3/4] relative border-2 cursor-pointer transition-all duration-200 ${
+            className={`w-20 sm:w-28 md:w-32 lg:w-36 aspect-3/4 relative border-2 cursor-pointer transition-all duration-200 ${
               selectedImageIndex === index
                 ? "border-primary-pink"
                 : "border-transparent"

@@ -35,10 +35,14 @@ function ContactPage() {
             <h4 className="font-bold mb-3 sm:mb-4 text-black uppercase text-sm sm:text-base">
               EMAIL
             </h4>
-            <div className="space-y-1.5 sm:space-y-2 uppercase text-xs sm:text-sm break-words flex flex-col">
+            <div className="space-y-1.5 sm:space-y-2 uppercase text-xs sm:text-sm wrap-break-word flex flex-col">
               <a href="mailto:heirloomnaga@gmail.com">HEIRLOOMNAGA@GMAIL.COM</a>
-              <a href="mailto:info.heirloomnaga@gmail.com">INFO.HEIRLOOMNAGA@GMAIL.COM</a>
-              <a href="mailto:jesminazeliang@gmail.com">JESMINAZELIANG@GMAIL.COM</a>
+              <a href="mailto:info.heirloomnaga@gmail.com">
+                INFO.HEIRLOOMNAGA@GMAIL.COM
+              </a>
+              <a href="mailto:jesminazeliang@gmail.com">
+                JESMINAZELIANG@GMAIL.COM
+              </a>
             </div>
             <h4 className="font-bold mt-8 sm:mt-9 md:mt-10 mb-3 sm:mb-4 text-black uppercase text-sm sm:text-base">
               CALL
@@ -76,7 +80,7 @@ function ContactPage() {
             </div>
           </div>
         </div>
-        <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[40rem] mb-12 sm:mb-14 md:mb-16 lg:mb-18">
+        <div className="w-full h-64 sm:h-80 md:h-96 lg:h-128 xl:h-160 mb-12 sm:mb-14 md:mb-16 lg:mb-18">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3561.383521568638!2d93.716267!3d25.9122088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3745e19210c9f617%3A0x2c874906fadc41dc!2sHussain%20Building!5e0!3m2!1sen!2sin!4v1696432875550!5m2!1sen!2sin"
             width="100%"

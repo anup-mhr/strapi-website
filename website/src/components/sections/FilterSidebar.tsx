@@ -295,7 +295,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   }
 
   return (
-    <div className="min-w-[17rem]">
+    <div className="min-w-68">
       {priceRange.min !== undefined &&
         priceRange.max !== undefined &&
         renderPriceSlider()}

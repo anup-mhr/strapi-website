@@ -86,7 +86,7 @@ export default async function Home() {
                 className="object-cover"
               />
             </div>
-            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.15em]">
+            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
               HEIRLOOM <br /> NAGA <br /> CENTER
             </div>
           </div>
@@ -100,7 +100,7 @@ export default async function Home() {
                 className="object-cover"
               />
             </div>
-            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.15em]">
+            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
               MEET <br /> JESMINA <br /> ZELIANG
             </div>
           </div>

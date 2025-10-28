@@ -48,7 +48,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
   return (
     <div className="flex items-center gap-4 md:gap-6 border-b border-black/10 py-4">
       {/* Product Image */}
-      <div className="relative w-40 md:w-48 h-60 flex-shrink-0">
+      <div className="relative w-40 md:w-48 h-60 shrink-0">
         <Image
           src={item.image || ""}
           alt={item.altText || item.title}
@@ -68,11 +68,14 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
 
         {/* Selected Options */}
         <div className="text-xs md:text-sm text-gray-700 space-y-2">
-          {item.selectedOptions?.map((option) => option.name !== "Note" && (
-            <p key={option.name}>
-              {option.name}: {option.value}
-            </p>
-          ))}
+          {item.selectedOptions?.map(
+            (option) =>
+              option.name !== "Note" && (
+                <p key={option.name}>
+                  {option.name}: {option.value}
+                </p>
+              )
+          )}
         </div>
 
         {/* Quantity Controls and Remove */}

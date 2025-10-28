@@ -69,7 +69,7 @@ export default function JournalImageSlider({
           }`}
         >
           <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-4 sm:gap-6 lg:gap-12 items-center p-3 sm:p-4">
-            <div className="relative w-full h-[20rem] sm:h-[22rem] md:h-[25rem] lg:h-[28rem] xl:h-[30rem]">
+            <div className="relative w-full h-80 sm:h-88 md:h-100 lg:h-112 xl:h-120">
               <Image
                 src={getImageUrl(journal.profile_image)}
                 alt={journal.title}
@@ -80,7 +80,7 @@ export default function JournalImageSlider({
             </div>
 
             <div className="flex flex-col gap-3 sm:gap-4 justify-center px-2 sm:px-0">
-              <h1 className="!text-black tagline font-semibold text-base sm:text-lg md:text-xl">
+              <h1 className="text-black! tagline font-semibold text-base sm:text-lg md:text-xl">
                 {journal.title} | {formatDate(journal.published_date)}
               </h1>
               <div>
@@ -93,7 +93,7 @@ export default function JournalImageSlider({
               </div>
               <LinkButton
                 href={`/journal/${journal.slug || ""}`}
-                className="px-0! tracking-normal capitalize border-b-1 rounded-none py-0! text-black text-sm sm:text-base"
+                className="px-0! tracking-normal capitalize border-b rounded-none py-0! text-black text-sm sm:text-base"
               >
                 Read Story
               </LinkButton>
