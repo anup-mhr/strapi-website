@@ -1,5 +1,5 @@
 import { ApiResponse, HeroSlide } from "@/types/heroslide";
-import { fetchStrapi } from "./strapi";
+import { ProductDetails } from "@/types/product";
 import {
   AllProjectsAndProducts,
   ProjectDetails,
@@ -7,8 +7,8 @@ import {
   ProjectListResponse,
   ProjectTitleList,
 } from "@/types/project";
-import { ProductDetails } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
+import { fetchStrapi } from "./strapi";
 
 async function fetchProjectCategories(): Promise<string[]> {
   try {
@@ -51,6 +51,38 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   } catch (error) {
     console.error("Error fetching hero slides", error);
     return [];
+  }
+}
+
+async function fetchContactContent(): Promise<string> {
+  try {
+    const data = await fetchStrapi(
+      "/api/contact",
+      {},
+      {
+        revalidate: 60 * 60 * 24 * 30,
+      }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching contact data", error);
+    return "";
+  }
+}
+
+async function fetchTermsContent(): Promise<string> {
+  try {
+    const data = await fetchStrapi(
+      "/api/terms-and-condition",
+      {},
+      {
+        revalidate: 60 * 60 * 24 * 30,
+      }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
   }
 }
 
@@ -227,12 +259,14 @@ export const useProduct = (slug: string | null) => {
 };
 
 export {
-  fetchHeroSlides,
-  fetchProjectListByCategory,
-  fetchProjectsByCategory,
-  fetchProjectBySlug,
-  fetchProductBySlug,
   fetchAllProjectsAndProduct,
+  fetchContactContent,
+  fetchHeroSlides,
+  fetchProductBySlug,
+  fetchProjectBySlug,
   fetchProjectBySlugCache,
   fetchProjectCategories,
+  fetchProjectListByCategory,
+  fetchProjectsByCategory,
+  fetchTermsContent,
 };
