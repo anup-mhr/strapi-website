@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ProductListSkeleton from "./common/ProjectListSkeleton";
 
-const itemsPerPage = 12;
+export const itemsPerPage = 12;
 
 function resolveSortOption(sortBy: string) {
   switch (sortBy) {
@@ -100,47 +100,6 @@ export default function ShopPage({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  async function fetchProducts(options?: { skipPriceRange?: boolean }) {
-    setIsLoading(true);
-    const sortingOption = resolveSortOption(sortBy);
-
-    const query = {
-      first: itemsPerPage,
-      after: cursor,
-      minPrice,
-      maxPrice,
-      collection: category,
-      subcategory,
-      sortBy: sortingOption,
-    };
-
-    try {
-      const {
-        products,
-        priceRange: fetchedRange,
-        totalCount,
-        pageInfo,
-        pageCursors, // ← Get the cursors!
-      } = await getProducts(query);
-
-      setProducts(products);
-      setTotalCount(totalCount);
-      setPageInfo(pageInfo);
-      setAllPageCursors(pageCursors); // ← Store them!
-
-      if (
-        !options?.skipPriceRange &&
-        fetchedRange?.min !== undefined &&
-        fetchedRange?.max !== undefined
-      )
-        setPriceRange(fetchedRange);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   // Now you can jump to any page!
   const handlePageClick = (page: number) => {
     if (page === currentPage) return;
@@ -162,8 +121,49 @@ export default function ShopPage({
   }, [filterKey]);
 
   useEffect(() => {
+    async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+      setIsLoading(true);
+      const sortingOption = resolveSortOption(sortBy);
+
+      const query = {
+        first: itemsPerPage,
+        after: cursor,
+        minPrice,
+        maxPrice,
+        collection: category,
+        subcategory,
+        sortBy: sortingOption,
+      };
+
+      try {
+        const {
+          products,
+          priceRange: fetchedRange,
+          totalCount,
+          pageInfo,
+          pageCursors, // ← Get the cursors!
+        } = await getProducts(query);
+
+        setProducts(products);
+        setTotalCount(totalCount);
+        setPageInfo(pageInfo);
+        setAllPageCursors(pageCursors); // ← Store them!
+
+        if (
+          !options?.skipPriceRange &&
+          fetchedRange?.min !== undefined &&
+          fetchedRange?.max !== undefined
+        )
+          setPriceRange(fetchedRange);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     fetchProducts({ skipPriceRange: true });
-  }, [minPrice, maxPrice, sortBy, cursor, currentPage, category, subcategory]);
+  }, [minPrice, maxPrice, sortBy, cursor, category, subcategory]);
 
   // Refresh price range when category/subcategory changes
   useEffect(() => {
