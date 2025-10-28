@@ -1,27 +1,52 @@
 import { ShopifyProduct, ShopifyProductPreview } from "@/types/shopify";
-import { GraphQLClient } from "graphql-request";
 import { productMapper } from "./helper";
 import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
+import { itemsPerPage } from "@/components/ShopPage";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
+
 const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
 
 const endpoint = `https://${domain}/api/2025-10/graphql.json`;
 
-const client = new GraphQLClient(endpoint, {
-  headers: {
-    "X-Shopify-Storefront-Access-Token": token,
-  },
-});
-
 async function shopifyFetch<T>(
   query: string,
-  variables: Record<string, any> = {}
+  variables: Record<string, any> = {},
+  revalidate?: number // optional
 ): Promise<T> {
-  return client.request<T>(query, variables);
+
+  const options: RequestInit & { next?: { revalidate?: number } } = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": token,
+    },
+    body: JSON.stringify({ query, variables }),
+  };
+
+  if (revalidate) {
+    options.next = { revalidate };
+  } else {
+    options.cache = "no-store";
+  }
+
+  const response = await fetch(endpoint, options);
+
+  if (!response.ok) {
+    throw new Error(`Shopify fetch failed: ${response.statusText}`);
+  }
+
+  const { data, errors } = await response.json();
+
+  if (errors) {
+    console.error(errors);
+    throw new Error("Shopify GraphQL errors occurred");
+  }
+
+  return data;
 }
 
-async function getProductByHandle(
+export async function getProductByHandle(
   handle: string
 ): Promise<ShopifyProduct | null> {
   const data = await shopifyFetch<{
@@ -71,9 +96,9 @@ async function getProductByHandle(
       },
       compareAtPrice: node.compareAtPrice
         ? {
-            amount: node.compareAtPrice.amount,
-            currencyCode: node.compareAtPrice.currencyCode,
-          }
+          amount: node.compareAtPrice.amount,
+          currencyCode: node.compareAtPrice.currencyCode,
+        }
         : undefined,
       quantityAvailable: node.quantityAvailable ?? 0,
     })),
@@ -119,7 +144,7 @@ async function getCategories(
   try {
     const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, {
       handle: menuHandle,
-    });
+    }, 60);
     if (!menuData.menu?.items) return [];
 
     const categories: CategoryItem[] = await Promise.all(
@@ -222,7 +247,7 @@ async function getRecommendedProducts(
 }
 
 async function getProducts({
-  first = 9,
+  first = itemsPerPage,
   after = null,
   collection,
   subcategory,
@@ -361,9 +386,8 @@ async function getProducts({
     // Collection-based query
     const sortKeyType = "ProductCollectionSortKeys";
     query = `
-      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${
-      hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
-    }) {
+      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+      }) {
         collectionByHandle(handle: $handle) {
           ${buildProductsFragment(sortKeyType)}
         }
@@ -457,7 +481,6 @@ async function getProducts({
 
 export {
   getCategories,
-  getProductByHandle,
   getProducts,
   getRecommendedProducts,
   shopifyFetch,

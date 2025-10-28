@@ -1,6 +1,5 @@
 "use client";
 
-import { getCategories } from "@/lib/shopify";
 import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { CategoryItem } from "@/lib/shopify";
@@ -22,6 +21,8 @@ interface FilterSidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
   priceRange: { min: number | undefined; max: number | undefined };
+  isLoading?: boolean;
+  categories: CategoryItem[];
 }
 
 const PRICE_GAP = 50; // Prevents slider thumbs from overlapping
@@ -33,8 +34,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isMobile = false,
   priceRange,
   onClose = () => {},
+  isLoading,
+  categories,
 }) => {
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [localMinPrice, setLocalMinPrice] = useState<number | undefined>(
     filters.minPrice
@@ -42,7 +44,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [localMaxPrice, setLocalMaxPrice] = useState<number | undefined>(
     filters.maxPrice
   );
+  const [displayRange, setDisplayRange] = useState(priceRange);
 
+  useEffect(() => {
+    if (!isLoading) {
+      setDisplayRange(priceRange);
+    }
+  }, [priceRange, isLoading]);
   useEffect(() => {
     if (isMobile) {
       document.body.style.overflow = "hidden";
@@ -51,14 +59,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       };
     }
   }, [isMobile]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const rawCategories = await getCategories();
-      setCategories(rawCategories);
-    };
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     setLocalMinPrice(filters.minPrice);
@@ -149,6 +149,29 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const safeMin = localMinPrice ?? priceRange.min ?? 0;
   const safeMax = localMaxPrice ?? priceRange.max ?? 0;
 
+  const handleRangeBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (priceRange.min === undefined || priceRange.max === undefined) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const clickedValue = Math.round(
+      priceRange.min + percentage * (priceRange.max - priceRange.min)
+    );
+
+    // Determine which thumb is closer to the clicked position
+    const distanceToMin = Math.abs(clickedValue - safeMin);
+    const distanceToMax = Math.abs(clickedValue - safeMax);
+
+    if (distanceToMin < distanceToMax) {
+      const newMin = Math.min(clickedValue, safeMax - PRICE_GAP);
+      setLocalMinPrice(Math.max(priceRange.min, Math.round(newMin)));
+    } else {
+      const newMax = Math.max(clickedValue, safeMin + PRICE_GAP);
+      setLocalMaxPrice(Math.min(priceRange.max, Math.round(newMax)));
+    }
+  };
+
   const renderPriceSlider = () => (
     <div className="mb-8 sm:mb-10 lg:mb-12">
       <h3 className="text-sm sm:text-base font-semibold pb-2 mb-3 sm:mb-4 border-b-2 border-black/30">
@@ -156,18 +179,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </h3>
 
       <div className="relative h-5 sm:h-6 mt-2">
-        <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 rounded-full transform -translate-y-1/2" />
+        <div
+          className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 rounded-full transform -translate-y-1/2 cursor-pointer"
+          onClick={handleRangeBarClick}
+        />
         <div
           className="absolute top-1/2 h-1 bg-primary-pink rounded-full transform -translate-y-1/2 pointer-events-none"
           style={{
             left: `${
-              ((safeMin - (priceRange.min ?? 0)) /
-                ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
+              ((safeMin - (displayRange.min ?? 0)) /
+                ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
               100
             }%`,
             width: `${
               ((safeMax - safeMin) /
-                ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
+                ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
               100
             }%`,
           }}
@@ -282,7 +308,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </div>
 
             <div className="flex-1 overflow-y-auto max-h-[calc(90vh-200px)] px-4 sm:px-6 py-4 sm:py-6">
-              {renderPriceSlider()}
+              {priceRange.min !== undefined &&
+                priceRange.max !== undefined &&
+                priceRange.min !== priceRange.max &&
+                renderPriceSlider()}
               {renderCategoryFilter()}
             </div>
           </div>
@@ -295,6 +324,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     <div className="min-w-68">
       {priceRange.min !== undefined &&
         priceRange.max !== undefined &&
+        priceRange.min !== priceRange.max &&
         renderPriceSlider()}
       {renderCategoryFilter()}
     </div>

@@ -4,6 +4,7 @@ import ProductList from "@/components/sections/ProductList";
 import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
+
 export default async function ProductPage({
   params,
 }: {

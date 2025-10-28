@@ -51,7 +51,6 @@ export default function ProductDetails({
           )}
         </div>
       </div>
-
       {/* Product Details */}
       <div className="text-base text-gray-700 mb-6 space-y-8">
         <div className="space-y-2">
