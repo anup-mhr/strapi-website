@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { cn } from "../../lib/utils";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { shopifyService } from "@/lib/shopify-v2";
+import { useEffect, useState } from "react";
+import { cn } from "../../lib/utils";
 import { useCart } from "../cart-test/CartProvider";
 
 const navLinks = [

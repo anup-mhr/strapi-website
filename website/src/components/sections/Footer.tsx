@@ -16,7 +16,10 @@ const Footer = () => {
 
       <div className="grid grid-cols-2  md:grid-cols-3 gap-8 md:gap-10 lg:gap-12 mt-12 md:mt-16 lg:mt-18 text-primary padding">
         <div className="grid md:grid-cols-2 md:col-span-2 space-y-10">
-          <div className="flex flex-col justify-center items-center md:items-start">
+          <Link
+            href="/"
+            className="flex flex-col justify-center items-center md:items-start"
+          >
             <Image
               src="/images/logo.png"
               alt={"Hierloom Naga Logo"}
@@ -24,32 +27,44 @@ const Footer = () => {
               height={96}
               className="object-contain w-32 sm:w-36 md:w-40 lg:w-50 h-auto"
             />
-          </div>
+          </Link>
 
           <div className="text-xs sm:text-sm text-center mx-auto font-semibold">
             FIND US ON
             <div className="flex gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-5 lg:mt-6">
-              <Image
-                src={"/images/socials/instagram.svg"}
-                alt="instagram"
-                width={44}
-                height={44}
-                className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
-              />
-              <Image
-                src={"/images/socials/facebook.svg"}
-                alt="facebook"
-                width={44}
-                height={44}
-                className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
-              />
-              <Image
-                src={"/images/socials/x-twitter.svg"}
-                alt="x-twitter"
-                width={44}
-                height={44}
-                className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
-              />
+              <Link
+                href="https://www.instagram.com/hierloomnaga/"
+                target="_blank"
+              >
+                <Image
+                  src={"/images/socials/instagram.svg"}
+                  alt="instagram"
+                  width={44}
+                  height={44}
+                  className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
+                />
+              </Link>
+              <Link
+                href="https://www.facebook.com/hierloomnaga"
+                target="_blank"
+              >
+                <Image
+                  src={"/images/socials/facebook.svg"}
+                  alt="facebook"
+                  width={44}
+                  height={44}
+                  className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
+                />
+              </Link>
+              <Link href="https://twitter.com/hierloomnaga" target="_blank">
+                <Image
+                  src={"/images/socials/x-twitter.svg"}
+                  alt="x-twitter"
+                  width={44}
+                  height={44}
+                  className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
+                />
+              </Link>
             </div>
           </div>
         </div>

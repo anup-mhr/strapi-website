@@ -2,7 +2,6 @@
 
 import { ProjectSorter } from "@/components/common/ProjectSorter";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
-import Footer from "@/components/sections/Footer";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";

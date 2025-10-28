@@ -16,9 +16,10 @@ function AboutPage() {
           <Image
             src="/images/about/heirloomnaga.jpg"
             alt="Heirloom Naga heritage"
-            width={1200}
-            height={800}
+            width={5000}
+            height={5000}
             className="w-full object-center object-cover h-full"
+            priority
           />
         </div>
 

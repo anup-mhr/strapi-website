@@ -51,7 +51,7 @@ export default async function Home() {
           title="SALE"
           subtitle="Limited time only"
           CTA="VIEW ALL"
-          href="/shop"
+          href="/shop?category=sale"
         />
 
         <ProductList products={salesProducts} />
