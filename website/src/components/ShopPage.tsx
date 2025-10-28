@@ -3,13 +3,14 @@
 import { ProjectSorter } from "@/components/common/ProjectSorter";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import ProductList from "@/components/sections/ProductList";
-import { getProducts } from "@/lib/shopify";
+import { CategoryItem, getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
 import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import ProductListSkeleton from "./common/ProjectListSkeleton";
 
-const itemsPerPage = 6;
+export const itemsPerPage = 6;
 
 function resolveSortOption(sortBy: string) {
   switch (sortBy) {
@@ -28,7 +29,7 @@ function resolveSortOption(sortBy: string) {
   }
 }
 
-export default function ShopPage() {
+export default function ShopPage({ categories }: { categories: CategoryItem[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([
@@ -158,7 +159,6 @@ export default function ShopPage() {
 
   useEffect(() => {
     fetchProducts({ skipPriceRange: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minPrice, maxPrice, sortBy, cursor, currentPage, category, subcategory]);
 
   // Refresh price range when category/subcategory changes
@@ -281,6 +281,8 @@ export default function ShopPage() {
               onCategoryChange={handleCategoryChange}
               onApplyPriceFilter={handleApplyPriceFilter}
               priceRange={priceRange}
+              categories={categories}
+              isLoading={isLoading}
             />
           </div>
 
@@ -301,6 +303,8 @@ export default function ShopPage() {
                   isMobile={true}
                   onClose={() => setIsMobileFilterOpen(false)}
                   priceRange={priceRange}
+                  categories={categories}
+                  isLoading={isLoading}
                 />
               </div>
             </div>
@@ -333,11 +337,12 @@ export default function ShopPage() {
             </div>
 
             {isLoading ? (
-              <div className="text-center py-12 text-gray-500 text-lg">
-                Loading products...
-              </div>
+              <ProductListSkeleton
+                count={itemsPerPage}
+                className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+              />
             ) : (
-              <>
+              <div className="min-h-screen">
                 <ProductList
                   products={products}
                   className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
@@ -347,7 +352,7 @@ export default function ShopPage() {
                     No products found matching your filters.
                   </div>
                 )}
-              </>
+              </div>
             )}
 
             {/* Pagination */}
@@ -356,9 +361,8 @@ export default function ShopPage() {
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
-                    currentPage === 1 && "opacity-50 cursor-not-allowed"
-                  }`}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${currentPage === 1 && "opacity-50 cursor-not-allowed"
+                    }`}
                 >
                   <ChevronsLeft />
                 </button>
@@ -367,11 +371,10 @@ export default function ShopPage() {
                   <button
                     key={page}
                     onClick={() => handlePageClick(page)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${
-                      currentPage === page
-                        ? "bg-primary-pink text-white border-primary-pink"
-                        : "border-black/20 text-gray-600 hover:bg-gray-100"
-                    }`}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center border ${currentPage === page
+                      ? "bg-primary-pink text-white border-primary-pink"
+                      : "border-black/20 text-gray-600 hover:bg-gray-100"
+                      }`}
                   >
                     {page}
                   </button>
@@ -380,9 +383,8 @@ export default function ShopPage() {
                 <button
                   onClick={handleNextPage}
                   disabled={!pageInfo.hasNextPage}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
-                    !pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
-                  }`}
+                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${!pageInfo.hasNextPage && "opacity-50 cursor-not-allowed"
+                    }`}
                 >
                   <ChevronsRight />
                 </button>

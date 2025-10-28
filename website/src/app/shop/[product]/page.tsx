@@ -3,6 +3,7 @@ import ProductGallery from "@/components/ProductGallery";
 import ProductList from "@/components/sections/ProductList";
 import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
 
+
 export default async function ProductPage({
   params,
 }: {

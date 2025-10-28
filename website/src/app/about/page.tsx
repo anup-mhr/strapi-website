@@ -12,7 +12,7 @@ function AboutPage() {
         <Heading title="ABOUT" subtitle="Our Journey" />
 
         {/* Top Image Grid */}
-        <div className="b-8 sm:mb-10 md:mb-12 lg:mb-14 gap-0.5 sm:gap-1">
+        <div className="b-8 mb-10 md:mb-12 lg:mb-14 gap-0.5 sm:gap-1">
           <Image
             src="/images/about/heirloomnaga.jpg"
             alt="Heirloom Naga heritage"
