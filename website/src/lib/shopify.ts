@@ -14,7 +14,6 @@ async function shopifyFetch<T>(
   variables: Record<string, any> = {},
   revalidate?: number // optional
 ): Promise<T> {
-
   const options: RequestInit & { next?: { revalidate?: number } } = {
     method: "POST",
     headers: {
@@ -26,9 +25,10 @@ async function shopifyFetch<T>(
 
   if (revalidate) {
     options.next = { revalidate };
-  } else {
-    options.cache = "no-store";
   }
+  // else {
+  //   options.cache = "no-store";
+  // }
 
   const response = await fetch(endpoint, options);
 
@@ -96,9 +96,9 @@ export async function getProductByHandle(
       },
       compareAtPrice: node.compareAtPrice
         ? {
-          amount: node.compareAtPrice.amount,
-          currencyCode: node.compareAtPrice.currencyCode,
-        }
+            amount: node.compareAtPrice.amount,
+            currencyCode: node.compareAtPrice.currencyCode,
+          }
         : undefined,
       quantityAvailable: node.quantityAvailable ?? 0,
     })),
@@ -142,9 +142,13 @@ async function getCategories(
   `;
 
   try {
-    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(menuQuery, {
-      handle: menuHandle,
-    }, 60);
+    const menuData = await shopifyFetch<{ menu: { items: any[] } }>(
+      menuQuery,
+      {
+        handle: menuHandle,
+      },
+      60
+    );
     if (!menuData.menu?.items) return [];
 
     const categories: CategoryItem[] = await Promise.all(
@@ -281,10 +285,10 @@ async function getProducts({
   const useCollection = collection && !hasValidSubcategory;
   const useProductSearch = hasValidSubcategory || !collection;
 
-  const effectiveSortBy = useCollection && sortBy.sortKey === "CREATED_AT"
-    ? { ...sortBy, sortKey: "CREATED" } // map to CREATED for collections
-    : sortBy;
-
+  const effectiveSortBy =
+    useCollection && sortBy.sortKey === "CREATED_AT"
+      ? { ...sortBy, sortKey: "CREATED" } // map to CREATED for collections
+      : sortBy;
 
   // Build filter query for product search
   const buildFilterQuery = () => {
@@ -390,8 +394,9 @@ async function getProducts({
     // Collection-based query
     const sortKeyType = "ProductCollectionSortKeys";
     query = `
-      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
-      }) {
+      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${
+      hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+    }) {
         collectionByHandle(handle: $handle) {
           ${buildProductsFragment(sortKeyType)}
         }
@@ -454,7 +459,6 @@ async function getProducts({
   const pageCursors: (string | null)[] = [null];
 
   if (countEdges.length > 0) {
-
     // Get the cursor at the end of each page
     for (let i = itemsPerPage - 1; i < countEdges.length; i += itemsPerPage) {
       const cursor = countEdges[i]?.cursor;
@@ -476,10 +480,5 @@ async function getProducts({
   };
 }
 
-export {
-  getCategories,
-  getProducts,
-  getRecommendedProducts,
-  shopifyFetch,
-};
+export { getCategories, getProducts, getRecommendedProducts, shopifyFetch };
 export type { ShopifyProduct, ShopifyProductPreview, CategoryItem };

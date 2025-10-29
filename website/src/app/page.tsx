@@ -11,7 +11,10 @@ import Image from "next/image";
 export default async function Home() {
   const slides = await fetchHeroSlides();
 
-  const { products } = await getProducts({ first: 8, sortBy: { sortKey: "CREATED_AT", reverse: true } });
+  const { products } = await getProducts({
+    first: 8,
+    sortBy: { sortKey: "CREATED_AT", reverse: true },
+  });
 
   const { products: salesProducts } = await getProducts({
     first: 4,
@@ -19,7 +22,6 @@ export default async function Home() {
   });
 
   const journals = await fetchJournals();
-  console.log("journals", journals);
 
   return (
     <div>
@@ -65,7 +67,7 @@ export default async function Home() {
           href="/journal"
         />
 
-        <JournalImageSlider journals={journals} />
+        <JournalImageSlider journals={journals.data} />
       </div>
 
       <div className="padding">

@@ -42,8 +42,14 @@ interface CartContextType {
   cartCount: number;
   isLoading: boolean;
   refreshCart: () => Promise<void>;
-  addToCart: (variantId: string, quantity?: number) => Promise<Cart | undefined>;
-  updateLineQuantity: (lineId: string, quantity: number) => Promise<Cart | undefined>;
+  addToCart: (
+    variantId: string,
+    quantity?: number
+  ) => Promise<Cart | undefined>;
+  updateLineQuantity: (
+    lineId: string,
+    quantity: number
+  ) => Promise<Cart | undefined>;
   removeFromCart: (lineId: string) => Promise<Cart | undefined>;
   clearCart: () => void;
 }
@@ -73,7 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const response = await fetch(`/api/cart/get?cartId=${cartId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-        cache: "no-store",
+        // cache: "no-store",
       });
 
       if (response.ok) {
@@ -119,7 +125,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const cartId = getCartId();
 
         if (!cartId) {
-          const newCart = await createCart([{ merchandiseId: variantId, quantity }]);
+          const newCart = await createCart([
+            { merchandiseId: variantId, quantity },
+          ]);
           return newCart;
         }
 
@@ -146,55 +154,61 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   // Update item quantity
-  const updateLineQuantity = useCallback(async (lineId: string, quantity: number): Promise<Cart | undefined> => {
-    setIsLoading(true);
-    try {
-      const cartId = getCartId();
-      if (!cartId) return;
+  const updateLineQuantity = useCallback(
+    async (lineId: string, quantity: number): Promise<Cart | undefined> => {
+      setIsLoading(true);
+      try {
+        const cartId = getCartId();
+        if (!cartId) return;
 
-      const response = await fetch("/api/cart/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cartId,
-          lines: [{ id: lineId, quantity }],
-        }),
-      });
+        const response = await fetch("/api/cart/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cartId,
+            lines: [{ id: lineId, quantity }],
+          }),
+        });
 
-      const updatedCart: Cart = await response.json();
-      setCart(updatedCart);
-      return updatedCart;
-    } catch (error) {
-      console.error("Update cart error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        const updatedCart: Cart = await response.json();
+        setCart(updatedCart);
+        return updatedCart;
+      } catch (error) {
+        console.error("Update cart error:", error);
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   // Remove item
-  const removeFromCart = useCallback(async (lineId: string): Promise<Cart | undefined> => {
-    setIsLoading(true);
-    try {
-      const cartId = getCartId();
-      if (!cartId) return;
+  const removeFromCart = useCallback(
+    async (lineId: string): Promise<Cart | undefined> => {
+      setIsLoading(true);
+      try {
+        const cartId = getCartId();
+        if (!cartId) return;
 
-      const response = await fetch("/api/cart/remove", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, lineIds: [lineId] }),
-      });
+        const response = await fetch("/api/cart/remove", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cartId, lineIds: [lineId] }),
+        });
 
-      const updatedCart: Cart = await response.json();
-      setCart(updatedCart);
-      return updatedCart;
-    } catch (error) {
-      console.error("Remove cart error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        const updatedCart: Cart = await response.json();
+        setCart(updatedCart);
+        return updatedCart;
+      } catch (error) {
+        console.error("Remove cart error:", error);
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   // Clear cart
   const clearCart = useCallback(() => {
