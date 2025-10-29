@@ -141,7 +141,7 @@ export default function CartPage() {
             <p className="mb-3">Shipping</p>
             <p>
               Complimentary shipping on all orders worldwide. Please visit our{" "}
-              <Link href="/shipping-policy" className="underline">
+              <Link href="/shipping" className="underline">
                 Shipping Policy
               </Link>{" "}
               for more information.
@@ -160,10 +160,10 @@ export default function CartPage() {
           <div className="py-6 text-xs md:text-sm">
             <p className="mb-3">Return Policy</p>
             <p>
-              Item purchased from khaite.com can be returned for a refund at no
+              Item purchased from heirloomnaga.com can be returned for a refund at no
               charge, online or in store within 14 days from original ship date.
               Please visit our{" "}
-              <Link href="/return-policy" className="underline">
+              <Link href="/return-refund-policy" className="underline">
                 Return Policy
               </Link>{" "}
               page for more information.

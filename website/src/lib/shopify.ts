@@ -454,7 +454,6 @@ async function getProducts({
   const pageCursors: (string | null)[] = [null];
 
   if (countEdges.length > 0) {
-    const itemsPerPage = first;
 
     // Get the cursor at the end of each page
     for (let i = itemsPerPage - 1; i < countEdges.length; i += itemsPerPage) {
