@@ -111,7 +111,7 @@ function ContactForm({ className }: { className?: string }) {
       />
       <textarea
         placeholder="Message"
-        className={`border px-5 placeholder-gray-400 p-3 text-gray-400 outline-none focus:ring-1 min-h-[10rem] ${
+        className={`border px-5 placeholder-gray-400 p-3 text-gray-400 outline-none focus:ring-1 min-h-40 ${
           errors.message
             ? "border-red-300 focus:ring-red-300"
             : "border-gray-200"
