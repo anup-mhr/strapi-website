@@ -34,9 +34,14 @@ function Footer() {
         </Link>
       </div>
       {/* Right Section */}
-      <Link href="/terms" className="text-center md:text-right">
-        TERMS & CONDITIONS
-      </Link>
+      <div className="uppercase flex flex-col items-center">
+        <Link href="/payment-modes" className="text-center md:text-right">
+          PAYMENT MODES
+        </Link>
+        <Link href="/terms" className="text-center md:text-right">
+          TERMS & CONDITIONS
+        </Link>
+      </div>
     </div>
   );
 }
