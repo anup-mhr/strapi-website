@@ -35,7 +35,7 @@ async function Contact() {
             <h2 className="font-semibold text-black mb-5 text-lg">ABOUT ME</h2>
 
             <div
-              className="pl-1 font-dosis text-xs sm:text-sm leading-relaxed"
+              className="pl-1 font-dosis text-xs sm:text-sm leading-relaxed **:font-inherit!"
               dangerouslySetInnerHTML={{ __html: contactData }}
             />
           </div>

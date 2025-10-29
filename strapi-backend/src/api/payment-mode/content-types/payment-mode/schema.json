@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "payment_modes",
+  "info": {
+    "singularName": "payment-mode",
+    "pluralName": "payment-modes",
+    "displayName": "payment-mode"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "content": {
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultHtml"
+      },
+      "required": true
+    }
+  }
+}

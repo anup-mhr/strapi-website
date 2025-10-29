@@ -86,6 +86,22 @@ async function fetchTermsContent(): Promise<string> {
   }
 }
 
+async function fetchPaymentModes(): Promise<string> {
+  try {
+    const data = await fetchStrapi(
+      "/api/payment-mode",
+      {},
+      {
+        revalidate: 0,
+      }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching payment data", error);
+    return "";
+  }
+}
+
 async function fetchProjectListByCategory(
   category: string
 ): Promise<ProjectTitleList[] | []> {
@@ -269,4 +285,5 @@ export {
   fetchProjectListByCategory,
   fetchProjectsByCategory,
   fetchTermsContent,
+  fetchPaymentModes,
 };

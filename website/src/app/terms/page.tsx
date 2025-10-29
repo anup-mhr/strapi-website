@@ -1,11 +1,17 @@
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
 import { loadLinks } from "@/lib/helper";
-import { fetchTermsContent } from "@/lib/strapiApiCall";
+import { fetchPaymentModes } from "@/lib/strapiApiCall";
+
+export const metadata = {
+  title: "Aku Zeliang - Terms & Conditions",
+  description:
+    "Terms and Conditions for Aku Zeliang. By using our services, you agree to these terms and conditions.",
+};
 
 async function page() {
   const links = await loadLinks();
-  const termsData = await fetchTermsContent();
+  const termsData = await fetchPaymentModes();
   return (
     <div className="bg-white text-black font-dosis tracking-wider">
       <Navigation links={links} />
@@ -15,7 +21,10 @@ async function page() {
           Terms of Service
         </h1>
 
-        <div dangerouslySetInnerHTML={{ __html: termsData }} />
+        <div
+          className="**:font-inherit!"
+          dangerouslySetInnerHTML={{ __html: termsData }}
+        />
       </div>
 
       <Footer />
