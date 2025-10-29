@@ -84,7 +84,10 @@ async function fetchJournalBySlug(slug: string): Promise<IJournal | null> {
   }
 }
 
-async function fetchRelatedJournals(tags: string[]): Promise<IJournal[] | []> {
+async function fetchRelatedJournals(
+  slug: string,
+  tags: string[]
+): Promise<IJournal[] | []> {
   try {
     const queryOptions = {
       filters: {
@@ -92,6 +95,9 @@ async function fetchRelatedJournals(tags: string[]): Promise<IJournal[] | []> {
           name: {
             $in: tags,
           },
+        },
+        slug: {
+          $ne: slug,
         },
       },
       populate: {
@@ -119,7 +125,7 @@ async function fetchRelatedJournals(tags: string[]): Promise<IJournal[] | []> {
 
 export {
   fetchHeroSlides,
-  fetchJournals,
   fetchJournalBySlug,
+  fetchJournals,
   fetchRelatedJournals,
 };

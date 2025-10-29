@@ -17,16 +17,13 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const post = await fetchJournalBySlug(slug);
 
-  console.log("Post:", post?.content);
-
   if (!post) {
     return notFound();
   }
   const relatedPosts = await fetchRelatedJournals(
+    slug,
     post.tags.map((tag: any) => tag.name)
   );
-
-  console.log("content", post.content);
 
   return (
     <div className="min-h-screen bg-heirloom-ivory pt-12 sm:pt-16 lg:pt-20">
@@ -137,12 +134,11 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
                     <Link href={`/journal/${relatedPost.slug}`}>
                       <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 sm:bg-white/20 sm:backdrop-blur-sm h-[85%] sm:h-[80%] w-[90%] sm:w-[85%] rounded-lg opacity-0 scale-100 sm:scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 sm:duration-400 ease-in-out p-4 sm:p-5 lg:p-6">
                         <h3 className="text-sm sm:text-base font-semibold leading-tight text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors line-clamp-2">
-
                           {relatedPost.title}
-
                         </h3>
                         <p className="text-xs sm:text-sm text-heirloom-charcoal/70 mb-3 line-clamp-3 sm:line-clamp-4">
-                          {htmlToPlainText(relatedPost.content).slice(0, 120)}...
+                          {htmlToPlainText(relatedPost.content).slice(0, 120)}
+                          ...
                         </p>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-auto text-heirloom-charcoal/60 capitalize text-xs">
                           <span className="text-primary-pink font-medium">
@@ -161,8 +157,8 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
           )}
         </div>
       </div>
-    </div >
-  )
+    </div>
+  );
 }
 
 export default Page;
