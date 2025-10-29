@@ -56,7 +56,7 @@ const getComponentOptions = () => ({
       },
     },
     contents: { img: false, title: false, price: false },
-    text: { button: "BUY NOW" },
+    text: { button: "ADD TO CART" },
   },
   cart: {
     styles: {
@@ -168,6 +168,7 @@ export default function ShopifyBuyButton({
       componentRef.current = ui.createComponent("product", {
         id: productId,
         node: divRef.current,
+        moneyFormat: "₹{{amount_no_decimals}}",
         options: componentOptions,
       });
 

@@ -130,7 +130,7 @@ export default function ImageSlider({ images }: ImageSliderProps) {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {images.map((img, index) => (
-            <div key={img.id || index} className="relative min-w-full h-full">
+            <div key={index} className="relative min-w-full h-full">
               <Image
                 src={getImageUrl(img)}
                 alt={img.name || `Image ${index + 1}`}
