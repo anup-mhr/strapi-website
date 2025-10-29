@@ -17,7 +17,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const post = await fetchJournalBySlug(slug);
 
-  // console.log("Post:", post?.content);
+  console.log("Post:", post?.content);
 
   if (!post) {
     return notFound();
@@ -101,7 +101,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
           {/* </div> */}
 
           {/* Article Content */}
-          <article className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-12 sm:mb-14 lg:mb-16">
+          <article className="prose prose-sm sm:prose-base max-w-none mb-12 sm:mb-14 lg:mb-16">
             <div
               className="text-heirloom-charcoal leading-relaxed [&_p]:mb-4 sm:[&_p]:mb-6 [&_h2]:text-xl [&_h2]:sm:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-lg [&_h3]:sm:text-xl [&_h3]:lg:text-2xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:my-4 [&_ul]:ml-4 [&_ol]:my-4 [&_ol]:ml-4 [&_li]:mb-2 **:text-heirloom-charcoal! **:font-inherit!"
               dangerouslySetInnerHTML={{ __html: post.content }}
@@ -132,24 +132,26 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
                     </div>
 
                     {/* Overlay Content */}
-                    <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 sm:bg-white/20 sm:backdrop-blur-sm h-[85%] sm:h-[80%] w-[90%] sm:w-[85%] rounded-lg opacity-0 scale-100 sm:scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 sm:duration-400 ease-in-out p-4 sm:p-5 lg:p-6">
-                      <h3 className="text-sm sm:text-base font-semibold leading-tight text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors line-clamp-2">
-                        <Link href={`/journal/${relatedPost.slug}`}>
+                    <Link href={`/journal/${relatedPost.slug}`}>
+                      <div className="flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 sm:bg-white/20 sm:backdrop-blur-sm h-[85%] sm:h-[80%] w-[90%] sm:w-[85%] rounded-lg opacity-0 scale-100 sm:scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 sm:duration-400 ease-in-out p-4 sm:p-5 lg:p-6">
+                        <h3 className="text-sm sm:text-base font-semibold leading-tight text-heirloom-charcoal mb-2 group-hover:text-heirloom-gold transition-colors line-clamp-2">
+
                           {relatedPost.title}
-                        </Link>
-                      </h3>
-                      <p className="text-xs sm:text-sm text-heirloom-charcoal/70 mb-3 line-clamp-3 sm:line-clamp-4">
-                        {htmlToPlainText(relatedPost.content).slice(0, 120)}...
-                      </p>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-auto text-heirloom-charcoal/60 capitalize text-xs">
-                        <span className="text-primary-pink font-medium">
-                          {relatedPost.tags.map((tag) => tag.name).join(", ")}
-                        </span>
-                        <span className="text-xs font-medium uppercase whitespace-nowrap">
-                          {getMonthYear(relatedPost.published_date)}
-                        </span>
+
+                        </h3>
+                        <p className="text-xs sm:text-sm text-heirloom-charcoal/70 mb-3 line-clamp-3 sm:line-clamp-4">
+                          {htmlToPlainText(relatedPost.content).slice(0, 120)}...
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-auto text-heirloom-charcoal/60 capitalize text-xs">
+                          <span className="text-primary-pink font-medium">
+                            {relatedPost.tags.map((tag) => tag.name).join(", ")}
+                          </span>
+                          <span className="text-xs font-medium uppercase whitespace-nowrap">
+                            {getMonthYear(relatedPost.published_date)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </article>
                 ))}
               </div>
@@ -157,8 +159,8 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
           )}
         </div>
       </div>
-    </div>
-  );
+    </div >
+  )
 }
 
 export default Page;
