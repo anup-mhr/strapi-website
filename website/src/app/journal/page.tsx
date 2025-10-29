@@ -10,7 +10,7 @@ import { fetchJournals, IJournal } from "@/lib/strapiApiCall";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ITEMS_PER_PAGE = 2;
 
@@ -18,6 +18,7 @@ function JournalPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("published_date:desc");
   const [journal, setJournal] = useState<IJournal[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +30,8 @@ function JournalPage() {
         setError(null);
 
         const data = await fetchJournals(ITEMS_PER_PAGE, currentPage, sortBy);
-        setJournal(data);
+        setJournal(data.data);
+        setTotalCount(data.meta?.pagination?.total);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load journal entries"
@@ -43,53 +45,16 @@ function JournalPage() {
     fetchJournal();
   }, [currentPage, sortBy]);
 
-  // Filter and sort journal entries
-  const filteredAndSortedJournal = useMemo(() => {
-    if (sortBy === "default") {
-      return [...journal];
-    }
-
-    const sorted = [...journal];
-
-    switch (sortBy) {
-      case "date-newest":
-        sorted.sort(
-          (a, b) =>
-            new Date(b.published_date || 0).getTime() -
-            new Date(a.published_date || 0).getTime()
-        );
-        break;
-      case "date-oldest":
-        sorted.sort(
-          (a, b) =>
-            new Date(a.published_date || 0).getTime() -
-            new Date(b.published_date || 0).getTime()
-        );
-        break;
-      case "title-asc":
-        sorted.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "title-desc":
-        sorted.sort((a, b) => b.title.localeCompare(a.title));
-        break;
-    }
-
-    return sorted;
-  }, [journal, sortBy]);
-
-  // Calculate pagination
-  const totalPages = Math.ceil(
-    filteredAndSortedJournal.length / ITEMS_PER_PAGE
-  );
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentItems = filteredAndSortedJournal.slice(startIndex, endIndex);
+  // Calculate pagination based on current page items
+  const totalPages =
+    journal.length === ITEMS_PER_PAGE ? currentPage + 1 : currentPage; // Rough estimate
 
   // Calculate display range
-  const displayStart = filteredAndSortedJournal.length > 0 ? startIndex + 1 : 0;
-  const displayEnd = Math.min(endIndex, filteredAndSortedJournal.length);
+  const displayStart =
+    journal.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0;
+  const displayEnd = (currentPage - 1) * ITEMS_PER_PAGE + journal.length;
 
-  // Reset to page 1 when filter changes
+  // Reset to page 1 when sort changes
   const handleSortChange = (value: string) => {
     setSortBy(value);
     setCurrentPage(1);
@@ -156,7 +121,7 @@ function JournalPage() {
   }
 
   // Empty state
-  if (journal.length === 0) {
+  if (journal.length === 0 && currentPage === 1) {
     return (
       <>
         <Heading
@@ -182,8 +147,7 @@ function JournalPage() {
       {/* Filter Bar - Responsive */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8 lg:mb-10">
         <p className="text-[10px] sm:text-xs text-gray-600 whitespace-nowrap">
-          SHOWING {displayStart}-{displayEnd} OF{" "}
-          {filteredAndSortedJournal.length} RESULTS
+          SHOWING {displayStart}-{displayEnd} OF {totalCount} RESULTS
         </p>
 
         <div className="relative w-full sm:w-auto">
@@ -197,9 +161,9 @@ function JournalPage() {
 
       {/* Journal Grid - Responsive */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700">
-        {currentItems.map((item, index) => (
+        {journal.map((item, index) => (
           <div
-            key={`${item.id}-${startIndex + index}`}
+            key={item.id}
             className="group opacity-0 animate-fadeInUp"
             style={{
               animationDelay: `${index * 150}ms`,
