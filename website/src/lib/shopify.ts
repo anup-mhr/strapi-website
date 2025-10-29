@@ -179,7 +179,6 @@ async function getCategories(
       })
     );
 
-    console.log("Categories with collection IDs:", categories);
     return categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -282,6 +281,11 @@ async function getProducts({
   const useCollection = collection && !hasValidSubcategory;
   const useProductSearch = hasValidSubcategory || !collection;
 
+  const effectiveSortBy = useCollection && sortBy.sortKey === "CREATED_AT"
+    ? { ...sortBy, sortKey: "CREATED" } // map to CREATED for collections
+    : sortBy;
+
+
   // Build filter query for product search
   const buildFilterQuery = () => {
     const filters: string[] = [];
@@ -378,8 +382,8 @@ async function getProducts({
   const variables: Record<string, any> = {
     first,
     after,
-    sortKey: sortBy.sortKey,
-    reverse: sortBy.reverse,
+    sortKey: effectiveSortBy.sortKey,
+    reverse: effectiveSortBy.reverse,
   };
 
   if (useCollection) {
@@ -411,7 +415,6 @@ async function getProducts({
     variables.query = filterQuery;
   }
 
-  console.log("::", query, variables);
   const data = await shopifyFetch<any>(query, variables);
 
   // Extract data (works for both collection and product queries)
@@ -437,9 +440,6 @@ async function getProducts({
     );
   }
 
-  console.log("Total count:", totalCount);
-  console.log("Price range:", { min: minPriceFound, max: maxPriceFound });
-
   const pageInfo = rootData.products?.pageInfo || {
     hasNextPage: false,
     hasPreviousPage: false,
@@ -464,8 +464,6 @@ async function getProducts({
       }
     }
   }
-
-  console.log("Page cursors extracted:", pageCursors.length, "pages");
 
   return {
     products,
