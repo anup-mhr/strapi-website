@@ -83,7 +83,7 @@ export default function CartPage() {
                 Shopping Cart
               </h1>
             </div>
-            <div className="flex flex-col items-center mt-12">
+            <div className="flex flex-col h-full justify-center items-center mt-12">
               <div className="mb-6 text-sm">Your cart is empty.</div>
               <Link href="/shop" className="underline text-xs">
                 Explore the heirloom collections.

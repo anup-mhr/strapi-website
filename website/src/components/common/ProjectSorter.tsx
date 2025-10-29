@@ -1,22 +1,22 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-
-export const sortOptions = [
-  { value: "PRICE_ASC", label: "Price: Low to High" },
-  { value: "PRICE_DESC", label: "Price: High to Low" },
-  { value: "CREATED", label: "Newest First" },
-  { value: "TITLE_ASC", label: "Name A-Z" },
-  { value: "TITLE_DESC", label: "Name Z-A" },
-];
 
 interface ProjectSorterProps {
   sortBy: string | null;
   setSortBy: (value: string) => void;
+  sortOptions: { value: string; label: string }[];
+  className?: string;
 }
 
-export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
+export function ProjectSorter({
+  sortBy,
+  setSortBy,
+  sortOptions,
+  className,
+}: ProjectSorterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const effectiveSortBy = sortBy || sortOptions[0].value;
   const currentLabel = sortOptions.find(
@@ -29,7 +29,12 @@ export function ProjectSorter({ sortBy, setSortBy }: ProjectSorterProps) {
   };
 
   return (
-    <div className="relative inline-block w-full md:min-w-48 text-left">
+    <div
+      className={cn(
+        "relative inline-block w-full md:min-w-48 text-left",
+        className
+      )}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex w-full items-center justify-between cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200 min-w-[150px]"

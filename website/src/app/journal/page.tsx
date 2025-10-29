@@ -1,28 +1,22 @@
 "use client";
 import Heading from "@/components/common/Heading";
 import Loader from "@/components/common/Loader";
+import { ProjectSorter } from "@/components/common/ProjectSorter";
 import LinkButton from "@/components/LinkButton";
+import { journalSortOptions } from "@/constants/sorter";
 import { getImageUrl } from "@/lib/helper";
 import htmlToPlainText from "@/lib/htmlToPlainText";
 import { fetchJournals, IJournal } from "@/lib/strapiApiCall";
-import { ChevronDown, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-const ITEMS_PER_PAGE = 9;
-
-const FILTER_OPTIONS = [
-  { value: "default", label: "FILTER BY" },
-  { value: "date-newest", label: "NEWEST FIRST" },
-  { value: "date-oldest", label: "OLDEST FIRST" },
-  { value: "title-asc", label: "TITLE: A-Z" },
-  { value: "title-desc", label: "TITLE: Z-A" },
-];
+const ITEMS_PER_PAGE = 2;
 
 function JournalPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("default");
+  const [sortBy, setSortBy] = useState("published_date:desc");
   const [journal, setJournal] = useState<IJournal[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +28,7 @@ function JournalPage() {
         setIsLoading(true);
         setError(null);
 
-        const data = await fetchJournals();
+        const data = await fetchJournals(ITEMS_PER_PAGE, currentPage, sortBy);
         setJournal(data);
       } catch (err) {
         setError(
@@ -47,7 +41,7 @@ function JournalPage() {
     };
 
     fetchJournal();
-  }, []);
+  }, [currentPage, sortBy]);
 
   // Filter and sort journal entries
   const filteredAndSortedJournal = useMemo(() => {
@@ -192,20 +186,12 @@ function JournalPage() {
           {filteredAndSortedJournal.length} RESULTS
         </p>
 
-        {/* Custom styled select */}
         <div className="relative w-full sm:w-auto">
-          <select
-            value={sortBy}
-            onChange={(e) => handleSortChange(e.target.value)}
-            className="w-full sm:w-auto appearance-none border border-black/20 text-primary rounded-md font-bold tracking-normal pl-4 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm transition-all duration-300 hover:border-black/40 focus:border-black/60 focus:outline-none cursor-pointer bg-white"
-          >
-            {FILTER_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none" />
+          <ProjectSorter
+            sortBy={sortBy}
+            setSortBy={handleSortChange}
+            sortOptions={journalSortOptions}
+          />
         </div>
       </div>
 

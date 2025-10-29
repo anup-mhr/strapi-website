@@ -36,7 +36,11 @@ export interface IJournal {
   publishedAt: string;
 }
 
-async function fetchJournals(pageSize?: number): Promise<IJournal[] | []> {
+async function fetchJournals(
+  pageSize?: number,
+  page?: number,
+  sort?: string
+): Promise<IJournal[] | []> {
   try {
     const queryOptions = {
       populate: {
@@ -45,11 +49,13 @@ async function fetchJournals(pageSize?: number): Promise<IJournal[] | []> {
       },
       pagination: {
         pageSize: pageSize ?? 5,
+        page: page ?? 1,
       },
-      sort: ["published_date:desc"],
+      sort: [sort ?? "published_date:desc"],
     };
 
     const data = await fetchStrapi("/api/journals", queryOptions);
+    console.log("data from journal", data);
     return data.data;
   } catch (error) {
     console.error("Error fetching journals", error);

@@ -3,6 +3,7 @@
 import { ProjectSorter } from "@/components/common/ProjectSorter";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import ProductList from "@/components/sections/ProductList";
+import { shopSortOptions } from "@/constants/sorter";
 import { CategoryItem, getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
 import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
@@ -332,7 +333,11 @@ export default function ShopPage({
               </div>
 
               <div className="flex items-center">
-                <ProjectSorter sortBy={sortBy} setSortBy={handleSortChange} />
+                <ProjectSorter
+                  sortBy={sortBy}
+                  setSortBy={handleSortChange}
+                  sortOptions={shopSortOptions}
+                />
                 <Filter
                   className="w-5 h-5 ml-2 sm:hidden cursor-pointer"
                   onClick={() => setIsMobileFilterOpen(true)}
