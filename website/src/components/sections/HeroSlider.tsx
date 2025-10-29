@@ -87,7 +87,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-50 absolute bottom-1/3 left-4 sm:left-6 md:left-12 lg:left-24 xl:left-32 2xl:left-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="z-40 absolute bottom-1/3 left-4 sm:left-6 md:left-12 lg:left-24 xl:left-32 2xl:left-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
         aria-label="Previous image"
       >
         <ChevronLeft
@@ -99,7 +99,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
       <button
         onClick={nextImage}
-        className="z-50 absolute bottom-1/3 right-4 sm:right-6 md:right-12 lg:right-24 xl:right-32 2xl:right-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        className="z-40 absolute bottom-1/3 right-4 sm:right-6 md:right-12 lg:right-24 xl:right-32 2xl:right-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
         aria-label="Next image"
       >
         <ChevronRight
