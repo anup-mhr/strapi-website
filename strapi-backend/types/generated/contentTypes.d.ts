@@ -470,41 +470,6 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiPaymentModePaymentMode extends Struct.SingleTypeSchema {
-  collectionName: 'payment_modes';
-  info: {
-    displayName: 'payment-mode';
-    pluralName: 'payment-modes';
-    singularName: 'payment-mode';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    content: Schema.Attribute.RichText &
-      Schema.Attribute.Required &
-      Schema.Attribute.CustomField<
-        'plugin::ckeditor5.CKEditor',
-        {
-          preset: 'defaultHtml';
-        }
-      >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::payment-mode.payment-mode'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
@@ -1148,7 +1113,6 @@ declare module '@strapi/strapi' {
       'api::contact.contact': ApiContactContact;
       'api::hero-slide.hero-slide': ApiHeroSlideHeroSlide;
       'api::page.page': ApiPagePage;
-      'api::payment-mode.payment-mode': ApiPaymentModePaymentMode;
       'api::product.product': ApiProductProduct;
       'api::project.project': ApiProjectProject;
       'api::terms-and-condition.terms-and-condition': ApiTermsAndConditionTermsAndCondition;

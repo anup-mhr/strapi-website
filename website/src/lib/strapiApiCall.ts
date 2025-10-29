@@ -92,7 +92,7 @@ async function fetchPaymentModes(): Promise<string> {
       "/api/payment-mode",
       {},
       {
-        revalidate: 0,
+        revalidate: 60 * 60 * 24 * 5,
       }
     );
     return data.data.content;
