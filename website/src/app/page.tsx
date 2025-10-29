@@ -11,7 +11,7 @@ import Image from "next/image";
 export default async function Home() {
   const slides = await fetchHeroSlides();
 
-  const { products } = await getProducts({ first: 8 });
+  const { products } = await getProducts({ first: 8, sortBy: { sortKey: "CREATED_AT", reverse: true } });
 
   const { products: salesProducts } = await getProducts({
     first: 4,
@@ -38,7 +38,7 @@ export default async function Home() {
             title="JUST IN"
             subtitle="New & Trending"
             CTA="SHOP NOW"
-            href="/shop"
+            href="/shop/?sort=CREATED"
           />
         </div>
 
