@@ -31,7 +31,7 @@ function JournalPage() {
 
         const data = await fetchJournals(ITEMS_PER_PAGE, currentPage, sortBy);
         setJournal(data.data);
-        setTotalCount(data.meta?.pagination?.total);
+        setTotalCount(data.meta?.pagination?.total || 0);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load journal entries"
@@ -45,14 +45,16 @@ function JournalPage() {
     fetchJournal();
   }, [currentPage, sortBy]);
 
-  // Calculate pagination based on current page items
-  const totalPages =
-    journal.length === ITEMS_PER_PAGE ? currentPage + 1 : currentPage; // Rough estimate
+  // Calculate pagination based on total count from API
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
   // Calculate display range
   const displayStart =
     journal.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0;
-  const displayEnd = (currentPage - 1) * ITEMS_PER_PAGE + journal.length;
+  const displayEnd = Math.min(
+    (currentPage - 1) * ITEMS_PER_PAGE + journal.length,
+    totalCount
+  );
 
   // Reset to page 1 when sort changes
   const handleSortChange = (value: string) => {
@@ -85,7 +87,7 @@ function JournalPage() {
   const pageNumbers = getPageNumbers();
 
   // Loading state
-  if (isLoading) {
+  if (isLoading && journal.length === 0) {
     return (
       <>
         <Heading
@@ -121,7 +123,7 @@ function JournalPage() {
   }
 
   // Empty state
-  if (journal.length === 0 && currentPage === 1) {
+  if (journal.length === 0 && currentPage === 1 && !isLoading) {
     return (
       <>
         <Heading

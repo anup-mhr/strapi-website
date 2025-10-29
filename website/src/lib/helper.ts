@@ -1,5 +1,6 @@
 import { File } from "@/types/heroSlider";
 import { ShopifyProductPreview } from "@/types/shopify";
+import striptags from "striptags";
 
 export const formatPrice = (
   amount: string | number | null,
@@ -90,4 +91,17 @@ export function calculateReadingTime(
   } else {
     return `${minutes} min ${seconds} sec`;
   }
+}
+
+export function capitalize(string: string | null) {
+  if (!string) return null;
+  return string
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export function getPlainText(html?: string, fallback = ""): string {
+  if (!html) return fallback;
+  return striptags(html).trim();
 }

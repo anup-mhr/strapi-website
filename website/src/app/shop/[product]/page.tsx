@@ -1,9 +1,18 @@
 import ProductDetails from "@/components/ProductDetails";
 import ProductGallery from "@/components/ProductGallery";
 import ProductList from "@/components/sections/ProductList";
+import { generateJournalMetadata } from "@/lib/metadataHelper";
 import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const slug = (await params).id;
+  return await generateJournalMetadata(slug);
+}
 
 export default async function ProductPage({
   params,

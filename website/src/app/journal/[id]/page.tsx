@@ -6,11 +6,21 @@ import {
   getMonthYear,
 } from "@/lib/helper";
 import htmlToPlainText from "@/lib/htmlToPlainText";
+import { generateJournalMetadata } from "@/lib/metadataHelper";
 import { fetchJournalBySlug, fetchRelatedJournals } from "@/lib/strapiApiCall";
 import { ArrowLeft, Calendar, Clock, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const slug = (await params).id;
+  return await generateJournalMetadata(slug);
+}
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id: slug } = await params;
