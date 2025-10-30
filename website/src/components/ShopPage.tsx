@@ -123,54 +123,58 @@ export default function ShopClient({ categories }: ShopClientProps) {
   }, [filterKey]);
 
   // Fetch products
+  async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+    setIsLoading(true);
+    const sortingOption = resolveSortOption(urlParams.sortBy);
+
+    const query = {
+      first: ITEMS_PER_PAGE,
+      after: cursor,
+      minPrice: urlParams.minPrice,
+      maxPrice: urlParams.maxPrice,
+      collection: urlParams.category,
+      subcategory: urlParams.subcategory,
+      sortBy: sortingOption,
+    };
+
+    try {
+      const {
+        products,
+        priceRange: fetchedRange,
+        totalCount,
+        pageInfo,
+        pageCursors,
+      } = await getProducts(query);
+
+      setProducts(products);
+      setTotalCount(totalCount);
+      setPageInfo(pageInfo);
+      setAllPageCursors(pageCursors);
+
+      if (
+        !options?.skipPriceRange &&
+        fetchedRange?.min !== undefined &&
+        fetchedRange?.max !== undefined
+      ) {
+        setPriceRange(fetchedRange);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     let isMounted = true;
 
-    async function fetchProducts() {
-      setIsLoading(true);
-      const sortingOption = resolveSortOption(urlParams.sortBy);
-
-      const query = {
-        first: ITEMS_PER_PAGE,
-        after: cursor,
-        minPrice: urlParams.minPrice,
-        maxPrice: urlParams.maxPrice,
-        collection: urlParams.category,
-        subcategory: urlParams.subcategory,
-        sortBy: sortingOption,
-      };
-
-      try {
-        const {
-          products,
-          priceRange: fetchedRange,
-          totalCount,
-          pageInfo,
-          pageCursors,
-        } = await getProducts(query);
-
-        if (!isMounted) return;
-
-        setProducts(products);
-        setTotalCount(totalCount);
-        setPageInfo(pageInfo);
-        setAllPageCursors(pageCursors);
-
-        // Update price range only on first load or category change
-        if (
-          fetchedRange?.min !== undefined &&
-          fetchedRange?.max !== undefined
-        ) {
-          setPriceRange(fetchedRange);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
+    async function loadProducts() {
+      await fetchProducts({
+        skipPriceRange: !!(urlParams.minPrice || urlParams.maxPrice),
+      });
     }
 
-    fetchProducts();
+    loadProducts();
 
     return () => {
       isMounted = false;
