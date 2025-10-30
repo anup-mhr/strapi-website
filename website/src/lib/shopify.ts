@@ -1,7 +1,7 @@
+import { ITEMS_PER_PAGE } from "@/components/ShopPage";
 import { ShopifyProduct, ShopifyProductPreview } from "@/types/shopify";
 import { productMapper } from "./helper";
 import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
-import { itemsPerPage } from "@/components/ShopPage";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 
@@ -250,7 +250,7 @@ async function getRecommendedProducts(
 }
 
 async function getProducts({
-  first = itemsPerPage,
+  first = ITEMS_PER_PAGE,
   after = null,
   collection,
   subcategory,
@@ -460,7 +460,11 @@ async function getProducts({
 
   if (countEdges.length > 0) {
     // Get the cursor at the end of each page
-    for (let i = itemsPerPage - 1; i < countEdges.length; i += itemsPerPage) {
+    for (
+      let i = ITEMS_PER_PAGE - 1;
+      i < countEdges.length;
+      i += ITEMS_PER_PAGE
+    ) {
       const cursor = countEdges[i]?.cursor;
       if (cursor) {
         pageCursors.push(cursor);
@@ -481,4 +485,4 @@ async function getProducts({
 }
 
 export { getCategories, getProducts, getRecommendedProducts, shopifyFetch };
-export type { ShopifyProduct, ShopifyProductPreview, CategoryItem };
+export type { CategoryItem, ShopifyProduct, ShopifyProductPreview };
