@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 6;
 
 function JournalPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -166,42 +166,43 @@ function JournalPage() {
         {journal.map((item, index) => (
           <div
             key={item.id}
-            className="group opacity-0 animate-fadeInUp"
+            className="group opacity-0 animate-fadeInUp flex flex-col "
             style={{
               animationDelay: `${index * 150}ms`,
               animationFillMode: "forwards",
             }}
           >
-            <div className="overflow-hidden rounded-sm mb-4 sm:mb-5 lg:mb-6">
+            <div className="overflow-hidden mb-4 sm:mb-5 lg:mb-6">
               <Link href={`/journal/${item.slug}`}>
                 <Image
                   src={getImageUrl(item.profile_image)}
                   alt={item.title}
                   width={600}
                   height={600}
-                  className="aspect-[3/3.4] md:aspect-[3/3.7] object-cover w-full transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-95"
+                  className="aspect-[3/3.4] md:aspect-[3/3.8] object-cover w-full transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-95"
                 />
               </Link>
             </div>
+            <div className="flex flex-col flex-grow">
+              <h1 className="text-base sm:text-lg lg:text-xl font-semibold text-black line-clamp-2 capitalize">
+                {item.title}
+              </h1>
+              <h2 className="text-xs gap-3 flex sm:text-sm text-primary-pink capitalize tracking-wider my-1 sm:my-2">
+                {item.tags.map((tag) => (
+                  <p key={tag.id}>{tag.name}</p>
+                ))}
+              </h2>
+              <p className="text-xs text-black sm:text-sm lg:text-base sm:mt-4 mb-4 sm:mb-6 lg:mb-8 line-clamp-3 sm:line-clamp-4 leading-relaxed">
+                {htmlToPlainText(item.content).slice(0, 150) + "..."}
+              </p>
 
-            <h1 className="text-base sm:text-lg lg:text-xl font-semibold text-black line-clamp-2 capitalize">
-              {item.title}
-            </h1>
-            <h2 className="text-xs gap-3 flex sm:text-sm text-primary-pink capitalize tracking-wider my-1 sm:my-2">
-              {item.tags.map((tag) => (
-                <p key={tag.id}>{tag.name}</p>
-              ))}
-            </h2>
-            <p className="text-xs text-black sm:text-sm lg:text-base sm:mt-4 mb-4 sm:mb-6 lg:mb-8 line-clamp-3 sm:line-clamp-4 leading-relaxed">
-              {htmlToPlainText(item.content).slice(0, 150) + "..."}
-            </p>
-
-            <LinkButton
-              href={`/journal/${item.slug}`}
-              className="bg-black hover:bg-gray-900 text-xs sm:text-sm px-4! transition-all duration-300 hover:translate-x-1 w-full sm:w-auto"
-            >
-              READ STORY
-            </LinkButton>
+              <LinkButton
+                href={`/journal/${item.slug}`}
+                className="self-start bg-black hover:bg-gray-900 text-xs sm:text-sm px-4! transition-all duration-300 hover:translate-x-1 w-full sm:w-auto mt-auto"
+              >
+                READ STORY
+              </LinkButton>
+            </div>
           </div>
         ))}
       </section>
@@ -222,11 +223,10 @@ function JournalPage() {
             <button
               key={pageNum}
               onClick={() => setCurrentPage(pageNum)}
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-all duration-300 text-xs sm:text-sm font-medium ${
-                currentPage === pageNum
-                  ? "bg-primary-pink text-white scale-105"
-                  : "border border-black/20 text-gray-600 hover:border-black/40 hover:scale-105"
-              }`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-all duration-300 text-xs sm:text-sm font-medium ${currentPage === pageNum
+                ? "bg-primary-pink text-white scale-105"
+                : "border border-black/20 text-gray-600 hover:border-black/40 hover:scale-105"
+                }`}
             >
               {pageNum}
             </button>

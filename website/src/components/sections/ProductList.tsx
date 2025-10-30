@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const ProductList = ({
   products,
-  className = "grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+  className = "grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
 }: {
   products: ShopifyProductPreview[];
   className?: string;
@@ -23,12 +23,12 @@ const ProductList = ({
 
         return (
           <Link href={`/shop/${product?.handle}`} key={index}>
-            <div className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
+            <div className="group relative w-full aspect-[3/3.7] md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
               <Image
                 src={product?.images?.[0]?.src}
                 alt={product?.title}
                 fill
-                className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                className="transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
               />
 
               {/* Hover overlay */}

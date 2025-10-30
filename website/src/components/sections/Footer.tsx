@@ -25,7 +25,7 @@ const Footer = () => {
               alt={"Hierloom Naga Logo"}
               width={200}
               height={96}
-              className="object-contain w-32 sm:w-36 md:w-40 lg:w-50 h-auto"
+              className="object-contain w-32 sm:w-36 md:w-40 lg:w-50 h-10 sm:h-11 md:h-12"
             />
           </Link>
 
@@ -44,7 +44,7 @@ const Footer = () => {
                   className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
                 />
               </Link>
-              <Link href="/" target="_blank">
+              <Link href="https://www.facebook.com/people/Heirloom-Naga/" target="_blank">
                 <Image
                   src={"/images/socials/facebook.svg"}
                   alt="facebook"
@@ -53,7 +53,7 @@ const Footer = () => {
                   className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
                 />
               </Link>
-              <Link href="/" target="_blank">
+              {/* <Link href="/" target="_blank">
                 <Image
                   src={"/images/socials/x-twitter.svg"}
                   alt="x-twitter"
@@ -61,7 +61,7 @@ const Footer = () => {
                   height={44}
                   className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11"
                 />
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

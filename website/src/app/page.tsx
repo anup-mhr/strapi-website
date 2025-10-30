@@ -27,7 +27,6 @@ export default async function Home() {
     <div>
       <Header className="text-primary" />
       <HeroSlider slides={slides} />
-
       {/* Trending Section */}
       <div className="padding">
         <div className="text-center pt-8 sm:pt-10 md:pt-12">

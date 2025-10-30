@@ -150,9 +150,45 @@ async function fetchRelatedJournals(
   }
 }
 
+async function fetchAboutPage() {
+  const data = await fetchStrapi("/api/about");
+  return data.data.content;
+}
+
+async function fetchContactPage() {
+  const data = await fetchStrapi("/api/contact");
+  return data.data.content;
+}
+
+async function fetchReturnRefundPage() {
+  const data = await fetchStrapi("/api/return-and-refund");
+  return data.data.content;
+}
+
+async function fetchShippingPage() {
+  const data = await fetchStrapi("/api/shipping-policy");
+  return data.data.content;
+}
+
+async function fetchTermsPage() {
+  const data = await fetchStrapi("/api/terms-and-condition");
+  return data.data.content;
+}
+
+async function fetchPrivacyPage() {
+  const data = await fetchStrapi("/api/privacy-policy");
+  return data.data.content;
+}
+
 export {
   fetchHeroSlides,
   fetchJournalBySlug,
   fetchJournals,
   fetchRelatedJournals,
+  fetchReturnRefundPage,
+  fetchShippingPage,
+  fetchAboutPage,
+  fetchContactPage,
+  fetchTermsPage,
+  fetchPrivacyPage
 };

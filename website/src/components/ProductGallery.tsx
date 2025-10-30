@@ -161,7 +161,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
                 alt={`${name} ${index + 1}`}
                 width={600}
                 height={600}
-                className="object-cover w-full h-full transition-transform duration-300 ease-out select-none"
+                className="w-full h-auto transition-transform duration-300 ease-out select-none"
                 style={{
                   transform:
                     index === selectedImageIndex

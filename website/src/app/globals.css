@@ -19,6 +19,7 @@
   --color-secondary-pink: var(--color-secondary-pink);
   --breakpoint-custom-lg: 850px;
   --text-2xs: var(--text-2xs);
+  --breakpoint-custom-xl: 950px;
 }
 
 body {
@@ -27,7 +28,7 @@ body {
 }
 
 .padding {
-  @apply px-6 sm:px-12 md:px-14 lg:px-20 xl:px-40;
+  @apply px-6 sm:px-12 md:px-14 lg:px-20 2xl:px-40;
 }
 
 .nav {
