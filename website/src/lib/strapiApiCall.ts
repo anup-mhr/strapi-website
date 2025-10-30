@@ -16,7 +16,7 @@ async function fetchProjectCategories(): Promise<string[]> {
       "/api/pages",
       {},
       {
-        revalidate: 60,
+        revalidate: 60 * 5,
       }
     );
     const titles =
@@ -45,7 +45,10 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
     };
     const data: ApiResponse = await fetchStrapi(
       "/api/hero-slides",
-      queryOptions
+      queryOptions,
+      {
+        revalidate: 60 * 5,
+      }
     );
     return data.data;
   } catch (error) {
@@ -118,7 +121,10 @@ async function fetchProjectListByCategory(
     };
     const data: ProjectListResponse = await fetchStrapi(
       "/api/projects",
-      queryOptions
+      queryOptions,
+      {
+        revalidate: 60 * 60,
+      }
     );
 
     return data.data;

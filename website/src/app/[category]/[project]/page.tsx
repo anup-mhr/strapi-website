@@ -7,8 +7,6 @@ import {
   fetchProjectListByCategory,
 } from "@/lib/strapiApiCall";
 
-export const revalidate = 0;
-
 export async function generateStaticParams() {
   const categories = await fetchProjectCategories();
   const params: { category: string; project: string }[] = [];
@@ -70,13 +68,14 @@ async function page({
         </h1>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2">
-          {project.products.map((product) => (
+          {project.products.map((product, index) => (
             <ModifiedImage
               key={product.documentId}
               category={{ title: displayName }}
               project={product}
               href={`/${category}/${projectSlug}/${product.slug}`}
               mime={product.images[0].mime}
+              priority={[0, 1].includes(index)}
             />
           ))}
         </div>

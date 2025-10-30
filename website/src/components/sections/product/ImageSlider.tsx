@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const SLIDE_INTERVAL = 5000;
-// const SWIPE_THRESHOLD = 50;
 
 interface ImageSliderProps {
   images: File[];
@@ -19,9 +18,6 @@ interface ImageSliderProps {
 
 export default function ImageSlider({ images }: ImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [products, setProducts] = useState<ProductDetails[]>([]);
-  // const [touchStart, setTouchStart] = useState<number | null>(null);
-  // const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const { currentPath } = useNavigationHistory();
   const router = useRouter();
@@ -38,10 +34,6 @@ export default function ImageSlider({ images }: ImageSliderProps) {
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
-
-  // const prevImage = () => {
-  //   setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  // };
 
   const navigateToProduct = (direction: "next" | "previous") => {
     if (products.length < 2) return;
@@ -60,28 +52,6 @@ export default function ImageSlider({ images }: ImageSliderProps) {
     router.push(`${parentPath}/${targetSlug}`);
   };
 
-  // // Touch handling|| ""
-  // const handleTouchStart = (e: React.TouchEvent) => {
-  //   setTouchStart(e.targetTouches[0].clientX);
-  // };
-
-  // const handleTouchMove = (e: React.TouchEvent) => {
-  //   setTouchEnd(e.targetTouches[0].clientX);
-  // };
-
-  // const handleTouchEnd = () => {
-  //   if (touchStart === null || touchEnd === null) return;
-
-  //   const distance = touchStart - touchEnd;
-  //   if (Math.abs(distance) > SWIPE_THRESHOLD) {
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  //     distance > 0 ? nextImage() : prevImage();
-  //   }
-
-  //   setTouchStart(null);
-  //   setTouchEnd(null);
-  // };
-
   useEffect(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -96,35 +66,10 @@ export default function ImageSlider({ images }: ImageSliderProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Fetch products data
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const projectSlug = currentPath.split("/")?.[2];
-  //     if (!projectSlug) return;
-
-  //     try {
-  //       const data = await fetchProjectBySlug(projectSlug);
-  //       const sortedProducts =
-  //         data?.products?.sort((a, b) => a.name.localeCompare(b.name)) || [];
-  //       setProducts(sortedProducts);
-  //     } catch (error) {
-  //       console.error("Failed to fetch products:", error);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   return (
     <div className="w-full relative">
       {/* Image Slider */}
-      <div
-        className="relative w-full h-full overflow-hidden"
-        // onTouchStart={handleTouchStart}
-        // onTouchMove={handleTouchMove}
-        // onTouchEnd={handleTouchEnd}
-      >
+      <div className="relative w-full h-full overflow-hidden">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -143,18 +88,6 @@ export default function ImageSlider({ images }: ImageSliderProps) {
             </div>
           ))}
         </div>
-
-        {/* Click zones for navigation */}
-        {/* <button
-          onClick={prevImage}
-          className="absolute left-0 top-0 h-full w-1/4 bg-transparent cursor-pointer"
-          aria-label="Previous image"
-        />
-        <button
-          onClick={nextImage}
-          className="absolute right-0 top-0 h-full w-1/4 bg-transparent cursor-pointer"
-          aria-label="Next image"
-        /> */}
       </div>
 
       {/* Controls */}

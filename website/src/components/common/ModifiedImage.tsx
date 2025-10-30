@@ -1,10 +1,8 @@
-// "use client";
 import { getImageUrl } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { ProductDetails, ProjectList } from "@/types/project";
 import Image from "next/image";
 import Link from "next/link";
-// import { useState } from "react";
 
 function ModifiedImage({
   project,
@@ -12,30 +10,17 @@ function ModifiedImage({
   mime,
   ctaLabel = "VIEW IMAGE",
   category,
+  priority = false,
 }: {
   project: ProjectList | ProductDetails;
   href: string;
   mime: string;
   ctaLabel?: string;
   category?: { title: string };
+  priority?: boolean;
 }) {
-  // const [isTouched, setIsTouched] = useState(false);
-
-  // const handleTouchStart = () => {
-  //   setIsTouched(true);
-  // };
-
-  // const handleTouchEnd = () => {
-  //   // Keep the overlay visible for a short time on mobile
-  //   setTimeout(() => setIsTouched(false), 2000);
-  // };
-
   return (
-    <div
-      className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center"
-      // onTouchStart={handleTouchStart}
-      // onTouchEnd={handleTouchEnd}
-    >
+    <div className="group relative w-full aspect-square md:min-h-[400px] overflow-hidden shadow-lg flex items-center justify-center">
       {/* Mobile overlay - always visible on small screens */}
       <Link
         href={href}
@@ -58,28 +43,6 @@ function ModifiedImage({
       </Link>
 
       {/* Touch-based overlay for better mobile interaction */}
-      {/* <Link
-        href={href}
-        className={`md:hidden absolute top-1/2 left-1/2 z-10 w-[82%] h-[82%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-black/40 transition-all duration-500 ease-in-out ${
-          isTouched ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <h1 className="uppercase text-sm font-semibold text-white">
-          {"name" in project ? project?.name : project?.title}
-        </h1>
-        <h1 className="text-white/80 font-medium text-xs uppercase">
-          {"category" in project ? project?.category : category}
-        </h1>
-        <button
-          className={cn(
-            "bg-black text-white py-2 md:py-3 px-8 mt-2 w-max uppercase font-light tracking-widest text-2xs group cursor-pointer",
-            "uppercase mt-2"
-          )}
-        >
-          {ctaLabel}
-        </button>
-      </Link> */}
-
       {mime.includes("video") ? (
         <video
           src={getImageUrl(
@@ -98,6 +61,7 @@ function ModifiedImage({
           alt={"name" in project ? project?.name : project?.title}
           fill
           className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+          priority={priority}
         />
       )}
     </div>

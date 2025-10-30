@@ -41,13 +41,14 @@ function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
             Coming soon.
           </div>
         )}
-        {sortedProjects.map((project) => (
+        {sortedProjects.map((project, index) => (
           <ModifiedImage
             key={project.slug}
             project={project}
             mime={project.thumbnail.mime}
             ctaLabel={ctaLabel}
             href={`/${category}/${project.slug}`}
+            priority={[0, 1].includes(index)}
           />
         ))}
       </div>
