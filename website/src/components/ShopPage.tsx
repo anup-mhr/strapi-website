@@ -6,12 +6,13 @@ import ProductList from "@/components/sections/ProductList";
 import { shopSortOptions } from "@/constants/sorter";
 import { CategoryItem, getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
-import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ProductListSkeleton from "./common/ProjectListSkeleton";
+import Pagination from "./common/Pagination";
 
-export const itemsPerPage = 12;
+export const ITEMS_PER_PAGE = 12;
 
 function resolveSortOption(sortBy: string) {
   switch (sortBy) {
@@ -30,109 +31,112 @@ function resolveSortOption(sortBy: string) {
   }
 }
 
-export default function ShopPage({
-  categories,
-}: {
+interface ShopClientProps {
   categories: CategoryItem[];
-}) {
+}
+
+export default function ShopClient({ categories }: ShopClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([
-    null,
-  ]);
 
+  // Parse URL params once
+  const urlParams = useMemo(() => {
+    const rawSortBy = searchParams.get("sort");
+    const minPrice = searchParams.get("minPrice")
+      ? parseFloat(searchParams.get("minPrice")!)
+      : undefined;
+    const maxPrice = searchParams.get("maxPrice")
+      ? parseFloat(searchParams.get("maxPrice")!)
+      : undefined;
+
+    return {
+      sortBy: rawSortBy || "PRICE_ASC",
+      minPrice,
+      maxPrice,
+      category: searchParams.get("category") || "",
+      subcategory: searchParams.get("subcategory") || "",
+    };
+  }, [searchParams]);
+
+  // State
   const [products, setProducts] = useState<ShopifyProductPreview[]>([]);
   const [priceRange, setPriceRange] = useState<{
     min: number | undefined;
     max: number | undefined;
-  }>({
-    min: undefined,
-    max: undefined,
-  });
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [pageInfo, setPageInfo] = useState<{
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    endCursor: string | null;
-    startCursor: string | null;
-  }>({
+  }>({ min: undefined, max: undefined });
+  const [totalCount, setTotalCount] = useState(0);
+  const [pageInfo, setPageInfo] = useState({
     hasNextPage: false,
     hasPreviousPage: false,
-    endCursor: null,
-    startCursor: null,
+    endCursor: null as string | null,
+    startCursor: null as string | null,
   });
-
+  const [allPageCursors, setAllPageCursors] = useState<(string | null)[]>([
+    null,
+  ]);
   const [cursor, setCursor] = useState<string | null>(null);
-  const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null]);
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const rawSortBy = searchParams.get("sort");
-  const sortBy = rawSortBy || "PRICE_ASC";
-  const minPrice = searchParams.get("minPrice")
-    ? parseFloat(searchParams.get("minPrice")!)
-    : undefined;
-  const maxPrice = searchParams.get("maxPrice")
-    ? parseFloat(searchParams.get("maxPrice")!)
-    : undefined;
-  const category = searchParams.get("category") || "";
-  const subcategory = searchParams.get("subcategory") || "";
+  const prevFiltersRef = useRef("");
+  const filterKey = `${urlParams.category}-${urlParams.subcategory}-${urlParams.minPrice}-${urlParams.maxPrice}-${urlParams.sortBy}`;
 
-  const filters: Filters = { minPrice, maxPrice, category, subcategory };
-
-  const prevFiltersRef = useRef<string>("");
-  const filterKey = `${category}-${subcategory}-${minPrice}-${maxPrice}-${sortBy}`;
-
-  const updateURL = (
-    updates: Record<string, string | number | undefined | null>,
-    resetPage = false
-  ) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (resetPage) params.delete("page");
-
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value === undefined || value === "" || value === null)
-        params.delete(key);
-      else params.set(key, String(value));
-    });
-
-    router.push(`?${params.toString()}`, { scroll: false });
+  const filters: Filters = {
+    minPrice: urlParams.minPrice,
+    maxPrice: urlParams.maxPrice,
+    category: urlParams.category,
+    subcategory: urlParams.subcategory,
   };
 
-  // Now you can jump to any page!
-  const handlePageClick = (page: number) => {
-    if (page === currentPage) return;
+  // Update URL helper
+  const updateURL = useCallback(
+    (
+      updates: Record<string, string | number | undefined | null>,
+      resetPage = false
+    ) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    const targetCursor = allPageCursors[page - 1]; // ← Use the stored cursor!
-    setCursor(targetCursor);
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+      if (resetPage) params.delete("page");
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === undefined || value === "" || value === null) {
+          params.delete(key);
+        } else {
+          params.set(key, String(value));
+        }
+      });
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
 
   // Reset pagination when filters change
   useEffect(() => {
     if (prevFiltersRef.current !== filterKey) {
       setCursor(null);
-      setCursorHistory([null]);
       setCurrentPage(1);
+      setAllPageCursors([null]);
       prevFiltersRef.current = filterKey;
     }
   }, [filterKey]);
 
+  // Fetch products
   useEffect(() => {
-    async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+    let isMounted = true;
+
+    async function fetchProducts() {
       setIsLoading(true);
-      const sortingOption = resolveSortOption(sortBy);
+      const sortingOption = resolveSortOption(urlParams.sortBy);
 
       const query = {
-        first: itemsPerPage,
+        first: ITEMS_PER_PAGE,
         after: cursor,
-        minPrice,
-        maxPrice,
-        collection: category,
-        subcategory,
+        minPrice: urlParams.minPrice,
+        maxPrice: urlParams.maxPrice,
+        collection: urlParams.category,
+        subcategory: urlParams.subcategory,
         sortBy: sortingOption,
       };
 
@@ -142,144 +146,99 @@ export default function ShopPage({
           priceRange: fetchedRange,
           totalCount,
           pageInfo,
-          pageCursors, // ← Get the cursors!
+          pageCursors,
         } = await getProducts(query);
+
+        if (!isMounted) return;
 
         setProducts(products);
         setTotalCount(totalCount);
         setPageInfo(pageInfo);
-        setAllPageCursors(pageCursors); // ← Store them!
+        setAllPageCursors(pageCursors);
 
+        // Update price range only on first load or category change
         if (
-          !options?.skipPriceRange &&
           fetchedRange?.min !== undefined &&
           fetchedRange?.max !== undefined
-        )
+        ) {
           setPriceRange(fetchedRange);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     }
 
-    fetchProducts({ skipPriceRange: true });
-  }, [minPrice, maxPrice, sortBy, cursor, category, subcategory]);
+    fetchProducts();
 
-  // Refresh price range when category/subcategory changes
-  useEffect(() => {
-    async function refreshPriceRange() {
-      try {
-        const sortingOption = resolveSortOption(sortBy);
-        const query = {
-          first: 1,
-          after: null,
-          collection: category,
-          subcategory,
-          sortBy: sortingOption,
-        };
+    return () => {
+      isMounted = false;
+    };
+  }, [cursor, urlParams]);
 
-        const { priceRange: newRange } = await getProducts(query);
-
-        if (newRange?.min !== undefined && newRange?.max !== undefined)
-          setPriceRange(newRange);
-      } catch (error) {
-        console.error("Error refreshing price range:", error);
-      }
-    }
-
-    refreshPriceRange();
-  }, [category, sortBy, subcategory]);
-
-  const handleCategoryChange = (
-    newCategory: string,
-    newSubcategory: string
-  ) => {
-    setCursor(null);
-    setCursorHistory([null]);
-    setCurrentPage(1);
-    updateURL(
-      {
-        category: newCategory,
-        subcategory: newSubcategory,
-        minPrice: undefined,
-        maxPrice: undefined,
-      },
-      true
-    );
-  };
-
-  const handleApplyPriceFilter = (
-    newMinPrice?: number,
-    newMaxPrice?: number
-  ) => {
-    setCursor(null);
-    setCursorHistory([null]);
-    setCurrentPage(1);
-    updateURL({ minPrice: newMinPrice, maxPrice: newMaxPrice }, true);
-    setIsMobileFilterOpen(false);
-  };
-
-  const handleSortChange = (newSort: string) => {
-    setCursor(null);
-    setCursorHistory([null]);
-    setCurrentPage(1);
-    updateURL({ sort: newSort }, true);
-  };
-
-  const handleNextPage = () => {
-    if (pageInfo.hasNextPage && pageInfo.endCursor) {
-      setCursorHistory((prev) => [...prev, pageInfo.endCursor]);
-      setCursor(pageInfo.endCursor);
-      setCurrentPage((p) => p + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      const prevCursor = cursorHistory[newPage - 1] || null;
-      setCursor(prevCursor);
-      setCurrentPage(newPage);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + products.length, totalCount);
-
-  // Compute pagination buttons (show up to 4)
-  const getVisiblePages = () => {
-    const pages: number[] = [];
-    const maxVisible = 4;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
-    } else if (currentPage <= 2) {
-      pages.push(1, 2, 3, 4);
-    } else if (currentPage >= totalPages - 1) {
-      pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-    } else {
-      pages.push(
-        currentPage - 1,
-        currentPage,
-        currentPage + 1,
-        currentPage + 2
+  // Handlers
+  const handleCategoryChange = useCallback(
+    (newCategory: string, newSubcategory: string) => {
+      setCursor(null);
+      setCurrentPage(1);
+      setAllPageCursors([null]);
+      updateURL(
+        {
+          category: newCategory,
+          subcategory: newSubcategory,
+          minPrice: undefined,
+          maxPrice: undefined,
+        },
+        true
       );
-    }
+    },
+    [updateURL]
+  );
 
-    return pages.filter((p) => p >= 1 && p <= totalPages);
-  };
+  const handleApplyPriceFilter = useCallback(
+    (newMinPrice?: number, newMaxPrice?: number) => {
+      setCursor(null);
+      setCurrentPage(1);
+      setAllPageCursors([null]);
+      updateURL({ minPrice: newMinPrice, maxPrice: newMaxPrice }, true);
+      setIsMobileFilterOpen(false);
+    },
+    [updateURL]
+  );
 
-  const visiblePages = getVisiblePages();
+  const handleSortChange = useCallback(
+    (newSort: string) => {
+      setCursor(null);
+      setCurrentPage(1);
+      setAllPageCursors([null]);
+      updateURL({ sort: newSort }, true);
+    },
+    [updateURL]
+  );
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (page === currentPage) return;
+
+      const targetCursor = allPageCursors[page - 1];
+      setCursor(targetCursor);
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [currentPage, allPageCursors]
+  );
+
+  // Calculate display values
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + products.length, totalCount);
 
   return (
     <div>
       <main className="py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-8 xl:gap-16">
-          {/* Sidebar */}
+          {/* Desktop Sidebar */}
           <div className="hidden lg:block">
             <FilterSidebar
               filters={filters}
@@ -317,11 +276,12 @@ export default function ShopPage({
 
           {/* Product List + Sorting */}
           <div>
+            {/* Filter Bar */}
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-6 sm:mb-8 md:mb-10">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setIsMobileFilterOpen(true)}
-                  className="hidden md:flex lg:hidden items-center gap-2  cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+                  className="hidden md:flex lg:hidden items-center gap-2 cursor-pointer px-4 py-2 uppercase text-xs text-black tracking-normal bg-white border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
                 >
                   <Filter className="w-4 h-4" />
                   <span className="text-xs font-medium">FILTERS</span>
@@ -334,7 +294,7 @@ export default function ShopPage({
 
               <div className="flex items-center">
                 <ProjectSorter
-                  sortBy={sortBy}
+                  sortBy={urlParams.sortBy}
                   setSortBy={handleSortChange}
                   sortOptions={shopSortOptions}
                 />
@@ -345,9 +305,10 @@ export default function ShopPage({
               </div>
             </div>
 
+            {/* Products Grid */}
             {isLoading ? (
               <ProductListSkeleton
-                count={itemsPerPage}
+                count={ITEMS_PER_PAGE}
                 className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
               />
             ) : (
@@ -366,45 +327,12 @@ export default function ShopPage({
 
             {/* Pagination */}
             {totalPages > 1 && !isLoading && (
-              <div className="flex justify-center lg:justify-start items-center space-x-2 mt-10">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500  ${
-                    currentPage === 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : "cursor-pointer"
-                  }`}
-                >
-                  <ChevronsLeft />
-                </button>
-
-                {visiblePages.map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageClick(page)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border cursor-pointer ${
-                      currentPage === page
-                        ? "bg-primary-pink text-white border-primary-pink"
-                        : "border-black/20 text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  onClick={handleNextPage}
-                  disabled={!pageInfo.hasNextPage}
-                  className={`w-10 h-10 flex items-center justify-center text-gray-500 ${
-                    pageInfo.hasNextPage
-                      ? "cursor-pointer"
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
-                >
-                  <ChevronsRight />
-                </button>
-              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                hasNextPage={pageInfo.hasNextPage}
+                onPageChange={handlePageChange}
+              />
             )}
           </div>
         </div>
