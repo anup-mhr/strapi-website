@@ -1,7 +1,7 @@
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
 import { loadLinks } from "@/lib/helper";
-import { fetchPaymentModes } from "@/lib/strapiApiCall";
+import { fetchTermsContent } from "@/lib/strapiApiCall";
 
 export const metadata = {
   title: "Aku Zeliang - Terms & Conditions",
@@ -11,7 +11,7 @@ export const metadata = {
 
 async function page() {
   const links = await loadLinks();
-  const termsData = await fetchPaymentModes();
+  const termsData = await fetchTermsContent();
   return (
     <div className="bg-white text-black font-dosis tracking-wider">
       <Navigation links={links} />

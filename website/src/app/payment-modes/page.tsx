@@ -16,8 +16,8 @@ async function page() {
       <Navigation links={links} />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 custom-md:px-16 custom-lg:px-32 xl:px-44 py-20 md:py-40 ">
-        <h1 className="text-3xl font-semibold mb-6 text-center">
-          Accepted Payment Modes
+        <h1 className="text-3xl font-semibold mb-8 text-center">
+          Payment Modes
         </h1>
 
         <div
