@@ -29,6 +29,7 @@ const ProductList = ({
                 alt={product?.title}
                 fill
                 className="transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                priority={[0, 1].includes(index)}
               />
 
               {/* Hover overlay */}
