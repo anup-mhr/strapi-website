@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "return_and_refunds",
+  "info": {
+    "singularName": "return-and-refund",
+    "pluralName": "return-and-refunds",
+    "displayName": "Return and Refund"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "content": {
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultHtml"
+      }
+    }
+  }
+}

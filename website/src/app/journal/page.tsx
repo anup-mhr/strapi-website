@@ -166,7 +166,7 @@ function JournalPage() {
         {journal.map((item, index) => (
           <div
             key={item.id}
-            className="group opacity-0 animate-fadeInUp flex flex-col "
+            className="group opacity-0 animate-fadeInUp flex flex-col flex-grow "
             style={{
               animationDelay: `${index * 150}ms`,
               animationFillMode: "forwards",
@@ -183,7 +183,7 @@ function JournalPage() {
                 />
               </Link>
             </div>
-            <div className="flex flex-col flex-grow">
+            <div className="">
               <h1 className="text-base sm:text-lg lg:text-xl font-semibold text-black line-clamp-2 capitalize">
                 {item.title}
               </h1>
