@@ -3,6 +3,14 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchShippingPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - Shipping Policy",
+  description:
+    "Learn about Heirloom Naga's shipping process, delivery timelines, and policies for handcrafted Naga products. Get your orders delivered safely and on time.",
+  keywords:
+    "Heirloom Naga, shipping policy, delivery, Naga crafts, handmade products, shipping information, order delivery",
+};
+
 async function page() {
   const data = await fetchShippingPage();
 

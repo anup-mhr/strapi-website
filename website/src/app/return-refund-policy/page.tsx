@@ -3,6 +3,14 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchReturnRefundPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - Return & Refund Policy",
+  description:
+    "Read Heirloom Naga's return and refund policy for handcrafted Naga products. Learn how to return items, request refunds, and ensure a smooth and hassle-free process.",
+  keywords:
+    "Heirloom Naga, return policy, refund policy, Naga crafts, handmade products, returns, refunds, customer support",
+};
+
 async function page() {
   const data = await fetchReturnRefundPage();
 

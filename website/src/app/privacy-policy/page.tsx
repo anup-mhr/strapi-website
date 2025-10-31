@@ -3,6 +3,14 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchPrivacyPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - Privacy Policy",
+  description:
+    "Read about how Heirloom Naga collects, uses, and protects your personal information.",
+  keywords:
+    "heirloom, naga, privacy, policy, information, collection, use, protection",
+};
+
 async function page() {
   const data = await fetchPrivacyPage();
 

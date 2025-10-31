@@ -3,6 +3,12 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchAboutPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - About Us",
+  description:
+    "Discover exquisite handcrafted pieces that preserve ancient Naga traditions. From ceramics to textiles, each item tells a story of heritage and timeless beauty.",
+};
+
 async function AboutPage() {
   const data = await fetchAboutPage();
   return (

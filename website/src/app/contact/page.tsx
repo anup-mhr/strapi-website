@@ -4,6 +4,15 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchContactPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - Contact",
+  description:
+    "Get in touch with Heirloom Naga to explore our handcrafted Naga heritage pieces, workshops, and guesthouse experiences. Reach us via email, phone, or visit us in Dimapur, Nagaland.",
+  keywords:
+    "Heirloom Naga, contact, Naga crafts, Dimapur, Nagaland, workshops, guesthouse, handmade",
+  author: "Heirloom Naga",
+};
+
 async function ContactPage() {
   const data = await fetchContactPage();
   return (

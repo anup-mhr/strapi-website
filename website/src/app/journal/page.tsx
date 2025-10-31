@@ -166,7 +166,7 @@ function JournalPage() {
         {journal.map((item, index) => (
           <div
             key={item.id}
-            className="group opacity-0 animate-fadeInUp flex flex-col flex-grow "
+            className="group opacity-0 animate-fadeInUp flex flex-col grow "
             style={{
               animationDelay: `${index * 150}ms`,
               animationFillMode: "forwards",
@@ -223,10 +223,11 @@ function JournalPage() {
             <button
               key={pageNum}
               onClick={() => setCurrentPage(pageNum)}
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-all duration-300 text-xs sm:text-sm font-medium ${currentPage === pageNum
-                ? "bg-primary-pink text-white scale-105"
-                : "border border-black/20 text-gray-600 hover:border-black/40 hover:scale-105"
-                }`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-all duration-300 text-xs sm:text-sm font-medium ${
+                currentPage === pageNum
+                  ? "bg-primary-pink text-white scale-105"
+                  : "border border-black/20 text-gray-600 hover:border-black/40 hover:scale-105"
+              }`}
             >
               {pageNum}
             </button>

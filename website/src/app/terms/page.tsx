@@ -3,6 +3,12 @@ import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { fetchTermsPage } from "@/lib/strapiApiCall";
 
+export const metadata = {
+  title: "Heirloom Naga - Terms & Conditions",
+  description:
+    "Terms and Conditions for Heirloom Naga. Read our terms and conditions carefully before using our website.",
+};
+
 async function TermsPage() {
   const data = await fetchTermsPage();
   return (
