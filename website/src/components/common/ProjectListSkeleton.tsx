@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 const ProductListSkeleton = ({
-  count = 8,
-  className = "grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+  count = 12,
+  className = "grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
 }: {
   count?: number;
   className?: string;
