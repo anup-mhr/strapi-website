@@ -314,7 +314,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
             {isLoading ? (
               <ProductListSkeleton
                 count={ITEMS_PER_PAGE}
-                className="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+                className="grid-cols-2 xl:grid-cols-3"
               />
             ) : (
               <div className="min-h-screen">

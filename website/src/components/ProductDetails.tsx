@@ -99,7 +99,7 @@ export default function ProductDetails({
         </div>
       )}
 
-      <div className="flex items-center gap-4 md:gap-8 mt-15 xl:mt-44">
+      <div className="flex flex-col xs:flex-row items-center gap-4 md:gap-8 mt-15 xl:mt-44">
         <div className="flex items-center gap-2 md:gap-8">
           <label htmlFor="quantity" className="text-gray-700">
             Quantity

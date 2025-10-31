@@ -69,7 +69,7 @@ const Header = ({ className = "" }: { className?: string }) => {
     >
       <Link
         href="/"
-        className="w-32 sm:w-36 md:w-40 lg:w-50 h-10 sm:h-11 md:h-12 relative"
+        className="w-32 md:w-36 lg:w-44 h-10  md:h-12 my-1 relative"
       >
         <Image
           src="/images/logo.png"

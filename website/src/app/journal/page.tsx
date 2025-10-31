@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 function JournalPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -162,11 +162,11 @@ function JournalPage() {
       </div>
 
       {/* Journal Grid - Responsive */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700 items-stretch">
         {journal.map((item, index) => (
           <div
             key={item.id}
-            className="group opacity-0 animate-fadeInUp flex flex-col grow "
+            className="group opacity-0 animate-fadeInUp flex flex-col grow h-full"
             style={{
               animationDelay: `${index * 150}ms`,
               animationFillMode: "forwards",
@@ -183,26 +183,29 @@ function JournalPage() {
                 />
               </Link>
             </div>
-            <div className="">
+
+            <div className="flex-1 flex flex-col space-y-2 sm:space-y-3 lg:space-y-4">
               <h1 className="text-base sm:text-lg lg:text-xl font-semibold text-black line-clamp-2 capitalize">
                 {item.title}
               </h1>
-              <h2 className="text-xs gap-3 flex sm:text-sm text-primary-pink capitalize tracking-wider my-1 sm:my-2">
+
+              <h2 className="text-xs gap-2 flex sm:text-sm text-primary-pink capitalize tracking-wider">
                 {item.tags.map((tag) => (
                   <p key={tag.id}>{tag.name}</p>
                 ))}
               </h2>
-              <p className="text-xs text-black sm:text-sm lg:text-base sm:mt-4 mb-4 sm:mb-6 lg:mb-8 line-clamp-3 sm:line-clamp-4 leading-relaxed">
+
+              <p className="text-xs text-black sm:text-sm lg:text-base leading-relaxed line-clamp-2 sm:line-clamp-3">
                 {htmlToPlainText(item.content).slice(0, 150) + "..."}
               </p>
-
-              <LinkButton
-                href={`/journal/${item.slug}`}
-                className="self-start bg-black hover:bg-gray-900 text-xs sm:text-sm px-4! transition-all duration-300 hover:translate-x-1 w-full sm:w-auto mt-auto"
-              >
-                READ STORY
-              </LinkButton>
             </div>
+
+            <LinkButton
+              href={`/journal/${item.slug}`}
+              className="mt-4 self-start bg-black hover:bg-gray-900 text-xs sm:text-sm px-4! transition-all duration-300 hover:translate-x-1 w-auto"
+            >
+              READ STORY
+            </LinkButton>
           </div>
         ))}
       </section>
