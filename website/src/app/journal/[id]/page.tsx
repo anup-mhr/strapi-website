@@ -97,17 +97,14 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
           </header>
 
           {/* Featured Image */}
-          {/* <div className="relative aspect-video mb-8 sm:mb-10 lg:mb-12 rounded-md sm:rounded-lg overflow-hidden"> */}
           <Image
             src={getImageUrl(post.profile_image)}
             alt={post.title}
             width={600}
             height={600}
             className="object-cover object-center w-full mb-8 sm:mb-10 lg:mb-12 rounded-md sm:rounded-lg"
-            // sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 896px"
             priority
           />
-          {/* </div> */}
 
           {/* Article Content */}
           <article className="prose prose-sm sm:prose-base max-w-none mb-12 sm:mb-14 lg:mb-16">

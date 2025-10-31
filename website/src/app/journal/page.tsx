@@ -162,7 +162,7 @@ function JournalPage() {
       </div>
 
       {/* Journal Grid - Responsive */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700 items-stretch">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700 items-stretch">
         {journal.map((item, index) => (
           <div
             key={item.id}
@@ -180,6 +180,7 @@ function JournalPage() {
                   width={600}
                   height={600}
                   className="aspect-[3/3.4] md:aspect-[3/3.8] object-cover w-full transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-95"
+                  priority={[0, 1].includes(index)}
                 />
               </Link>
             </div>

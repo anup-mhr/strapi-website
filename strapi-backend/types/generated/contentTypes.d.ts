@@ -385,6 +385,7 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
@@ -416,6 +417,7 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
@@ -525,6 +527,7 @@ export interface ApiPrivacyPolicyPrivacyPolicy extends Struct.SingleTypeSchema {
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
@@ -560,6 +563,7 @@ export interface ApiReturnAndRefundReturnAndRefund
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
@@ -595,6 +599,7 @@ export interface ApiShippingPolicyShippingPolicy
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
@@ -630,6 +635,7 @@ export interface ApiTermsAndConditionTermsAndCondition
   };
   attributes: {
     content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
