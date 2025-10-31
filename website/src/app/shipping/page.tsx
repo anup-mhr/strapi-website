@@ -11,15 +11,11 @@ async function page() {
       <Header />
       <div className="padding py-8 sm:py-10 md:py-12">
         <Heading title="SHIPPING" subtitle="Our shipping policy" />
-        <div className="mx-auto w-full max-w-5xl">
-          {
-            data && (
-              <div
-                dangerouslySetInnerHTML={{ __html: data }}
-              />
-            )
-          }
-        </div>
+
+        <div
+          className="mx-auto w-full max-w-5xl"
+          dangerouslySetInnerHTML={{ __html: data }}
+        />
       </div>
       <Footer />
     </div>

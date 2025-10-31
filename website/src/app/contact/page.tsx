@@ -12,13 +12,7 @@ async function ContactPage() {
 
       <main className="py-8 sm:py-10 md:py-12 padding">
         <Heading title="CONTACT" subtitle="Get in touch with us!" />
-        {
-          data && (
-            <div
-              dangerouslySetInnerHTML={{ __html: data }}
-            />
-          )
-        }
+        {data && <div dangerouslySetInnerHTML={{ __html: data }} />}
 
         {/* Contact Form */}
         <ContactForm />

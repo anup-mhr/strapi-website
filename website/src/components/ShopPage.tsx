@@ -9,8 +9,8 @@ import { ShopifyProductPreview } from "@/types/shopify";
 import { Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ProductListSkeleton from "./common/ProjectListSkeleton";
 import Pagination from "./common/Pagination";
+import ProductListSkeleton from "./common/ProjectListSkeleton";
 
 export const ITEMS_PER_PAGE = 12;
 
@@ -122,51 +122,49 @@ export default function ShopClient({ categories }: ShopClientProps) {
     }
   }, [filterKey]);
 
-  // Fetch products
-  async function fetchProducts(options?: { skipPriceRange?: boolean }) {
-    setIsLoading(true);
-    const sortingOption = resolveSortOption(urlParams.sortBy);
-
-    const query = {
-      first: ITEMS_PER_PAGE,
-      after: cursor,
-      minPrice: urlParams.minPrice,
-      maxPrice: urlParams.maxPrice,
-      collection: urlParams.category,
-      subcategory: urlParams.subcategory,
-      sortBy: sortingOption,
-    };
-
-    try {
-      const {
-        products,
-        priceRange: fetchedRange,
-        totalCount,
-        pageInfo,
-        pageCursors,
-      } = await getProducts(query);
-
-      setProducts(products);
-      setTotalCount(totalCount);
-      setPageInfo(pageInfo);
-      setAllPageCursors(pageCursors);
-
-      if (
-        !options?.skipPriceRange &&
-        fetchedRange?.min !== undefined &&
-        fetchedRange?.max !== undefined
-      ) {
-        setPriceRange(fetchedRange);
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   useEffect(() => {
-    let isMounted = true;
+    // Fetch products
+    async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+      setIsLoading(true);
+      const sortingOption = resolveSortOption(urlParams.sortBy);
+
+      const query = {
+        first: ITEMS_PER_PAGE,
+        after: cursor,
+        minPrice: urlParams.minPrice,
+        maxPrice: urlParams.maxPrice,
+        collection: urlParams.category,
+        subcategory: urlParams.subcategory,
+        sortBy: sortingOption,
+      };
+
+      try {
+        const {
+          products,
+          priceRange: fetchedRange,
+          totalCount,
+          pageInfo,
+          pageCursors,
+        } = await getProducts(query);
+
+        setProducts(products);
+        setTotalCount(totalCount);
+        setPageInfo(pageInfo);
+        setAllPageCursors(pageCursors);
+
+        if (
+          !options?.skipPriceRange &&
+          fetchedRange?.min !== undefined &&
+          fetchedRange?.max !== undefined
+        ) {
+          setPriceRange(fetchedRange);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
     async function loadProducts() {
       await fetchProducts({
@@ -175,11 +173,14 @@ export default function ShopClient({ categories }: ShopClientProps) {
     }
 
     loadProducts();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [cursor, urlParams]);
+  }, [
+    cursor,
+    urlParams.category,
+    urlParams.maxPrice,
+    urlParams.minPrice,
+    urlParams.sortBy,
+    urlParams.subcategory,
+  ]);
 
   // Handlers
   const handleCategoryChange = useCallback(

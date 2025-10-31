@@ -151,33 +151,99 @@ async function fetchRelatedJournals(
 }
 
 async function fetchAboutPage() {
-  const data = await fetchStrapi("/api/about");
-  return data.data.content;
+  try {
+    const data = await fetchStrapi(
+      "/api/about",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
 async function fetchContactPage() {
-  const data = await fetchStrapi("/api/contact");
-  return data.data.content;
+  try {
+    const data = await fetchStrapi(
+      "/api/contact",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
 async function fetchReturnRefundPage() {
-  const data = await fetchStrapi("/api/return-and-refund");
-  return data.data.content;
+  try {
+    const data = await fetchStrapi(
+      "/api/return-and-refund",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
 async function fetchShippingPage() {
-  const data = await fetchStrapi("/api/shipping-policy");
-  return data.data.content;
+  try {
+    const data = await fetchStrapi(
+      "/api/shipping-policy",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
-async function fetchTermsPage() {
-  const data = await fetchStrapi("/api/terms-and-condition");
-  return data.data.content;
+async function fetchTermsPage(): Promise<string> {
+  try {
+    const data = await fetchStrapi(
+      "/api/terms-and-condition",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
 async function fetchPrivacyPage() {
-  const data = await fetchStrapi("/api/privacy-policy");
-  return data.data.content;
+  try {
+    const data = await fetchStrapi(
+      "/api/privacy-policy",
+      {}
+      // {
+      //   revalidate: 60 * 60 * 24 * 30,
+      // }
+    );
+    return data.data.content;
+  } catch (error) {
+    console.error("Error fetching terms data", error);
+    return "";
+  }
 }
 
 export {
@@ -190,5 +256,5 @@ export {
   fetchAboutPage,
   fetchContactPage,
   fetchTermsPage,
-  fetchPrivacyPage
+  fetchPrivacyPage,
 };

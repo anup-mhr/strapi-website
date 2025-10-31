@@ -10,15 +10,11 @@ async function TermsPage() {
       <Header />
       <div className="py-8 sm:py-10 md:py-12 padding">
         <Heading title="TERMS" subtitle="Our terms & conditions" />
-        <div className="w-full mx-auto max-w-5xl">
-          {
-            data && (
-              <div
-                dangerouslySetInnerHTML={{ __html: data }}
-              />
-            )
-          }
-        </div>
+
+        <div
+          className="w-full mx-auto min-h-[20vh] max-w-5xl"
+          dangerouslySetInnerHTML={{ __html: data }}
+        />
       </div>
       <Footer />
     </div>
