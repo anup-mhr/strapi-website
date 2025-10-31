@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 function JournalPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -162,7 +162,7 @@ function JournalPage() {
       </div>
 
       {/* Journal Grid - Responsive */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700 items-stretch">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 gap-y-12 sm:gap-y-16 lg:gap-y-24 text-gray-700 items-stretch">
         {journal.map((item, index) => (
           <div
             key={item.id}
