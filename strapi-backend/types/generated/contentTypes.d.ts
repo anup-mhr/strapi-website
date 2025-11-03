@@ -376,7 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   collectionName: 'abouts';
   info: {
-    displayName: 'About';
+    displayName: 'about';
     pluralName: 'abouts';
     singularName: 'about';
   };
@@ -398,6 +398,10 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'about'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -408,7 +412,7 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
 export interface ApiContactContact extends Struct.SingleTypeSchema {
   collectionName: 'contacts';
   info: {
-    displayName: 'Contact';
+    displayName: 'contact';
     pluralName: 'contacts';
     singularName: 'contact';
   };
@@ -433,6 +437,10 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
       'api::contact.contact'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'contact'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -518,7 +526,7 @@ export interface ApiJournalJournal extends Struct.CollectionTypeSchema {
 export interface ApiPrivacyPolicyPrivacyPolicy extends Struct.SingleTypeSchema {
   collectionName: 'privacy_policies';
   info: {
-    displayName: 'Privacy Policy';
+    displayName: 'privacy-policy';
     pluralName: 'privacy-policies';
     singularName: 'privacy-policy';
   };
@@ -543,6 +551,10 @@ export interface ApiPrivacyPolicyPrivacyPolicy extends Struct.SingleTypeSchema {
       'api::privacy-policy.privacy-policy'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'privacy-policy'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -554,7 +566,7 @@ export interface ApiReturnAndRefundReturnAndRefund
   extends Struct.SingleTypeSchema {
   collectionName: 'return_and_refunds';
   info: {
-    displayName: 'Return and Refund';
+    displayName: 'return-refund-policy';
     pluralName: 'return-and-refunds';
     singularName: 'return-and-refund';
   };
@@ -579,6 +591,10 @@ export interface ApiReturnAndRefundReturnAndRefund
       'api::return-and-refund.return-and-refund'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'return-refund-policy'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -590,7 +606,7 @@ export interface ApiShippingPolicyShippingPolicy
   extends Struct.SingleTypeSchema {
   collectionName: 'shipping_policies';
   info: {
-    displayName: 'Shipping Policy';
+    displayName: 'shipping';
     pluralName: 'shipping-policies';
     singularName: 'shipping-policy';
   };
@@ -615,6 +631,10 @@ export interface ApiShippingPolicyShippingPolicy
       'api::shipping-policy.shipping-policy'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'shipping'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -626,7 +646,7 @@ export interface ApiTermsAndConditionTermsAndCondition
   extends Struct.SingleTypeSchema {
   collectionName: 'terms_and_conditions';
   info: {
-    displayName: 'Terms and Condition';
+    displayName: 'terms';
     pluralName: 'terms-and-conditions';
     singularName: 'terms-and-condition';
   };
@@ -651,6 +671,10 @@ export interface ApiTermsAndConditionTermsAndCondition
       'api::terms-and-condition.terms-and-condition'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'terms'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

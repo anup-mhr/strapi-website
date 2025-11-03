@@ -21,7 +21,21 @@ async function page() {
         <Heading title="SHIPPING" subtitle="Our shipping policy" />
 
         <div
-          className="mx-auto w-full max-w-5xl"
+          className="mx-auto w-full max-w-5xl
+              [&_ul]:list-disc 
+              [&_ol]:list-decimal 
+              [&_li]:mb-2 [&_li]:text-gray-700
+
+              [&_p]:text-gray-700
+
+              [&_strong]:font-semibold
+              [&_em]:italic
+
+              [&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:my-4
+
+              **:font-inherit!
+              **:text-gray-700!
+            "
           dangerouslySetInnerHTML={{ __html: data }}
         />
       </div>

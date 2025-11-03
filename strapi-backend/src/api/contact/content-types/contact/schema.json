@@ -4,7 +4,7 @@
   "info": {
     "singularName": "contact",
     "pluralName": "contacts",
-    "displayName": "Contact"
+    "displayName": "contact"
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +17,12 @@
       "options": {
         "preset": "defaultHtml"
       },
+      "required": true
+    },
+    "page": {
+      "type": "string",
+      "private": true,
+      "default": "contact",
       "required": true
     }
   }

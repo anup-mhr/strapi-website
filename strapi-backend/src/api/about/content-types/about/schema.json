@@ -4,7 +4,7 @@
   "info": {
     "singularName": "about",
     "pluralName": "abouts",
-    "displayName": "About"
+    "displayName": "about"
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +17,12 @@
       "options": {
         "preset": "defaultHtml"
       },
+      "required": true
+    },
+    "page": {
+      "type": "string",
+      "private": true,
+      "default": "about",
       "required": true
     }
   }

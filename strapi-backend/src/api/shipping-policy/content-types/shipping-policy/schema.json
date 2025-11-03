@@ -4,7 +4,7 @@
   "info": {
     "singularName": "shipping-policy",
     "pluralName": "shipping-policies",
-    "displayName": "Shipping Policy"
+    "displayName": "shipping"
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +17,12 @@
       "options": {
         "preset": "defaultHtml"
       },
+      "required": true
+    },
+    "page": {
+      "type": "string",
+      "private": true,
+      "default": "shipping",
       "required": true
     }
   }

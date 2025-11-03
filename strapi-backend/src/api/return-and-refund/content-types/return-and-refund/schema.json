@@ -4,7 +4,7 @@
   "info": {
     "singularName": "return-and-refund",
     "pluralName": "return-and-refunds",
-    "displayName": "Return and Refund"
+    "displayName": "return-refund-policy"
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +17,12 @@
       "options": {
         "preset": "defaultHtml"
       },
+      "required": true
+    },
+    "page": {
+      "type": "string",
+      "private": true,
+      "default": "return-refund-policy",
       "required": true
     }
   }
