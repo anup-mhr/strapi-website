@@ -19,6 +19,7 @@
   --color-secondary-pink: var(--color-secondary-pink);
   --breakpoint-custom-lg: 850px;
   --breakpoint-xs:375px;
+  --breakpoint-custom-sm:500px;
   --text-2xs: var(--text-2xs);
   --breakpoint-custom-xl: 950px;
 }

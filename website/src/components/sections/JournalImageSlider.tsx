@@ -69,25 +69,25 @@ export default function JournalImageSlider({
           }`}
         >
           <div className="max-w-4xl mx-auto grid grid-cols-1 custom-lg:grid-cols-[1fr_1.1fr] gap-4 sm:gap-6 lg:gap-12 items-center p-3 sm:p-4">
-            <div className="relative w-full h-80 sm:h-88 md:h-100 lg:h-112 xl:h-120">
+            <div className="aspect-[3/3.9] max-w-sm mx-auto relative w-full">
               <Image
                 src={getImageUrl(journal.profile_image)}
                 alt={journal.title}
                 fill
-                className="object-cover object-center"
+                className="object-center"
                 priority={index === 0}
               />
             </div>
 
-            <div className="flex flex-col gap-3 sm:gap-4 justify-center px-2 sm:px-0">
-              <h1 className="text-black! tagline font-semibold text-base sm:text-lg md:text-xl">
+            <div className="flex flex-col items-center custom-lg:items-start gap-3 sm:gap-4 justify-center px-2 sm:px-0">
+              <h1 className="text-black!  tagline font-semibold text-base sm:text-lg md:text-xl">
                 {journal.title} | {formatDate(journal.published_date)}
               </h1>
               <div>
                 {/* <h2 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">
                   {journal.sub_title}
                 </h2> */}
-                <p className="leading-5 sm:leading-6 text-xs sm:text-sm md:text-base">
+                <p className="leading-5 text-center md:text-left sm:leading-6 text-xs sm:text-sm md:text-base">
                   {htmlToPlainText(journal.content).slice(0, 200) + "..."}
                 </p>
               </div>

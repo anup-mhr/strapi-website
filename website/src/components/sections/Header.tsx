@@ -9,6 +9,7 @@ import { cn } from "../../lib/utils";
 import { useCart } from "../cart-test/CartProvider";
 
 const navLinks = [
+  { label: "HOME", href: "/" },
   { label: "SHOP", href: "/shop" },
   { label: "JOURNAL", href: "/journal" },
   { label: "ABOUT", href: "/about" },
@@ -69,13 +70,14 @@ const Header = ({ className = "" }: { className?: string }) => {
     >
       <Link
         href="/"
-        className="w-32 md:w-36 lg:w-44 h-10  md:h-12 my-1 relative"
+        className="w-33 md:w-37 lg:w-45 h-10 md:h-12 relative my-1"
       >
         <Image
           src="/images/logo.png"
           alt="Hierloom Naga Logo"
           fill
           className="object-contain"
+          priority
         />
       </Link>
 
@@ -86,7 +88,9 @@ const Header = ({ className = "" }: { className?: string }) => {
               href={href}
               className={cn(
                 "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
-                pathname.startsWith(href) && "text-primary-pink"
+                href === "/"
+                  ? pathname === "/" && "text-primary-pink"
+                  : pathname.startsWith(href) && "text-primary-pink"
               )}
             >
               {label}

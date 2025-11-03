@@ -7,6 +7,7 @@ import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
 import { fetchHeroSlides, fetchJournals } from "@/lib/strapiApiCall";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   const slides = await fetchHeroSlides();
@@ -30,7 +31,7 @@ export default async function Home() {
       {/* Trending Section */}
       <div className="padding">
         <div className="text-center pt-8 sm:pt-10 md:pt-12">
-          <h1 className="tagline text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-4">
+          <h1 className="tagline text-lg md:text-xl lg:text-2xl xl:text-3xl px-4">
             Blending heritage with design <br />
             Empowering artisans, preserving craft, honouring hands.
           </h1>
@@ -77,9 +78,9 @@ export default async function Home() {
           href="/about"
         />
 
-        <div className="grid grid-cols-1 2xl:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-1 mx-auto max-w-sm sm:max-w-2xl 2xl:max-w-full">
-          <div className="flex flex-col sm:flex-row bg-black">
-            <div className="relative aspect-square h-64 sm:h-56 md:h-64 lg:h-72 xl:h-80">
+        <div className="grid items-center grid-cols-1 2xl:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-3 mx-auto w-full sm:max-w-2xl 2xl:max-w-full">
+          <Link href="/about" className="flex w-full items-center flex-col custom-sm:flex-row bg-black">
+            <div className="relative aspect-square w-full custom-sm:w-auto custom-sm:h-56 md:h-64 lg:h-72 xl:h-80">
               <Image
                 src="/images/about/heirloom-center.jpeg"
                 alt="about-us"
@@ -87,13 +88,13 @@ export default async function Home() {
                 className="object-cover"
               />
             </div>
-            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
+            <div className="flex text-center custom-sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold py-8 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
               HEIRLOOM <br /> NAGA <br /> CENTER
             </div>
-          </div>
+          </Link>
 
-          <div className="flex flex-col sm:flex-row bg-black">
-            <div className="relative aspect-square h-64 sm:h-56 md:h-64 lg:h-72 xl:h-80">
+          <Link href="/about" className="flex w-full items-center flex-col custom-sm:flex-row bg-black">
+            <div className="relative aspect-square w-full custom-sm:w-auto custom-sm:h-56 md:h-64 lg:h-72 xl:h-80">
               <Image
                 src="/images/about/jesmina.jpeg"
                 alt="about-us"
@@ -101,10 +102,10 @@ export default async function Home() {
                 className="object-cover"
               />
             </div>
-            <div className="flex text-center sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
+            <div className="flex text-center custom-sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold py-8 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
               MEET <br /> JESMINA <br /> ZELIANG
             </div>
-          </div>
+          </Link>
         </div>
       </div>
 

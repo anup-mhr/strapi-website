@@ -79,14 +79,14 @@ export default function CartPage() {
         <div className="flex flex-col lg:flex-row justify-between gap-10">
           <div className="w-full space-y-6">
             <div className="flex items-center justify-between w-full mb-8">
-              <h1 className="text-center text-primary italic md:text-left text-base md:text-lg font-semibold w-full mb-2">
+              <h1 className="text-center subheading text-base md:text-lg font-semibold w-full mb-2">
                 Shopping Cart
               </h1>
             </div>
             <div className="flex flex-col h-full justify-center items-center mt-12">
-              <div className="mb-6 text-sm">Your cart is empty.</div>
+              <h3 className="mb-6 text-lg">Your cart is empty.</h3>
               <Link href="/shop" className="underline text-xs">
-                Explore the heirloom collections.
+                SHOP NOW.
               </Link>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function CartPage() {
         {/* Cart Items */}
         <div className="w-full space-y-6">
           <div className="flex items-center justify-between w-full mb-8">
-            <h1 className="text-center text-primary italic md:text-left text-base md:text-lg font-semibold w-full mb-2">
+            <h1 className="text-center subheading text-base md:text-lg font-semibold w-full mb-2">
               Shopping Cart
             </h1>
           </div>
