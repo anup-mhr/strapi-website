@@ -401,6 +401,10 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
       'api::contact.contact'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'contact'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -498,6 +502,10 @@ export interface ApiPaymentModePaymentMode extends Struct.SingleTypeSchema {
       'api::payment-mode.payment-mode'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'Contact'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -629,6 +637,10 @@ export interface ApiTermsAndConditionTermsAndCondition
       'api::terms-and-condition.terms-and-condition'
     > &
       Schema.Attribute.Private;
+    page: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.DefaultTo<'terms'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

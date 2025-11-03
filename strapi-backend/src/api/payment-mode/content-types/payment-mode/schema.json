@@ -18,6 +18,12 @@
         "preset": "defaultHtml"
       },
       "required": true
+    },
+    "page": {
+      "type": "string",
+      "private": true,
+      "default": "Contact",
+      "required": true
     }
   }
 }
