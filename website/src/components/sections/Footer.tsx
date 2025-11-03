@@ -80,7 +80,7 @@ const Footer = () => {
 
       <div className="mx-auto w-full py-6 sm:py-7 md:py-8 mt-4 sm:mt-5">
         <p className="text-gray-500 text-[10px] sm:text-sm text-center">
-          © {new Date().getFullYear()} Heirloomnaga.com <span className="hidden sm:inline">All rights reserved.</span>
+          © {new Date().getFullYear()} Heirloom Naga. <span className="hidden sm:inline">All rights reserved.</span>
         </p>
       </div>
 
