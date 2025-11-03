@@ -63,7 +63,7 @@ async function fetchContactContent(): Promise<string> {
       "/api/contact",
       {},
       {
-        revalidate: 60 * 60 * 24 * 30,
+        revalidate: 60,
       }
     );
     return data.data.content;
@@ -79,7 +79,7 @@ async function fetchTermsContent(): Promise<string> {
       "/api/terms-and-condition",
       {},
       {
-        revalidate: 60 * 60 * 24 * 30,
+        revalidate: 60,
       }
     );
     return data.data.content;
@@ -95,7 +95,7 @@ async function fetchPaymentModes(): Promise<string> {
       "/api/payment-mode",
       {},
       {
-        revalidate: 60 * 60 * 24 * 5,
+        revalidate: 60,
       }
     );
     return data.data.content;
@@ -123,7 +123,7 @@ async function fetchProjectListByCategory(
       "/api/projects",
       queryOptions,
       {
-        revalidate: 60 * 60,
+        revalidate: 60 * 5,
       }
     );
 

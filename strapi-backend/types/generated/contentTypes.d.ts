@@ -473,7 +473,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
 export interface ApiPaymentModePaymentMode extends Struct.SingleTypeSchema {
   collectionName: 'payment_modes';
   info: {
-    displayName: 'payment-mode';
+    displayName: 'payment-modes';
     pluralName: 'payment-modes';
     singularName: 'payment-mode';
   };
@@ -604,7 +604,7 @@ export interface ApiTermsAndConditionTermsAndCondition
   extends Struct.SingleTypeSchema {
   collectionName: 'terms_and_conditions';
   info: {
-    displayName: 'terms-and-condition';
+    displayName: 'terms';
     pluralName: 'terms-and-conditions';
     singularName: 'terms-and-condition';
   };

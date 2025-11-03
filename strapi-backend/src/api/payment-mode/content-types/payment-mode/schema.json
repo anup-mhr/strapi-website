@@ -4,7 +4,7 @@
   "info": {
     "singularName": "payment-mode",
     "pluralName": "payment-modes",
-    "displayName": "payment-mode"
+    "displayName": "payment-modes"
   },
   "options": {
     "draftAndPublish": true
