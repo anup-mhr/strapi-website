@@ -14,12 +14,14 @@ export default async function Home() {
 
   const { products } = await getProducts({
     first: 8,
-    sortBy: { sortKey: "CREATED_AT", reverse: true },
+    collection: "homepage-new-and-trending",
+    sortBy: { sortKey: "CREATED", reverse: true },
   });
 
   const { products: salesProducts } = await getProducts({
     first: 4,
-    collection: "sale",
+    collection: "homepage-sales",
+    sortBy: { sortKey: "CREATED", reverse: false }
   });
 
   const journals = await fetchJournals();

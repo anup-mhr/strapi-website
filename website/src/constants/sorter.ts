@@ -1,7 +1,7 @@
 export const shopSortOptions = [
+  { value: "CREATED", label: "Newest First" },
   { value: "PRICE_ASC", label: "Price: Low to High" },
   { value: "PRICE_DESC", label: "Price: High to Low" },
-  { value: "CREATED", label: "Newest First" },
   { value: "TITLE_ASC", label: "Name A-Z" },
   { value: "TITLE_DESC", label: "Name Z-A" },
 ];

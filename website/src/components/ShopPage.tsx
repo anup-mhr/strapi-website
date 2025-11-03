@@ -27,7 +27,7 @@ function resolveSortOption(sortBy: string) {
     case "TITLE_DESC":
       return { sortKey: "TITLE", reverse: true };
     default:
-      return { sortKey: "PRICE", reverse: false };
+      return { sortKey: "CREATED_AT", reverse: true };
   }
 }
 

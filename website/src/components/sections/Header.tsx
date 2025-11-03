@@ -89,8 +89,8 @@ const Header = ({ className = "" }: { className?: string }) => {
               className={cn(
                 "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
                 href === "/"
-                  ? pathname === "/" && "text-primary-pink"
-                  : pathname.startsWith(href) && "text-primary-pink"
+                  ? pathname === "/" && "text-black font-extrabold"
+                  : pathname.startsWith(href) && "text-black font-extrabold"
               )}
             >
               {label}
