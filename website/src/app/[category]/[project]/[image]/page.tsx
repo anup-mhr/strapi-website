@@ -68,7 +68,7 @@ async function page({
       </div>
 
       <div className="px-5 md:px-0">
-        {product.shopifyProductId ? (
+        {product.shopifyBuyButton && product.shopifyProductId ? (
           <ShopifyBuyButton
             productId={product.shopifyProductId}
             className="w-full flex justify-start"
