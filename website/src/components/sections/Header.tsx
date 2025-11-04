@@ -87,10 +87,10 @@ const Header = ({ className = "" }: { className?: string }) => {
             <Link
               href={href}
               className={cn(
-                "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
+                "font-normal transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
                 href === "/"
-                  ? pathname === "/" && "text-black font-extrabold"
-                  : pathname.startsWith(href) && "text-black font-extrabold"
+                  ? pathname === "/" && "text-black font-bold"
+                  : pathname.startsWith(href) && "text-black font-bold"
               )}
             >
               {label}
@@ -101,8 +101,8 @@ const Header = ({ className = "" }: { className?: string }) => {
           <Link
             href={"/cart"}
             className={cn(
-              "font-bold transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
-              pathname.startsWith("/cart") && "text-primary-pink"
+              "font-normal transition-all duration-500 ease-in-out hover:-translate-y-0.5 uppercase",
+              pathname.startsWith("/cart") && "text-black font-bold"
             )}
           >
             CART <span>({cartCount})</span>
