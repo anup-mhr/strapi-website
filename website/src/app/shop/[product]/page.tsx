@@ -24,8 +24,7 @@ export default async function ProductPage({
 
   if (!product) return notFound();
 
-  const relatedProducts = await getRecommendedProducts(product.id);
-
+  const relatedProducts = await getRecommendedProducts(product.handle, product.tags);
   return (
     <div>
       <main className="py-12">

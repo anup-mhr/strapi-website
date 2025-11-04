@@ -54,6 +54,7 @@ export async function getProductByHandle(
       id: string;
       title: string;
       handle: string;
+      tags: string[];
       descriptionHtml: string;
       images: { edges: { node: { src: string } }[] };
       variants: {
@@ -80,6 +81,7 @@ export async function getProductByHandle(
     id: product.id,
     handle: product.handle,
     title: product.title,
+    tags: product.tags,
     descriptionHtml: product.descriptionHtml,
     images: product.images.edges.map((img) => ({
       src: img.node.src,
@@ -96,9 +98,9 @@ export async function getProductByHandle(
       },
       compareAtPrice: node.compareAtPrice
         ? {
-            amount: node.compareAtPrice.amount,
-            currencyCode: node.compareAtPrice.currencyCode,
-          }
+          amount: node.compareAtPrice.amount,
+          currencyCode: node.compareAtPrice.currencyCode,
+        }
         : undefined,
       quantityAvailable: node.quantityAvailable ?? 0,
     })),
@@ -191,63 +193,80 @@ async function getCategories(
 }
 
 async function getRecommendedProducts(
-  productId: string
+  currentProductHandle: string,
+  tags: string[]
 ): Promise<ShopifyProductPreview[]> {
-  const query = `
-    query getRecommendedProducts($productId: ID!) {
-      productRecommendations(productId: $productId) {
-        id
-        handle
-        title
-        descriptionHtml
-        images(first: 1) {
+  if (!tags.length) return [];
+
+  async function fetchByQuery(queryString: string): Promise<ShopifyProductPreview[]> {
+    const query = `
+      query getProductsByTags($queryString: String!, $limit: Int!) {
+        products(first: $limit, query: $queryString) {
           edges {
             node {
-              src
-            }
-          }
-        }
-        variants(first: 1) {
-          edges {
-            node {
-              price {
-                amount
-                currencyCode
+              id
+              handle
+              title
+              descriptionHtml
+              tags
+              images(first: 1) {
+                edges {
+                  node { src }
+                }
               }
-              compareAtPrice {
-                amount
-                currencyCode
+              variants(first: 1) {
+                edges {
+                  node {
+                    price { amount currencyCode }
+                    compareAtPrice { amount currencyCode }
+                  }
+                }
               }
             }
           }
         }
       }
-    }
-  `;
+    `;
 
-  const variables = {
-    productId,
-  };
+    const variables = {
+      queryString,
+      limit: 6,
+    };
+
+    const data = await shopifyFetch<{ products: { edges: any[] } }>(query, variables);
+
+    if (!data.products?.edges) return [];
+
+    return data.products.edges
+      .map(edge => edge.node)
+      .filter(node => node.handle !== currentProductHandle)
+      .map(node => productMapper(node));
+  }
 
   try {
-    const data = await shopifyFetch<{ productRecommendations: any[] }>(
-      query,
-      variables
-    );
+    const andQuery = tags.map(tag => `tag:${tag}`).join(' AND ');
+    let products = await fetchByQuery(andQuery);
 
-    if (!data.productRecommendations) return [];
+    if (products.length < 4 && tags.length > 1) {
+      const orQuery = tags.map(tag => `tag:${tag}`).join(' OR ');
+      const orProducts = await fetchByQuery(orQuery);
 
-    const recommendedProducts: ShopifyProductPreview[] =
-      data.productRecommendations.map((node) => {
-        return productMapper(node);
-      });
+      const existingHandles = new Set(products.map(p => p.handle));
+      const merged = [
+        ...products,
+        ...orProducts.filter(p => !existingHandles.has(p.handle)),
+      ];
 
-    return recommendedProducts;
+      products = merged;
+    }
+
+    return products.slice(0, 4);
   } catch (error) {
-    console.error("Failed to fetch recommended products:", error);
+    console.error("Failed to fetch related products:", error);
     return [];
   }
 }
+
 
 async function getProducts({
   first = ITEMS_PER_PAGE,
@@ -394,9 +413,8 @@ async function getProducts({
     // Collection-based query
     const sortKeyType = "ProductCollectionSortKeys";
     query = `
-      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${
-      hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
-    }) {
+      query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+      }) {
         collectionByHandle(handle: $handle) {
           ${buildProductsFragment(sortKeyType)}
         }

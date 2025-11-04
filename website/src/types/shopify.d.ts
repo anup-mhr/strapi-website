@@ -34,6 +34,7 @@ export interface ShopifyProductPreview {
 
 export interface ShopifyProduct
   extends Omit<ShopifyProductPreview, "variants"> {
+  tags: string[];
   descriptionHtml: string;
   variants: ShopifyVariant[];
 }

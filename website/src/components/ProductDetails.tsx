@@ -53,30 +53,44 @@ export default function ProductDetails({
       </div>
       {/* Product Details */}
       <div className="text-base text-gray-700 mb-6 space-y-8">
-        <div className="space-y-2">
-          {selectedVariant.selectedOptions.map((option, index) => (
-            <p
-              key={index}
-              className={`${option.name.toUpperCase() === "NOTE" && "mt-8"}`}
-            >
-              {option.name.toUpperCase() !== "NOTE" && (
-                <strong>{option.name}: </strong>
-              )}
-              {option.value}
-            </p>
-          ))}
-        </div>
         <div
           className="mt-4 text-gray-700"
           dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
         />
-        <p>
-          Availability:{" "}
-          <span className="text-primary-pink">
-            {selectedVariant.quantityAvailable}
-          </span>{" "}
-          in stock
-        </p>
+
+        <div className="space-y-2">
+          {selectedVariant.selectedOptions.map((option, index) => option.name.toUpperCase() !== "NOTE" && (
+            <p
+              key={index}
+            >
+
+              <strong>{option.name}: </strong>
+
+              {option.value}
+            </p>
+          ))}
+          <strong>Tags: </strong>{product.tags.join(", ")}
+          <p className="mt-2">
+            <strong>Availability:{" "}</strong>
+            <span className="text-primary-pink">
+              {selectedVariant.quantityAvailable}
+            </span>{" "}
+            in stock
+          </p>
+        </div>
+
+        <div>
+          {(() => {
+            const noteOption = selectedVariant.selectedOptions.find(
+              (option) => option.name.toUpperCase() === "NOTE"
+            );
+            return noteOption ? (
+              <p>
+                {noteOption.value}
+              </p>
+            ) : null;
+          })()}
+        </div>
       </div>
 
       {product.variants.length > 1 && (

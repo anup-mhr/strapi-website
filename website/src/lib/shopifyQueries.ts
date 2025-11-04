@@ -106,6 +106,7 @@ export const GET_PRODUCT_BY_HANDLE = `
         id
         title
         handle
+        tags
         descriptionHtml
         images(first: 10) {
           edges {
