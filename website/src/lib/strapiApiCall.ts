@@ -9,6 +9,7 @@ import {
 } from "@/types/project";
 import { useQuery } from "@tanstack/react-query";
 import { fetchStrapi } from "./strapi";
+import { ContactPageDetails } from "@/types/contact";
 
 async function fetchProjectCategories(): Promise<string[]> {
   try {
@@ -57,19 +58,24 @@ async function fetchHeroSlides(): Promise<HeroSlide[] | []> {
   }
 }
 
-async function fetchContactContent(): Promise<string> {
+async function fetchContactContent(): Promise<ContactPageDetails | null> {
   try {
-    const data = await fetchStrapi(
-      "/api/contact",
-      {},
-      {
-        revalidate: 60,
-      }
-    );
-    return data.data.content;
+    const queryOptions = {
+      fields: ["*"],
+      populate: {
+        heroSection: {
+          fields: ["*"],
+          populate: "*",
+        },
+      },
+    };
+    const data = await fetchStrapi("/api/contact", queryOptions, {
+      revalidate: 60,
+    });
+    return data.data;
   } catch (error) {
     console.error("Error fetching contact data", error);
-    return "";
+    return null;
   }
 }
 

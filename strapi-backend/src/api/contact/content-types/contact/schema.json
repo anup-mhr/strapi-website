@@ -24,6 +24,12 @@
       "private": true,
       "default": "contact",
       "required": true
+    },
+    "heroSection": {
+      "type": "component",
+      "component": "utilities.hero-section",
+      "repeatable": false,
+      "required": true
     }
   }
 }

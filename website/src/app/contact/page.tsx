@@ -1,7 +1,7 @@
 import ContactForm from "@/components/sections/contactForm/ContactForm";
 import Footer from "@/components/theme/Footer";
 import Navigation from "@/components/theme/Navigation";
-import { loadLinks } from "@/lib/helper";
+import { getImageUrl, loadLinks } from "@/lib/helper";
 import { fetchContactContent } from "@/lib/strapiApiCall";
 import Image from "next/image";
 
@@ -12,28 +12,45 @@ export const metadata = {
 };
 
 async function Contact() {
-  const links = await loadLinks();
   const contactData = await fetchContactContent();
+  if (!contactData) {
+    return <div className="">Something went wrong</div>;
+  }
+  const links = await loadLinks();
   return (
     <div className="font-dosis">
       <Navigation links={links} theme="dark" />
 
       <div>
-        <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-screen">
+        <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-[80vh]">
           <Image
-            src="/contact.jpg"
-            alt="Aku Zeliang contact"
+            src={getImageUrl(contactData.heroSection.image)}
+            alt="Aku Zeliang"
             fill
             className="object-cover "
             priority
           />
+
+          {(contactData.heroSection?.subTitle ||
+            contactData.heroSection?.title) && (
+            <div className="absolute top-1/2 left-5/7 transform -translate-x-1/2 -translate-y-1/2 min-w-40 lg:min-w-sm text-left ">
+              {contactData.heroSection?.title && (
+                <h1 className="text-xs sm:text-lg lg:text-2xl font-semibold tracking-widest text-white ">
+                  {contactData.heroSection.title}
+                </h1>
+              )}
+              {contactData.heroSection?.subTitle && (
+                <p className="text-[8px] sm:text-2xs lg:text-sm tracking-wider text-white/90">
+                  {contactData.heroSection.subTitle}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-48 py-16 lg:py-24 bg-white">
           {/* About Section */}
           <div className="text-gray-900 tracking-widest">
-            <h2 className="font-semibold text-black mb-5 text-lg">ABOUT ME</h2>
-
             <div
               className="pl-1 font-dosis text-xs sm:text-sm leading-relaxed **:font-inherit!
                     ck-content
@@ -56,7 +73,7 @@ async function Contact() {
 
                     [&_section]:mt-6 [&_section]:mb-6 
                   "
-              dangerouslySetInnerHTML={{ __html: contactData }}
+              dangerouslySetInnerHTML={{ __html: contactData.content }}
             />
           </div>
 

@@ -51,6 +51,18 @@ export interface SharedSeo extends Struct.ComponentSchema {
   };
 }
 
+export interface UtilitiesHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_utilities_hero_sections';
+  info: {
+    displayName: 'heroSection';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    subTitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface UtilitiesLink extends Struct.ComponentSchema {
   collectionName: 'components_utilities_links';
   info: {
@@ -70,6 +82,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'shared.open-graph': SharedOpenGraph;
       'shared.seo': SharedSeo;
+      'utilities.hero-section': UtilitiesHeroSection;
       'utilities.link': UtilitiesLink;
     }
   }
