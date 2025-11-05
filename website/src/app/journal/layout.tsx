@@ -3,7 +3,7 @@ import Header from "@/components/sections/Header";
 import React from "react";
 
 export const metadata = {
-  title: "Heirloom Naga - Journals",
+  title: "Heirloom Naga - Journal",
   description:
     "Explore Heirloom Naga's handcrafted journals, inspired by Naga traditions. Perfect for writing, sketching, or gifting, each journal reflects heritage and artistry.",
   keywords:
