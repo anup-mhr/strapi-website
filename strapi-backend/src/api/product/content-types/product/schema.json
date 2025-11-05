@@ -114,7 +114,7 @@
           ]
         }
       },
-      "required": true,
+      "required": false,
       "regex": "^[0-9]{10,20}$"
     }
   }

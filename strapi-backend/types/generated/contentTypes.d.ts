@@ -558,7 +558,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     shopifyBuyButton: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
-    shopifyProductId: Schema.Attribute.String & Schema.Attribute.Required;
+    shopifyProductId: Schema.Attribute.String;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
