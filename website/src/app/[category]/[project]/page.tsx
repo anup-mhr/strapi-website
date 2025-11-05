@@ -74,7 +74,7 @@ async function page({
               category={{ title: displayName }}
               project={product}
               href={`/${category}/${projectSlug}/${product.slug}`}
-              mime={product.images[0].mime}
+              mime={product.images?.mime || "image/jpeg"}
               priority={[0, 1].includes(index)}
             />
           ))}

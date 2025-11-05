@@ -45,7 +45,7 @@ function ProjectGrid({ projects, category, ctaLabel }: ProjectGridProps) {
           <ModifiedImage
             key={project.slug}
             project={project}
-            mime={project.thumbnail.mime}
+            mime={project.thumbnail?.mime || "image/jpeg"}
             ctaLabel={ctaLabel}
             href={`/${category}/${project.slug}`}
             priority={[0, 1].includes(index)}

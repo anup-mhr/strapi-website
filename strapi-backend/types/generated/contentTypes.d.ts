@@ -541,7 +541,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     Generate_Slug: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.Private;
-    images: Schema.Attribute.Media<'images' | 'videos', true> &
+    images: Schema.Attribute.Media<'images' | 'videos'> &
       Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

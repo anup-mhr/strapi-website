@@ -95,7 +95,7 @@ export async function generateProductMetadata(productSlug: string) {
       "Checkout our latest products"
     );
 
-    const image = product?.images?.[0] ? getImageUrl(product.images[0]) : "";
+    const image = product?.images ? getImageUrl(product.images) : "";
 
     return buildSEO({ title, description, image });
   } catch (error) {

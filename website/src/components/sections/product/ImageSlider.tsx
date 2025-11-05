@@ -8,20 +8,14 @@ import { File } from "@/types/heroslide";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-
-const SLIDE_INTERVAL = 5000;
 
 interface ImageSliderProps {
-  images: File[];
+  images: File;
 }
 
 export default function ImageSlider({ images }: ImageSliderProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   const { currentPath } = useNavigationHistory();
   const router = useRouter();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const projectSlug = currentPath.split("/")?.[2];
   const { data } = useProduct(projectSlug);
@@ -31,9 +25,6 @@ export default function ImageSlider({ images }: ImageSliderProps) {
   const currentSlug = currentPath.split("/").pop();
 
   // Navigation functions
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
 
   const navigateToProduct = (direction: "next" | "previous") => {
     if (products.length < 2) return;
@@ -52,41 +43,22 @@ export default function ImageSlider({ images }: ImageSliderProps) {
     router.push(`${parentPath}/${targetSlug}`);
   };
 
-  useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(nextImage, SLIDE_INTERVAL);
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex]);
-
   return (
     <div className="w-full relative">
       {/* Image Slider */}
       <div className="relative w-full h-full overflow-hidden">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {images.map((img, index) => (
-            <div key={index} className="relative min-w-full h-full">
-              <Image
-                src={getImageUrl(img)}
-                alt={img.name || `Image ${index + 1}`}
-                // fill
-                width={600}
-                height={600}
-                className="object-center w-full h-full"
-                priority={index === 0}
-              />
-            </div>
-          ))}
+        <div className="flex transition-transform duration-500 ease-in-out">
+          <div className="relative min-w-full h-full">
+            <Image
+              src={getImageUrl(images)}
+              alt={images.name}
+              // fill
+              width={600}
+              height={600}
+              className="object-center w-full h-full"
+              priority
+            />
+          </div>
         </div>
       </div>
 

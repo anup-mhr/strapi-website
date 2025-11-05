@@ -17,7 +17,7 @@ async function fetchProjectCategories(): Promise<string[]> {
       "/api/pages",
       {},
       {
-        revalidate: 60 * 5,
+        revalidate: 60,
       }
     );
     const titles =
@@ -160,8 +160,7 @@ async function fetchProjectsByCategory(
       "/api/projects",
       queryOptions
     );
-    console.log("========fetchProjectsByCategory=======");
-    console.log(data.data);
+
     return data.data;
   } catch (error) {
     console.error("Error fetching project  lists", error);
@@ -193,8 +192,7 @@ async function fetchProjectBySlug(
     const data = await fetchStrapi("/api/projects", queryOptions, {
       // revalidate: 60,
     });
-    console.log("========fetchProjectBySlug=======");
-    console.log(data.data[0]);
+
     return data.data[0];
   } catch (error) {
     console.error("Error fetching project details ", error);

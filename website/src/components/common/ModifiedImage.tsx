@@ -46,7 +46,7 @@ function ModifiedImage({
       {mime.includes("video") ? (
         <video
           src={getImageUrl(
-            "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
+            "thumbnail" in project ? project?.thumbnail : project?.images
           )}
           autoPlay
           loop
@@ -56,7 +56,7 @@ function ModifiedImage({
       ) : (
         <Image
           src={getImageUrl(
-            "thumbnail" in project ? project?.thumbnail : project?.images?.[0]
+            "thumbnail" in project ? project?.thumbnail : project?.images
           )}
           alt={"name" in project ? project?.name : project?.title}
           fill

@@ -100,7 +100,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               }}
             >
               {/* Desktop Image */}
-              {slide.backgroundImage.mime.includes("video") ? (
+              {slide.backgroundImage?.mime.includes("video") ? (
                 <video
                   src={getImageUrl(slide.backgroundImage)}
                   autoPlay
@@ -132,7 +132,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               )}
 
               {/* Mobile Image */}
-              {slide.mobileViewImage.mime.includes("video") ? (
+              {slide.mobileViewImage?.mime.includes("video") ? (
                 <video
                   src={getImageUrl(slide.mobileViewImage)}
                   autoPlay

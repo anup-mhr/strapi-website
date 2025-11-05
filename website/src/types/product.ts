@@ -7,7 +7,7 @@ interface ProductDetails extends ProjectTitleList {
   materials: string;
   shopifyProductId?: string;
   shopifyBuyButton?: boolean;
-  images: File[];
+  images: File;
   name: string;
   CTA?: CTA;
 }

@@ -48,7 +48,6 @@ export function sortProjects(
 
     case "date-asc":
       return sorted.sort((a, b) => {
-        console.log(a);
         const dateA = new Date(a.projectDate || 0);
         const dateB = new Date(b.projectDate || 0);
         return dateA.getTime() - dateB.getTime();
