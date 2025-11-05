@@ -5,13 +5,13 @@ import "./globals.css";
 import { CartProvider } from "@/components/cart-test/CartProvider";
 
 export const metadata: Metadata = {
-  title: "Heirloom Naga - Premium Artisan Crafts & Heritage Goods",
+  title: "Heirloom Naga - Honouring Hands",
   description:
     "Discover exquisite handcrafted pieces that preserve ancient Naga traditions. From ceramics to textiles, each item tells a story of heritage and timeless beauty.",
   keywords:
     "heirloom, naga, artisan, handcrafted, traditional, ceramics, textiles, home decor, wellness",
   openGraph: {
-    title: "Heirloom Naga - Premium Artisan Crafts",
+    title: "Heirloom Naga - Honouring Hands",
     description:
       "Exquisite handcrafted pieces preserving ancient Naga traditions",
     type: "website",
