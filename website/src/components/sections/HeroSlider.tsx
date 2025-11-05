@@ -14,7 +14,6 @@ interface HeroSliderProps {
 
 export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [logoColor, setLogoColor] = useState("dark");
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -164,7 +163,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               <div
                 className={cn(
                   "absolute tracking-widest md:min-w-36 z-30 cursor-default",
-                  "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-[12rem] pr-0 md:pr-8 lg:pr-[2rem]",
+                  "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-48 pr-0 md:pr-8 lg:pr-8",
                   "sm:bottom-1/4",
                   "transition-all duration-800 ease-out",
                   isActive
@@ -180,7 +179,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     "font-semibold uppercase transition-all duration-500 ease-out",
                     "text-xs sm:text-sm",
                     "hover:translate-x-2",
-                    logoColor === "light" ? "text-black" : "text-white",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
@@ -197,14 +195,10 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     "mb-2 uppercase transition-all duration-500 ease-out",
                     "text-2xs sm:text-xs",
                     "hover:translate-x-1",
-                    logoColor === "light" ? "text-black/80" : "text-white/80",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
                   )}
-                  // style={{
-                  //   transitionDelay: isActive ? "500ms" : "0ms",
-                  // }}
                 >
                   {slide.subTitle}
                 </p>
@@ -214,7 +208,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                   className={cn(
                     "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out relative overflow-hidden",
                     "py-1 md:py-2 text-2xs sm:text-xs",
-                    logoColor === "light" ? "text-black" : "text-white",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
@@ -236,15 +229,14 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                   {/* Animated underline */}
                   <div
                     className={cn(
-                      "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out",
-                      logoColor === "light" ? "bg-black" : "bg-white"
+                      "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out"
                     )}
                   />
                 </Link>
               </div>
 
               {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/40 z-10" />
+              <div className="absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-black/40 z-10" />
             </div>
           ) : null;
         })}

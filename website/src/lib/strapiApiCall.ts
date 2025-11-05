@@ -129,7 +129,7 @@ async function fetchProjectListByCategory(
       "/api/projects",
       queryOptions,
       {
-        revalidate: 60 * 5,
+        revalidate: 60,
       }
     );
 

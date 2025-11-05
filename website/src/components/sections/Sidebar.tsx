@@ -22,7 +22,7 @@ function Sidebar({ projects, all = "ALL WORKS" }: SidebarProps) {
   const sortedProjects = sortProjects(projects, currentSort);
 
   return (
-    <div className="text-black z-25 bg-white top-[5rem] md:top-[9rem] hidden md:block md:sticky self-start uppercase">
+    <div className="text-black z-25 bg-white top-20 md:top-36 hidden md:block md:sticky self-start uppercase">
       <div className="flex items-center justify-between mb-4">
         <div className="hover:font-semibold transition-transform duration-500 ease-in-out hover:transform hover:translate-x-2">
           {sortedProjects.length > 0 && (
