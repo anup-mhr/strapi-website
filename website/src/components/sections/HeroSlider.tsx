@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { HeroSlide } from "@/types/heroslide";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Lucide from "../ui/Lucide";
 
 interface HeroSliderProps {
@@ -17,21 +17,58 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  const SLIDE_DURATION = 8000; // 8 seconds
+
+  // Timer management
   useEffect(() => {
     if (slides.length === 0) return;
 
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 8000);
+    const startTimer = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
 
-    return () => clearInterval(interval);
-  }, [slides?.length]);
+      startTimeRef.current = Date.now() - elapsedTime;
+
+      intervalRef.current = setInterval(() => {
+        if (!isPaused) {
+          const currentElapsed = Date.now() - startTimeRef.current;
+
+          if (currentElapsed >= SLIDE_DURATION) {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+            setElapsedTime(0);
+            startTimeRef.current = Date.now();
+          } else {
+            setElapsedTime(currentElapsed);
+          }
+        }
+      }, 100);
+    };
+
+    startTimer();
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [slides.length, isPaused, elapsedTime, currentSlide]);
+
+  const resetTimer = () => {
+    setElapsedTime(0);
+    startTimeRef.current = Date.now();
+  };
 
   const nextSlide = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentSlide((prev) => (prev + 1 + slides.length) % slides.length);
+    resetTimer(); // Reset timer on manual navigation
     setTimeout(() => setIsTransitioning(false), 1000);
   };
 
@@ -39,12 +76,14 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    resetTimer(); // Reset timer on manual navigation
     setTimeout(() => setIsTransitioning(false), 1000);
   };
 
   // Swipe handling
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.targetTouches[0].clientX);
+    setIsPaused(true); // Pause on touch
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -52,21 +91,41 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
   };
 
   const handleTouchEnd = () => {
-    if (!touchStartX || !touchEndX) return;
+    if (!touchStartX || !touchEndX) {
+      setIsPaused(false);
+      return;
+    }
 
     const distance = touchStartX - touchEndX;
 
     if (distance > 50) {
-      // swipe left → next
       nextSlide();
     }
     if (distance < -50) {
-      // swipe right → prev
       prevSlide();
     }
 
     setTouchStartX(null);
     setTouchEndX(null);
+    setIsPaused(false); // Resume after touch
+  };
+
+  // Mouse down handler for pause
+  const handleMouseDown = () => {
+    setIsPaused(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsPaused(false);
+  };
+
+  // Content hover handlers
+  const handleContentMouseEnter = () => {
+    setIsPaused(true);
+  };
+
+  const handleContentMouseLeave = () => {
+    setIsPaused(false);
   };
 
   return (
@@ -75,6 +134,9 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
     >
       {/* Image slides with cross-dissolve effect */}
       {slides &&
@@ -85,7 +147,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
             index === (currentSlide - 1 + slides.length) % slides.length;
           const isNext = index === (currentSlide + 1) % slides.length;
 
-          // Show current slide and adjacent slides for smooth transition
           const shouldRender = isActive || isPrevious || isNext;
 
           return shouldRender ? (
@@ -123,11 +184,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     isActive ? "scale-100" : "scale-105"
                   )}
                   priority={index === 0 || isActive}
-                // onLoad={() => {
-                //   if (isActive) {
-                //     setLogoColor("light");
-                //   }
-                // }}
                 />
               )}
 
@@ -159,32 +215,35 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               )}
 
               {/* Content with staggered animation */}
-
               <div
                 className={cn(
                   "absolute tracking-widest md:min-w-36 z-30 cursor-default",
                   "bottom-1/5 right-1/2 transform translate-x-1/2 md:translate-x-0 md:right-8 lg:right-48 pr-0 md:pr-8 lg:pr-8",
                   "sm:bottom-1/4",
                   "transition-all duration-800 ease-out",
-                  isActive
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-4"
+                  // Force visibility hidden instead of opacity for inactive slides
+                  isActive ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-4 invisible"
                 )}
                 style={{
                   transitionDelay: isActive ? "300ms" : "0ms",
                 }}
+                onMouseEnter={handleContentMouseEnter}
+                onMouseLeave={handleContentMouseLeave}
               >
                 <h1
                   className={cn(
                     "font-semibold uppercase drop-shadow-sm drop-shadow-black sm:drop-shadow-none z-30 transition-all duration-500 ease-out text-white",
                     "text-xs sm:text-sm font-semibold sm:font-normal",
                     "hover:translate-x-2",
+                    // Force white color and prevent any color transition
+                    "!text-white",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
                   )}
                   style={{
                     transitionDelay: isActive ? "400ms" : "0ms",
+                    color: 'white', // Inline style for extra guarantee
                   }}
                 >
                   {slide.title}
@@ -195,10 +254,14 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     "mb-2 uppercase drop-shadow-sm drop-shadow-black sm:drop-shadow-none transition-all z-30 duration-500 ease-out text-white",
                     "text-2xs sm:text-xs font-[500] sm:font-normal",
                     "hover:translate-x-1",
+                    "!text-white",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
                   )}
+                  style={{
+                    color: 'white',
+                  }}
                 >
                   {slide.subTitle}
                 </p>
@@ -232,9 +295,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     )}
                   />
                 </Link>
-
               </div>
-
 
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-black/40 z-10" />
