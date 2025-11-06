@@ -176,7 +176,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               >
                 <h1
                   className={cn(
-                    "font-semibold uppercase transition-all duration-500 ease-out",
+                    "font-semibold uppercase transition-all duration-500 ease-out text-white",
                     "text-xs sm:text-sm",
                     "hover:translate-x-2",
                     isActive
@@ -192,7 +192,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
                 <p
                   className={cn(
-                    "mb-2 uppercase transition-all duration-500 ease-out",
+                    "mb-2 uppercase transition-all duration-500 ease-out text-white",
                     "text-2xs sm:text-xs",
                     "hover:translate-x-1",
                     isActive
@@ -207,7 +207,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                   href={slide?.CTA?.href ?? "#"}
                   className={cn(
                     "font-light items-center flex gap-3 group/link hover:gap-5 transition-all duration-500 ease-out relative overflow-hidden",
-                    "py-1 md:py-2 text-2xs sm:text-xs",
+                    "py-1 md:py-2 text-2xs sm:text-xs text-white",
                     isActive
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2"
@@ -229,7 +229,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                   {/* Animated underline */}
                   <div
                     className={cn(
-                      "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out"
+                      "absolute bottom-0 left-0 h-0.5 w-0 group-hover/link:w-full transition-all duration-500 ease-out text-white"
                     )}
                   />
                 </Link>
