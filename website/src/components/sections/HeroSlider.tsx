@@ -123,11 +123,11 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     isActive ? "scale-100" : "scale-105"
                   )}
                   priority={index === 0 || isActive}
-                  // onLoad={() => {
-                  //   if (isActive) {
-                  //     setLogoColor("light");
-                  //   }
-                  // }}
+                // onLoad={() => {
+                //   if (isActive) {
+                //     setLogoColor("light");
+                //   }
+                // }}
                 />
               )}
 
@@ -176,8 +176,8 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
               >
                 <h1
                   className={cn(
-                    "font-semibold uppercase transition-all duration-500 ease-out text-white",
-                    "text-xs sm:text-sm",
+                    "font-semibold uppercase drop-shadow-sm drop-shadow-black sm:drop-shadow-none z-30 transition-all duration-500 ease-out text-white",
+                    "text-xs sm:text-sm font-semibold sm:font-normal",
                     "hover:translate-x-2",
                     isActive
                       ? "opacity-100 translate-y-0"
@@ -192,8 +192,8 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
                 <p
                   className={cn(
-                    "mb-2 uppercase transition-all duration-500 ease-out text-white",
-                    "text-2xs sm:text-xs",
+                    "mb-2 uppercase drop-shadow-sm drop-shadow-black sm:drop-shadow-none transition-all z-30 duration-500 ease-out text-white",
+                    "text-2xs sm:text-xs font-[500] sm:font-normal",
                     "hover:translate-x-1",
                     isActive
                       ? "opacity-100 translate-y-0"
@@ -216,7 +216,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     transitionDelay: isActive ? "600ms" : "0ms",
                   }}
                 >
-                  <span className="relative z-10 group-hover/link:tracking-wider transition-all duration-300 uppercase">
+                  <span className="relative font-[500] drop-shadow-sm drop-shadow-black sm:drop-shadow-none sm:font-normal group-hover/link:tracking-wider transition-all duration-300 uppercase">
                     {slide?.CTA?.label ?? "view work"}
                   </span>
 
@@ -225,7 +225,6 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     size={4}
                     className="transform group-hover/link:translate-x-1 group-hover/link:scale-110 transition-all duration-300 relative z-10 w-3 h-3 sm:w-4 sm:h-4"
                   />
-
                   {/* Animated underline */}
                   <div
                     className={cn(
@@ -233,7 +232,9 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
                     )}
                   />
                 </Link>
+
               </div>
+
 
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-black/40 z-10" />

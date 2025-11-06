@@ -17,7 +17,7 @@ function HomeFooter({ theme = "light", className }: HomeFooterProps) {
       )}
     >
       {/* Desktop Layout */}
-      <div className="flex flex-col md:flex-row gap-3 md:gap-6 lg:gap-10 items-center justify-between">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-6 lg:gap-10 items-center justify-between uppercase">
         <div className="flex gap-6 lg:gap-8">
           <a
             href="https://heirloomnaga.com/"
