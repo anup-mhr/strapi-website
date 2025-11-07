@@ -33,7 +33,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onApplyPriceFilter,
   isMobile = false,
   priceRange,
-  onClose = () => {},
+  onClose = () => { },
   isLoading,
   categories,
 }) => {
@@ -45,6 +45,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     filters.maxPrice
   );
   const [displayRange, setDisplayRange] = useState(priceRange);
+
+  useEffect(() => {
+    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
+      onApplyPriceFilter(undefined, undefined);
+    }
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
@@ -186,16 +192,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <div
           className="absolute top-1/2 h-1 bg-primary-pink rounded-full transform -translate-y-1/2 pointer-events-none"
           style={{
-            left: `${
-              ((safeMin - (displayRange.min ?? 0)) /
+            left: `${((safeMin - (displayRange.min ?? 0)) /
                 ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
               100
-            }%`,
-            width: `${
-              ((safeMax - safeMin) /
+              }%`,
+            width: `${((safeMax - safeMin) /
                 ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
               100
-            }%`,
+              }%`,
           }}
         />
 
@@ -247,10 +251,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <div className="flex justify-between items-center">
               <span
                 onClick={() => handleCategoryClick(category)}
-                className={`text-sm sm:text-base cursor-pointer hover:text-primary-pink transition-colors ${
-                  filters.category === category.handle &&
+                className={`text-sm sm:text-base cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle &&
                   "text-primary-pink font-semibold"
-                }`}
+                  }`}
               >
                 {category.title}
               </span>
@@ -271,11 +274,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     <li
                       key={sub.title}
                       onClick={() => handleSubcategoryClick(category, sub)}
-                      className={`text-xs sm:text-sm cursor-pointer hover:text-primary-pink transition-colors ${
-                        filters.category === category.handle &&
+                      className={`text-xs sm:text-sm cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle &&
                         filters.subcategory === sub.title &&
                         "text-primary-pink font-semibold"
-                      }`}
+                        }`}
                     >
                       {sub.title}
                     </li>
