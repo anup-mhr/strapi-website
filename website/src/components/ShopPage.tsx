@@ -301,6 +301,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
                 <ProjectSorter
                   sortBy={urlParams.sortBy}
                   setSortBy={handleSortChange}
+                  sortOptions={shopSortOptions}
                 />
                 <Filter
                   className="w-5 h-5 ml-2 sm:hidden cursor-pointer"
