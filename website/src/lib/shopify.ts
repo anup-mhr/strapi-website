@@ -502,5 +502,47 @@ async function getProducts({
   };
 }
 
-export { getCategories, getProducts, getRecommendedProducts, shopifyFetch };
+async function getAllProductHandles(): Promise<string[]> {
+  const query = `
+    query getProductHandles($after: String) {
+      products(first: 250, after: $after) {
+        edges {
+          node {
+            handle
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  `;
+
+  let allHandles: string[] = [];
+  let currentCursor: string | null = null;
+  let hasMore = true;
+
+  while (hasMore) {
+    const variables: Record<string, any> = {
+      after: currentCursor,
+    };
+
+    const data = await shopifyFetch<any>(query, variables);
+    const edges = data.products?.edges || [];
+    const pageInfo = data.products?.pageInfo;
+
+    // Extract handles from edges
+    const handles = edges.map((edge: any) => edge.node.handle).filter(Boolean);
+    allHandles = allHandles.concat(handles);
+
+    hasMore = pageInfo?.hasNextPage || false;
+    currentCursor = pageInfo?.endCursor || null;
+  }
+
+  return allHandles;
+}
+
+export { getCategories, getAllProductHandles, getProducts, getRecommendedProducts, shopifyFetch };
 export type { CategoryItem, ShopifyProduct, ShopifyProductPreview };

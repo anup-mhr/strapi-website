@@ -185,7 +185,6 @@ export async function shopifyFetch<T = any>({
       variables,
     })) as ShopifyResponse<T>;
 
-    console.log("data,errros", data, errors);
     if (errors && errors.length > 0) {
       console.error("Shopify API errors:", errors);
       throw new Error(errors[0].message || "Shopify API error");

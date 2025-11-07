@@ -5,13 +5,12 @@ import HeroSlider from "@/components/sections/HeroSlider";
 import JournalImageSlider from "@/components/sections/JournalImageSlider";
 import ProductList from "@/components/sections/ProductList";
 import { getProducts } from "@/lib/shopify";
-import { fetchHeroSlides, fetchJournals } from "@/lib/strapiApiCall";
+import { fetchHeroSlides, fetchJournals, getAllJournalSlugs } from "@/lib/strapiApiCall";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   const slides = await fetchHeroSlides();
-
   const { products } = await getProducts({
     first: 8,
     collection: "homepage-new-and-trending",
@@ -21,7 +20,7 @@ export default async function Home() {
   const { products: salesProducts } = await getProducts({
     first: 4,
     collection: "homepage-sales",
-    sortBy: { sortKey: "CREATED", reverse: false }
+    sortBy: { sortKey: "CREATED", reverse: true }
   });
 
   const journals = await fetchJournals();
@@ -33,7 +32,7 @@ export default async function Home() {
       {/* Trending Section */}
       <div className="padding">
         <div className="text-center pt-8 sm:pt-10 md:pt-12">
-          <h1 className="tagline text-lg md:text-xl lg:text-2xl xl:text-3xl px-4">
+          <h1 className="tagline text-xl lg:text-2xl xl:text-3xl">
             Blending heritage with design <br />
             Empowering artisans, preserving craft, honouring hands.
           </h1>

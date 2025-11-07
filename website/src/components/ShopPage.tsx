@@ -3,7 +3,6 @@
 import { ProjectSorter } from "@/components/common/ProjectSorter";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import ProductList from "@/components/sections/ProductList";
-import { shopSortOptions } from "@/constants/sorter";
 import { CategoryItem, getProducts } from "@/lib/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
 import { Filter } from "lucide-react";
@@ -11,6 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Pagination from "./common/Pagination";
 import ProductListSkeleton from "./common/ProjectListSkeleton";
+import { shopSortOptions } from "@/constants/sorter";
 
 export const ITEMS_PER_PAGE = 12;
 
@@ -50,7 +50,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
       : undefined;
 
     return {
-      sortBy: rawSortBy || "PRICE_ASC",
+      sortBy: rawSortBy || shopSortOptions[0].value,
       minPrice,
       maxPrice,
       category: searchParams.get("category") || "",
@@ -301,7 +301,6 @@ export default function ShopClient({ categories }: ShopClientProps) {
                 <ProjectSorter
                   sortBy={urlParams.sortBy}
                   setSortBy={handleSortChange}
-                  sortOptions={shopSortOptions}
                 />
                 <Filter
                   className="w-5 h-5 ml-2 sm:hidden cursor-pointer"
@@ -314,13 +313,13 @@ export default function ShopClient({ categories }: ShopClientProps) {
             {isLoading ? (
               <ProductListSkeleton
                 count={ITEMS_PER_PAGE}
-                className="grid-cols-2 xl:grid-cols-3"
+                className="grid-cols-1 custom-sm:grid-cols-2 xl:grid-cols-3"
               />
             ) : (
               <div className="min-h-screen">
                 <ProductList
                   products={products}
-                  className="grid-cols-2 xl:grid-cols-3"
+                  className="grid-cols-1 custom-sm:grid-cols-2 xl:grid-cols-3"
                 />
                 {products.length === 0 && (
                   <div className="text-center py-12 text-gray-500 text-lg">

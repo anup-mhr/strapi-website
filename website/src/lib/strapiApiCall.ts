@@ -246,6 +246,26 @@ async function fetchPrivacyPage() {
   }
 }
 
+
+async function getAllJournalSlugs(): Promise<IJournal[] | null> {
+  try {
+    const queryOptions = {
+      fields: ['slug']
+    };
+
+    const data = await fetchStrapi("/api/journals", queryOptions);
+
+    if (!data.data || data.data.length === 0) {
+      return null;
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error(`Error fetching slugs`);
+    return null;
+  }
+}
+
 export {
   fetchHeroSlides,
   fetchJournalBySlug,
@@ -257,4 +277,5 @@ export {
   fetchContactPage,
   fetchTermsPage,
   fetchPrivacyPage,
+  getAllJournalSlugs
 };

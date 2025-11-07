@@ -15,8 +15,6 @@ export async function GET(request: Request) {
       variables: { cartId },
     });
 
-    console.log("from api", data);
-
     if (!data?.cart) {
       return NextResponse.json({ error: "Cart not found" }, { status: 404 });
     }

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const ProductList = ({
   products,
-  className = "grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
+  className = "grid-cols-1 custom-sm:grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
 }: {
   products: ShopifyProductPreview[];
   className?: string;

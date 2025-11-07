@@ -26,7 +26,6 @@ export default function CartPage() {
       const cartData = await shopifyService.getCart();
       await refreshCart();
       setCart(cartData);
-      console.log(cartData);
     } catch (error) {
       console.error("Error loading cart:", error);
     } finally {

@@ -70,13 +70,13 @@ const Header = ({ className = "" }: { className?: string }) => {
     >
       <Link
         href="/"
-        className="w-33 md:w-37 lg:w-45 h-10 md:h-12 relative my-1"
       >
         <Image
           src="/images/logo.png"
           alt="Hierloom Naga Logo"
-          fill
-          className="object-contain"
+          width={600}
+          height={600}
+          className="object-contain w-33 md:w-37 lg:w-45 my-1"
           priority
         />
       </Link>

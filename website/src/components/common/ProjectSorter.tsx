@@ -3,23 +3,23 @@
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { shopSortOptions } from "@/constants/sorter";
 
 interface ProjectSorterProps {
   sortBy: string | null;
   setSortBy: (value: string) => void;
-  sortOptions: { value: string; label: string }[];
   className?: string;
 }
 
 export function ProjectSorter({
   sortBy,
   setSortBy,
-  sortOptions,
   className,
 }: ProjectSorterProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const effectiveSortBy = sortBy || sortOptions[0].value;
-  const currentLabel = sortOptions.find(
+  const effectiveSortBy = sortBy;
+
+  const currentLabel = shopSortOptions.find(
     (opt) => opt.value === effectiveSortBy
   )?.label;
 
@@ -41,23 +41,21 @@ export function ProjectSorter({
       >
         <span>{currentLabel}</span>
         <ChevronDown
-          className={`ml-2 h-4 w-4 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`ml-2 h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
       {isOpen && (
         <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 shadow-lg z-30">
-          {sortOptions.map((option) => (
+          {shopSortOptions.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}
-              className={`block w-full px-4 py-2 text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${
-                effectiveSortBy === option.value
-                  ? "bg-gray-100 text-black font-semibold"
-                  : "text-gray-700"
-              }`}
+              className={`block w-full px-4 py-2 text-xs text-left cursor-pointer hover:bg-gray-50 transition-colors duration-200 uppercase tracking-normal ${effectiveSortBy === option.value
+                ? "bg-gray-100 text-black font-semibold"
+                : "text-gray-700"
+                }`}
             >
               {option.label}
             </button>

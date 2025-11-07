@@ -117,7 +117,6 @@ export const shopifyService = {
     }
 
     const cartData = await response.json();
-    console.log("cartData", cartData);
     return this.normalizeCart(cartData);
   },
 

@@ -25,7 +25,6 @@ export async function fetchStrapi(
   }
 ) {
   const query = qs.stringify(queryOptions, { encodeValuesOnly: true });
-  console.log("hitting", `${STRAPI_URL}${endpoint}?${query}`);
 
   const res = await fetch(`${STRAPI_URL}${endpoint}?${query}`, {
     method: "GET",

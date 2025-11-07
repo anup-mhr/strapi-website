@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
+import { ITEMS_PER_PAGE } from "../ShopPage";
 
 const ProductListSkeleton = ({
-  count = 12,
-  className = "grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
+  count = ITEMS_PER_PAGE,
+  className = "grid-cols-1 custom-sm:grid-cols-2 custom-xl:grid-cols-3 xl:grid-cols-4",
 }: {
   count?: number;
   className?: string;
