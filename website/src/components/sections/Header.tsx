@@ -74,9 +74,9 @@ const Header = ({ className = "" }: { className?: string }) => {
         <Image
           src="/images/logo.png"
           alt="Hierloom Naga Logo"
-          width={600}
-          height={600}
-          className="object-contain w-33 md:w-37 lg:w-45 my-1"
+          width={180}
+          height={48}
+          className="object-contain w-33 md:w-37 lg:w-45 h-12 my-1"
           priority
         />
       </Link>
