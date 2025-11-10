@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { CategoryItem } from "@/lib/shopify";
+import { CategoryItem } from "@/types/shopify";
 
 export interface Filters {
   minPrice: number | undefined;

@@ -3,7 +3,8 @@
 import { ProjectSorter } from "@/components/common/ProjectSorter";
 import FilterSidebar, { Filters } from "@/components/sections/FilterSidebar";
 import ProductList from "@/components/sections/ProductList";
-import { CategoryItem, getProducts } from "@/lib/shopify";
+import { getProducts, getProductsTotalCountAndCursors } from "@/lib/shopify";
+import { CategoryItem } from "@/types/shopify";
 import { ShopifyProductPreview } from "@/types/shopify";
 import { Filter } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -78,6 +79,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetchingCount, setIsFetchingCount] = useState(false);
 
   const prevFiltersRef = useRef("");
   const filterKey = `${urlParams.category}-${urlParams.subcategory}-${urlParams.minPrice}-${urlParams.maxPrice}-${urlParams.sortBy}`;
@@ -122,43 +124,65 @@ export default function ShopClient({ categories }: ShopClientProps) {
     }
   }, [filterKey]);
 
+  // Fetch totalCount and pagination cursors only when filters change
   useEffect(() => {
-    // Fetch products
-    async function fetchProducts(options?: { skipPriceRange?: boolean }) {
+    async function fetchTotalCountData() {
+      setIsFetchingCount(true);
+      const sortingOption = resolveSortOption(urlParams.sortBy);
+
+      try {
+        const { totalCount, priceRange: fetchedRange, pageCursors } =
+          await getProductsTotalCountAndCursors({
+            minPrice: urlParams.minPrice,
+            maxPrice: urlParams.maxPrice,
+            collection: urlParams.category,
+            subcategory: urlParams.subcategory,
+            sortBy: sortingOption,
+          });
+        console.log("totalCOunt", totalCount)
+        setTotalCount(totalCount);
+        setAllPageCursors(pageCursors);
+
+        // Only update price range if no price filter is applied
+        if (!(urlParams.minPrice || urlParams.maxPrice) &&
+          fetchedRange?.min !== undefined &&
+          fetchedRange?.max !== undefined) {
+          setPriceRange(fetchedRange);
+        }
+      } catch (error) {
+        console.error("Error fetching total count:", error);
+      } finally {
+        setIsFetchingCount(false);
+      }
+    }
+
+    fetchTotalCountData();
+  }, [
+    urlParams.category,
+    urlParams.subcategory,
+    urlParams.minPrice,
+    urlParams.maxPrice,
+    urlParams.sortBy,
+  ]);
+
+  useEffect(() => {
+    async function fetchProducts() {
       setIsLoading(true);
       const sortingOption = resolveSortOption(urlParams.sortBy);
 
-      const query = {
-        first: ITEMS_PER_PAGE,
-        after: cursor,
-        minPrice: urlParams.minPrice,
-        maxPrice: urlParams.maxPrice,
-        collection: urlParams.category,
-        subcategory: urlParams.subcategory,
-        sortBy: sortingOption,
-      };
-
       try {
-        const {
-          products,
-          priceRange: fetchedRange,
-          totalCount,
-          pageInfo,
-          pageCursors,
-        } = await getProducts(query);
+        const { products, pageInfo } = await getProducts({
+          first: ITEMS_PER_PAGE,
+          after: cursor,
+          minPrice: urlParams.minPrice,
+          maxPrice: urlParams.maxPrice,
+          collection: urlParams.category,
+          subcategory: urlParams.subcategory,
+          sortBy: sortingOption,
+        });
 
         setProducts(products);
-        setTotalCount(totalCount);
         setPageInfo(pageInfo);
-        setAllPageCursors(pageCursors);
-
-        if (
-          !options?.skipPriceRange &&
-          fetchedRange?.min !== undefined &&
-          fetchedRange?.max !== undefined
-        ) {
-          setPriceRange(fetchedRange);
-        }
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -166,20 +190,14 @@ export default function ShopClient({ categories }: ShopClientProps) {
       }
     }
 
-    async function loadProducts() {
-      await fetchProducts({
-        skipPriceRange: !!(urlParams.minPrice || urlParams.maxPrice),
-      });
-    }
-
-    loadProducts();
+    fetchProducts();
   }, [
     cursor,
     urlParams.category,
-    urlParams.maxPrice,
-    urlParams.minPrice,
-    urlParams.sortBy,
     urlParams.subcategory,
+    urlParams.minPrice,
+    urlParams.maxPrice,
+    urlParams.sortBy,
   ]);
 
   // Handlers
@@ -239,6 +257,9 @@ export default function ShopClient({ categories }: ShopClientProps) {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + products.length, totalCount);
 
+  // Show loading when either count or products are being fetched
+  const showLoading = isLoading || isFetchingCount;
+
   return (
     <div>
       <main className="py-12">
@@ -251,7 +272,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
               onApplyPriceFilter={handleApplyPriceFilter}
               priceRange={priceRange}
               categories={categories}
-              isLoading={isLoading}
+              isLoading={showLoading}
             />
           </div>
 
@@ -273,7 +294,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
                   onClose={() => setIsMobileFilterOpen(false)}
                   priceRange={priceRange}
                   categories={categories}
-                  isLoading={isLoading}
+                  isLoading={showLoading}
                 />
               </div>
             </div>
@@ -311,7 +332,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
             </div>
 
             {/* Products Grid */}
-            {isLoading ? (
+            {showLoading ? (
               <ProductListSkeleton
                 count={ITEMS_PER_PAGE}
                 className="grid-cols-1 custom-sm:grid-cols-2 xl:grid-cols-3"
@@ -331,7 +352,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
             )}
 
             {/* Pagination */}
-            {totalPages > 1 && !isLoading && (
+            {totalPages > 1 && !showLoading && (
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

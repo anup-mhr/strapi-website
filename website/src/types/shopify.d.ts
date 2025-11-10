@@ -2,6 +2,16 @@ export interface ShopifyImage {
   src: string;
 }
 
+export interface CategoryItem {
+  id: string;
+  title: string;
+  handle: string;
+  subItems: {
+    title: string;
+    handle: string;
+  }[];
+}
+
 export interface ShopifyPrice {
   amount: string;
   currencyCode: string;

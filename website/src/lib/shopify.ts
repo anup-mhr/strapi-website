@@ -2,11 +2,10 @@ import { ITEMS_PER_PAGE } from "@/components/ShopPage";
 import { ShopifyProduct, ShopifyProductPreview } from "@/types/shopify";
 import { productMapper } from "./helper";
 import { GET_PRODUCT_BY_HANDLE } from "./shopifyQueries";
+import { CategoryItem } from "@/types/shopify";
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
-
 const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
-
 const endpoint = `https://${domain}/api/2025-10/graphql.json`;
 
 async function shopifyFetch<T>(
@@ -46,7 +45,7 @@ async function shopifyFetch<T>(
   return data;
 }
 
-export async function getProductByHandle(
+async function getProductByHandle(
   handle: string
 ): Promise<ShopifyProduct | null> {
   const data = await shopifyFetch<{
@@ -72,7 +71,7 @@ export async function getProductByHandle(
         }[];
       };
     } | null;
-  }>(GET_PRODUCT_BY_HANDLE, { handle });
+  }>(GET_PRODUCT_BY_HANDLE, { handle }, 60 * 1 * 0); //revalidate
 
   const product = data.productByHandle;
   if (!product) return null;
@@ -107,16 +106,6 @@ export async function getProductByHandle(
   };
 }
 
-interface CategoryItem {
-  id: string;
-  title: string;
-  handle: string;
-  subItems: {
-    title: string;
-    handle: string;
-  }[];
-}
-
 async function getCategories(
   menuHandle: string = "shop"
 ): Promise<CategoryItem[]> {
@@ -149,7 +138,7 @@ async function getCategories(
       {
         handle: menuHandle,
       },
-      60
+      60 * 1 * 0 //revalidate
     );
     if (!menuData.menu?.items) return [];
 
@@ -233,7 +222,7 @@ async function getRecommendedProducts(
       limit: 6,
     };
 
-    const data = await shopifyFetch<{ products: { edges: any[] } }>(query, variables);
+    const data = await shopifyFetch<{ products: { edges: any[] } }>(query, variables, 60 * 1 * 0); //revalidate
 
     if (!data.products?.edges) return [];
 
@@ -267,6 +256,272 @@ async function getRecommendedProducts(
   }
 }
 
+async function getProductsTotalCountAndCursors({
+  collection,
+  subcategory,
+  minPrice,
+  maxPrice,
+  sortBy = { sortKey: "PRICE", reverse: false },
+}: {
+  collection?: string;
+  subcategory?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: { sortKey: string; reverse: boolean };
+}): Promise<{
+  totalCount: number;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  pageCursors: (string | null)[];
+}> {
+  const hasValidSubcategory = subcategory !== undefined && subcategory !== "";
+  const hasPriceFilter = minPrice !== undefined && maxPrice !== undefined;
+
+  const useCollection = collection && !hasValidSubcategory;
+  const useProductSearch = hasValidSubcategory || !collection;
+
+  const effectiveSortBy =
+    useCollection && sortBy.sortKey === "CREATED_AT"
+      ? { ...sortBy, sortKey: "CREATED" }
+      : sortBy;
+
+  const buildFilterQuery = () => {
+    const filters: string[] = [];
+    if (hasValidSubcategory) filters.push(`tag:${subcategory}`);
+    if (hasPriceFilter && useProductSearch) {
+      filters.push(
+        `variants.price:>=${minPrice} AND variants.price:<=${maxPrice}`
+      );
+    }
+    return filters.join(" AND ");
+  };
+
+  const buildTotalCountFragment = (sortKeyType: string) => {
+    const priceFilterArg =
+      hasPriceFilter && useCollection
+        ? ", filters: {price: {min: $minPrice, max: $maxPrice}}"
+        : "";
+    const queryArg = useProductSearch ? ", query: $query" : "";
+
+    return `
+      totalCount: products(first: 250, after: $totalCountAfter, sortKey: $sortKey, reverse: $reverse${priceFilterArg}${queryArg}) {
+        edges {
+          cursor
+        }
+      }
+      minPriceProduct: products(first: 1, sortKey: PRICE, reverse: false${priceFilterArg}${queryArg}) {
+        edges {
+          node {
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+            }
+          }
+        }
+      }
+      maxPriceProduct: products(first: 1, sortKey: PRICE, reverse: true${priceFilterArg}${queryArg}) {
+        edges {
+          node {
+            priceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+          }
+        }
+      }
+    `;
+  };
+
+  const buildPageInfoFragment = (sortKeyType: string) => {
+    const priceFilterArg =
+      hasPriceFilter && useCollection
+        ? ", filters: {price: {min: $minPrice, max: $maxPrice}}"
+        : "";
+    const queryArg = useProductSearch ? ", query: $query" : "";
+
+    return `
+      products(first: 1, after: $checkCursor, sortKey: $sortKey, reverse: $reverse${priceFilterArg}${queryArg}) {
+        pageInfo {
+          hasNextPage
+        }
+      }
+    `;
+  };
+
+  const checkHasMoreProducts = async (
+    sortKeyType: string,
+    cursor: string,
+    baseVariables: Record<string, any>
+  ): Promise<boolean> => {
+    const checkQuery = useCollection
+      ? `query checkPageInfo($handle: String!, $checkCursor: String!, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+      }) {
+          collectionByHandle(handle: $handle) {
+            ${buildPageInfoFragment(sortKeyType)}
+          }
+        }`
+      : `query checkPageInfo($checkCursor: String!, $sortKey: ${sortKeyType}!, $reverse: Boolean!, $query: String!) {
+          ${buildPageInfoFragment(sortKeyType)}
+        }`;
+
+    const variables = {
+      ...baseVariables,
+      checkCursor: cursor,
+    };
+
+    const data = await shopifyFetch<any>(checkQuery, variables);
+    const rootData = data.collectionByHandle || data;
+    const pageInfo = rootData.products?.pageInfo;
+
+    return pageInfo?.hasNextPage || false;
+  };
+
+  const fetchAllTotalCount = async (
+    query: string,
+    sortKeyType: string,
+    baseVariables: Record<string, any>,
+    initialEdges: any[]
+  ) => {
+    let allEdges: any[] = [...initialEdges];
+
+    if (initialEdges.length === 250) {
+      const lastCursor = initialEdges[249].cursor;
+      const hasNextPage = await checkHasMoreProducts(
+        sortKeyType,
+        lastCursor,
+        baseVariables
+      );
+
+      if (hasNextPage) {
+        let currentCursor: string | null = lastCursor;
+        let hasMore = true;
+
+        while (hasMore) {
+          const variables: Record<string, any> = {
+            ...baseVariables,
+            totalCountAfter: currentCursor,
+          };
+
+          const data = await shopifyFetch<any>(query, variables);
+          const rootData = data.collectionByHandle || data;
+          const countEdges = rootData.totalCount?.edges || [];
+
+          allEdges = allEdges.concat(countEdges);
+
+          if (countEdges.length === 250) {
+            const lastBatchCursor = countEdges[249].cursor;
+            hasMore = await checkHasMoreProducts(
+              sortKeyType,
+              lastBatchCursor,
+              baseVariables
+            );
+            currentCursor = lastBatchCursor;
+          } else {
+            hasMore = false;
+          }
+        }
+      }
+    }
+
+    return allEdges;
+  };
+
+  // Build query and variables
+  let query: string;
+  const variables: Record<string, any> = {
+    sortKey: effectiveSortBy.sortKey,
+    reverse: effectiveSortBy.reverse,
+    totalCountAfter: null,
+  };
+
+  const sortKeyType = useCollection ? "ProductCollectionSortKeys" : "ProductSortKeys";
+
+  if (useCollection) {
+    query = `
+      query getCollectionTotalCount($handle: String!, $sortKey: ${sortKeyType}!, $reverse: Boolean!, $totalCountAfter: String${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
+      }) {
+        collectionByHandle(handle: $handle) {
+          ${buildTotalCountFragment(sortKeyType)}
+        }
+      }
+    `;
+    variables.handle = collection;
+    if (hasPriceFilter) {
+      variables.minPrice = minPrice;
+      variables.maxPrice = maxPrice;
+    }
+  } else {
+    const filterQuery = buildFilterQuery();
+
+    query = `
+      query getProductsTotalCount($sortKey: ${sortKeyType}!, $reverse: Boolean!, $query: String!, $totalCountAfter: String) {
+        ${buildTotalCountFragment(sortKeyType)}
+      }
+    `;
+    variables.query = filterQuery;
+  }
+
+  const data = await shopifyFetch<any>(query, variables);
+  const jsonString = JSON.stringify(data);
+  const bytes = Buffer.byteLength(jsonString, "utf8");
+
+  console.log("Shopify response size:", bytes, "bytes");
+  console.log("≈", (bytes / 1024).toFixed(2), "KB");
+  const rootData = data.collectionByHandle || data;
+
+  const initialCountEdges = rootData.totalCount?.edges || [];
+  const minPriceEdges = rootData.minPriceProduct?.edges || [];
+  const maxPriceEdges = rootData.maxPriceProduct?.edges || [];
+
+  // Fetch all totalCount data if needed
+  let countEdges = initialCountEdges;
+  if (initialCountEdges.length === 250) {
+    countEdges = await fetchAllTotalCount(query, sortKeyType, variables, initialCountEdges);
+  }
+
+  const totalCount = countEdges.length;
+
+  // Calculate price range
+  let minPriceFound = 0;
+  let maxPriceFound = 0;
+
+  if (totalCount > 0) {
+    minPriceFound = parseFloat(
+      minPriceEdges[0]?.node.priceRange?.minVariantPrice?.amount || "0"
+    );
+    maxPriceFound = parseFloat(
+      maxPriceEdges[0]?.node.priceRange?.maxVariantPrice?.amount || "0"
+    );
+  }
+
+  const pageCursors: (string | null)[] = [null];
+
+  if (countEdges.length > 0) {
+    for (
+      let i = ITEMS_PER_PAGE - 1;
+      i < countEdges.length;
+      i += ITEMS_PER_PAGE
+    ) {
+      const cursor = countEdges[i]?.cursor;
+      if (cursor) {
+        pageCursors.push(cursor);
+      }
+    }
+  }
+
+  return {
+    totalCount,
+    priceRange: {
+      min: minPriceFound,
+      max: maxPriceFound,
+    },
+    pageCursors,
+  };
+}
 
 async function getProducts({
   first = ITEMS_PER_PAGE,
@@ -287,29 +542,18 @@ async function getProducts({
 }): Promise<{
   products: ShopifyProductPreview[];
   pageInfo: any;
-  totalCount: number;
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  pageCursors: (string | null)[];
 }> {
-  console.log("collection?", collection);
-  console.log("sortBYYY", sortBy);
-
   const hasValidSubcategory = subcategory !== undefined && subcategory !== "";
   const hasPriceFilter = minPrice !== undefined && maxPrice !== undefined;
 
-  // Determine query type
   const useCollection = collection && !hasValidSubcategory;
   const useProductSearch = hasValidSubcategory || !collection;
 
   const effectiveSortBy =
     useCollection && sortBy.sortKey === "CREATED_AT"
-      ? { ...sortBy, sortKey: "CREATED" } // map to CREATED for collections
+      ? { ...sortBy, sortKey: "CREATED" }
       : sortBy;
 
-  // Build filter query for product search
   const buildFilterQuery = () => {
     const filters: string[] = [];
     if (hasValidSubcategory) filters.push(`tag:${subcategory}`);
@@ -348,7 +592,6 @@ async function getProducts({
     }
   `;
 
-  // Build the products fragment with all queries
   const buildProductsFragment = (sortKeyType: string) => {
     const priceFilterArg =
       hasPriceFilter && useCollection
@@ -365,42 +608,13 @@ async function getProducts({
         pageInfo {
           hasNextPage
           hasPreviousPage
-          startCursor
           endCursor
-        }
-      }
-      totalCount: products(first: 250, sortKey: $sortKey, reverse: $reverse${priceFilterArg}${queryArg}) {
-        edges {
-          node { id }
-          cursor
-        }
-      }
-      minPriceProduct: products(first: 1, sortKey: PRICE, reverse: false${priceFilterArg}${queryArg}) {
-        edges {
-          node {
-            priceRange {
-              minVariantPrice {
-                amount
-              }
-            }
-          }
-        }
-      }
-      maxPriceProduct: products(first: 1, sortKey: PRICE, reverse: true${priceFilterArg}${queryArg}) {
-        edges {
-          node {
-            priceRange {
-              maxVariantPrice {
-                amount
-              }
-            }
-          }
+          startCursor
         }
       }
     `;
   };
 
-  // Build query and variables
   let query: string;
   const variables: Record<string, any> = {
     first,
@@ -409,9 +623,9 @@ async function getProducts({
     reverse: effectiveSortBy.reverse,
   };
 
+  const sortKeyType = useCollection ? "ProductCollectionSortKeys" : "ProductSortKeys";
+
   if (useCollection) {
-    // Collection-based query
-    const sortKeyType = "ProductCollectionSortKeys";
     query = `
       query getCollectionProducts($handle: String!, $first: Int!, $after: String, $sortKey: ${sortKeyType}!, $reverse: Boolean!${hasPriceFilter ? ", $minPrice: Float!, $maxPrice: Float!" : ""
       }) {
@@ -426,8 +640,6 @@ async function getProducts({
       variables.maxPrice = maxPrice;
     }
   } else {
-    // Product basedd query
-    const sortKeyType = "ProductSortKeys";
     const filterQuery = buildFilterQuery();
 
     query = `
@@ -439,30 +651,9 @@ async function getProducts({
   }
 
   const data = await shopifyFetch<any>(query, variables);
-
-  // Extract data (works for both collection and product queries)
   const rootData = data.collectionByHandle || data;
 
   const productEdges = rootData.products?.edges || [];
-  const countEdges = rootData.totalCount?.edges || [];
-  const minPriceEdges = rootData.minPriceProduct?.edges || [];
-  const maxPriceEdges = rootData.maxPriceProduct?.edges || [];
-
-  const totalCount = countEdges.length;
-
-  // Calculate price range
-  let minPriceFound = 0;
-  let maxPriceFound = 0;
-
-  if (totalCount > 0) {
-    minPriceFound = parseFloat(
-      minPriceEdges[0]?.node.priceRange?.minVariantPrice?.amount || "0"
-    );
-    maxPriceFound = parseFloat(
-      maxPriceEdges[0]?.node.priceRange?.maxVariantPrice?.amount || "0"
-    );
-  }
-
   const pageInfo = rootData.products?.pageInfo || {
     hasNextPage: false,
     hasPreviousPage: false,
@@ -474,31 +665,9 @@ async function getProducts({
     ({ node }: { node: ShopifyProductPreview }) => productMapper(node)
   );
 
-  const pageCursors: (string | null)[] = [null];
-
-  if (countEdges.length > 0) {
-    // Get the cursor at the end of each page
-    for (
-      let i = ITEMS_PER_PAGE - 1;
-      i < countEdges.length;
-      i += ITEMS_PER_PAGE
-    ) {
-      const cursor = countEdges[i]?.cursor;
-      if (cursor) {
-        pageCursors.push(cursor);
-      }
-    }
-  }
-
   return {
     products,
     pageInfo,
-    totalCount,
-    priceRange: {
-      min: minPriceFound,
-      max: maxPriceFound,
-    },
-    pageCursors,
   };
 }
 
@@ -544,5 +713,12 @@ async function getAllProductHandles(): Promise<string[]> {
   return allHandles;
 }
 
-export { getCategories, getAllProductHandles, getProducts, getRecommendedProducts, shopifyFetch };
-export type { CategoryItem, ShopifyProduct, ShopifyProductPreview };
+export {
+  getCategories,
+  getAllProductHandles,
+  getProducts,
+  getProductsTotalCountAndCursors,
+  getRecommendedProducts,
+  shopifyFetch,
+  getProductByHandle
+};
