@@ -72,7 +72,7 @@ const Header = ({ className = "" }: { className?: string }) => {
         href="/"
       >
         <Image
-          src="/images/logo1.png"
+          src="/images/logo1.webp"
           alt="Hierloom Naga Logo"
           width={180}
           height={48}

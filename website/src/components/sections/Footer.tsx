@@ -13,16 +13,16 @@ const Footer = () => {
           className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[210px] mb-2"
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-8 md:gap-10 lg:gap-12 mt-12 md:mt-16 lg:mt-18 text-primary padding">
+      <div className="grid grid-cols-1 sm:grid-cols-3 items-start gap-8 md:gap-10 lg:gap-12 mt-12 md:mt-16 lg:mt-18 text-primary padding">
         <Link
           href="/"
-          className="mx-auto sm:mx-0 w-33 md:w-37 lg:w-45 h-10 md:h-12 relative"
         >
           <Image
-            src="/images/logo.png"
+            src="/images/logo1.webp"
             alt="Hierloom Naga Logo"
-            fill
-            className="object-contain"
+            width={180}
+            height={48}
+            className="object-contain mx-auto sm:mx-0 w-33 md:w-37 lg:w-45 h-10 sm:h-12 my-1"
             priority
           />
         </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
               </Link> */}
           </div>
         </div>
-        
+
         <div className="flex flex-col items-center md:items-end  text-center sm:text-left">
           <div>
             <p className="text-xs sm:text-sm font-semibold">

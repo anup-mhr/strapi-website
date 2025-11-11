@@ -11,32 +11,79 @@ interface HeroSliderProps {
   slides: HeroSlide[];
 }
 
-export default function HeroSlider({ slides = [] }: HeroSliderProps) {
+export default function HeroSliderSecond({ slides = [] }: HeroSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const interval = 5000;
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % slides.length);
-  const prevImage = () =>
-    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
-
-  useEffect(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(nextImage, interval);
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex]);
-
-  // Swipe handling
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
-  const handleTouchStart = (e: React.TouchEvent) =>
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  const SLIDE_DURATION = 8000; // 8 seconds
+
+  useEffect(() => {
+    if (slides.length === 0) return;
+
+    const startTimer = () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+
+      startTimeRef.current = Date.now() - elapsedTime;
+
+      intervalRef.current = setInterval(() => {
+        if (!isPaused) {
+          const currentElapsed = Date.now() - startTimeRef.current;
+
+          if (currentElapsed >= SLIDE_DURATION) {
+            setCurrentIndex((prev) => (prev + 1) % slides.length);
+            setElapsedTime(0);
+            startTimeRef.current = Date.now();
+          } else {
+            setElapsedTime(currentElapsed);
+          }
+        }
+      }, 100);
+    };
+
+    startTimer();
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [slides.length, isPaused, elapsedTime]);
+
+  const resetTimer = () => {
+    setElapsedTime(0);
+    startTimeRef.current = Date.now();
+  };
+
+  const nextImage = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+    resetTimer();
+    setTimeout(() => setIsTransitioning(false), 1000);
+  };
+
+  const prevImage = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    resetTimer();
+    setTimeout(() => setIsTransitioning(false), 1000);
+  };
+
+  // Swipe handling
+  const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX);
-  const handleTouchMove = (e: React.TouchEvent) =>
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
+  };
+
   const handleTouchEnd = () => {
     if (touchStart !== null && touchEnd !== null) {
       const distance = touchStart - touchEnd;
@@ -45,7 +92,14 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
     }
     setTouchStart(null);
     setTouchEnd(null);
+    setIsPaused(false);
   };
+
+  const handleMouseDown = () => setIsPaused(true);
+  const handleMouseUp = () => setIsPaused(false);
+
+  const handleNavMouseEnter = () => setIsPaused(true);
+  const handleNavMouseLeave = () => setIsPaused(false);
 
   return (
     <div
@@ -53,13 +107,17 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onContextMenu={(e) => e.preventDefault()}
+      style={{ touchAction: "pan-y pinch-zoom", userSelect: "none" }}
     >
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
-            index === currentIndex ? "opacity-100 z-20" : "opacity-0 z-10"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentIndex ? "opacity-100 z-20" : "opacity-0 z-10"
+            }`}
         >
           {/* Desktop Image */}
           <Image
@@ -80,7 +138,10 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
           />
 
           {/* Overlay content */}
-          <div className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 px-4">
+          <div
+            onMouseEnter={handleNavMouseEnter}
+            onMouseLeave={handleNavMouseLeave}
+            className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 px-4">
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold sm:font-semibold text-white drop-shadow-sm drop-shadow-black sm:drop-shadow-none tracking-wide sm:tracking-wider md:tracking-widest mb-2 sm:mb-2.5 md:mb-3 uppercase text-center">
               {slide.title}
             </p>
@@ -98,25 +159,29 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
       {/* Navigation buttons */}
       <button
         onClick={prevImage}
-        className="z-40 absolute bottom-1/3 left-4 sm:left-6 md:left-12 lg:left-24 xl:left-32 2xl:left-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        onMouseEnter={handleNavMouseEnter}
+        onMouseLeave={handleNavMouseLeave}
+        className="z-40 group hover:scale-110 absolute bottom-1/3 left-4 sm:left-6 md:left-12 lg:left-24 xl:left-32 2xl:left-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
         aria-label="Previous image"
       >
         <ChevronLeft
           size={24}
           strokeWidth={0.8}
-          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+          className="group-hover:scale-110 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
       </button>
 
       <button
         onClick={nextImage}
-        className="z-40 absolute bottom-1/3 right-4 sm:right-6 md:right-12 lg:right-24 xl:right-32 2xl:right-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
+        onMouseEnter={handleNavMouseEnter}
+        onMouseLeave={handleNavMouseLeave}
+        className="z-40 group hover:scale-110  absolute bottom-1/3 right-4 sm:right-6 md:right-12 lg:right-24 xl:right-32 2xl:right-48 bg-black/70 hover:bg-black/30 text-white p-1.5 sm:p-2 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer"
         aria-label="Next image"
       >
         <ChevronRight
           size={24}
           strokeWidth={0.8}
-          className="sm:w-7 sm:h-7 md:w-8 md:h-8"
+          className="group-hover:scale-110 sm:w-7 sm:h-7 md:w-8 md:h-8"
         />
       </button>
 

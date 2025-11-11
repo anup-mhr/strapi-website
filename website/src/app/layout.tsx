@@ -3,6 +3,7 @@ import "./globals.css";
 import { montserrat, cormorant, nunito } from "@/lib/fonts";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-test/CartProvider";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "Heirloom Naga - Honouring Hands",
@@ -26,6 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+       <Head>
+        <link
+          rel="preload"
+          as="image"
+          href="/images/logo1.webp"
+          type="image/webp"
+        />
+      </Head>
       <body
         className={`${montserrat.variable} ${cormorant.variable} ${nunito.variable} antialiased`}
       >
