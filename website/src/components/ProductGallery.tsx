@@ -17,7 +17,11 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
   const [mobilePosition, setMobilePosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+    const [isHorizontalDrag, setIsHorizontalDrag] = useState(false);
+    
+ 
   const touchStartX = useRef(0);
+   const touchStartY = useRef(0);
   const touchEndX = useRef(0);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const initialDistance = useRef(0);
@@ -47,6 +51,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
       dragStartX.current = e.touches[0].clientX;
       lastTouchCount.current = 1;
       if (mobileZoom === 1) {
@@ -60,36 +65,51 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
     }
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+   const handleTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 1 && lastTouchCount.current === 1) {
-      touchEndX.current = e.touches[0].clientX;
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - touchStartX.current;
+      const deltaY = touch.clientY - touchStartY.current;
+
+      if (!isHorizontalDrag) {
+        if (Math.abs(deltaX) > Math.abs(deltaY) + 10) {
+          setIsHorizontalDrag(true);
+          setIsDragging(true);
+        } else {
+          return;
+        }
+      }
 
       if (mobileZoom > 1) {
-        // Pan when zoomed
-        const deltaX = e.touches[0].clientX - touchStartX.current;
         setMobilePosition((prev) => ({
           x: prev.x + deltaX * 0.5,
-          y: prev.y,
+          y: prev.y + deltaY * 0.5,
         }));
-        touchStartX.current = e.touches[0].clientX;
-      } else if (isDragging) {
-        // Slider drag
-        const delta = e.touches[0].clientX - dragStartX.current;
-        setDragOffset(delta);
+
+        touchStartX.current = touch.clientX;
+        touchStartY.current = touch.clientY;
+        return;
       }
-    } else if (e.touches.length === 2) {
+
+      if (isHorizontalDrag) {
+        setDragOffset(touch.clientX - dragStartX.current);
+      }
+    }
+
+    if (e.touches.length === 2) {
       e.preventDefault();
-      const currentDistance = getDistance(e.touches[0], e.touches[1]);
-      const scale = currentDistance / initialDistance.current;
-      const newZoom = Math.min(Math.max(initialZoom.current * scale, 1), 3);
-      setMobileZoom(newZoom);
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      const scale = distance / initialDistance.current;
+      const z = Math.min(Math.max(initialZoom.current * scale, 1), 3);
+
       lastTouchCount.current = 2;
+      setMobileZoom(z);
     }
   };
 
   const handleTouchEnd = () => {
-    if (lastTouchCount.current === 1 && mobileZoom === 1 && isDragging) {
-      const threshold = 50;
+    if (isHorizontalDrag && mobileZoom === 1) {
+      const threshold = 0;
 
       if (dragOffset < -threshold && selectedImageIndex < images.length - 1) {
         handleImageChange(selectedImageIndex + 1);
@@ -101,7 +121,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
     }
 
     setIsDragging(false);
-
+    setIsHorizontalDrag(false);
     // Reset zoom if less than 1.2x
     if (mobileZoom < 1.2) {
       setMobileZoom(1);
@@ -136,7 +156,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
       {/* Main Image Slider */}
       <div
         ref={imageContainerRef}
-        className="w-full aspect-3/4 lg:aspect-[3/3.5] relative overflow-hidden rounded touch-none"
+        className="w-full aspect-3/4 lg:aspect-[3/3.5] relative overflow-hidden rounded"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

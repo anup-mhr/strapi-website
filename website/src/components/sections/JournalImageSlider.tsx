@@ -87,7 +87,7 @@ export default function JournalImageSlider({
                 {/* <h2 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">
                   {journal.sub_title}
                 </h2> */}
-                <p className="leading-5 text-center md:text-left sm:leading-6 text-xs sm:text-sm md:text-base">
+                <p className="leading-5 text-center md:text-left sm:leading-6 text-xs sm:text-sm md:text-base min-h-20 sm:min-h-auto">
                   {htmlToPlainText(journal.content).slice(0, 200) + "..."}
                 </p>
               </div>

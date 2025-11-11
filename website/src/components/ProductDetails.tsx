@@ -26,9 +26,9 @@ export default function ProductDetails({
   const isOnSale = compareAtPrice > 0 && compareAtPrice !== price;
 
   return (
-    <div className="max-w-xl w-full">
+    <div className="max-w-xl w-full mt-4 sm:mt-0">
       <div className="flex justify-between items-start mb-8 border-b-2 border-black/30">
-        <h2 className="text-xl font-bold uppercase tracking-widest">
+        <h2 className="text-sm sm:text-base :text-xl font-bold uppercase tracking-widest">
           {product.title}
         </h2>
         <div className="text-lg mb-4 flex flex-col items-end">
@@ -40,25 +40,25 @@ export default function ProductDetails({
                   selectedVariant.price.currencyCode
                 )}
               </span>
-              <span className="font-semibold text-lg">
+              <span className="font-semibold text-base sm:text-lg">
                 {formatPrice(price, selectedVariant.price.currencyCode)}
               </span>
             </div>
           ) : (
-            <span>
+            <span className="font-semibold text-base sm:text-lg">
               {formatPrice(price, selectedVariant.price.currencyCode)}
             </span>
           )}
         </div>
       </div>
       {/* Product Details */}
-      <div className="text-base text-gray-700 mb-6 space-y-8">
+      <div className="text-sm sm:text-base text-gray-700 mb-6 space-y-8">
         <div
           className="mt-4 text-gray-700"
           dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
         />
 
-        <div className="space-y-2">
+        <div className="space-y2">
           {selectedVariant.selectedOptions.map((option, index) => option.name.toUpperCase() !== "NOTE" && (
             <p
               key={index}
@@ -115,7 +115,7 @@ export default function ProductDetails({
 
       <div className="flex flex-col xs:flex-row items-center gap-4 md:gap-8 mt-15 xl:mt-44">
         <div className="flex items-center gap-2 md:gap-8">
-          <label htmlFor="quantity" className="text-gray-700">
+          <label htmlFor="quantity" className="text-gray-700 text-sm sm:text-base">
             Quantity
           </label>
           <select

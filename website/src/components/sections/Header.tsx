@@ -32,7 +32,7 @@ const Header = ({ className = "" }: { className?: string }) => {
   }, []);
 
   // Close mobile menu on ESC or outside click
-  useEffect(() => {
+  useEffect(():any => {
     const handleEscape = (e: KeyboardEvent) =>
       e.key === "Escape" && setIsMobileMenuOpen(false);
     const handleClickOutside = (e: MouseEvent) => {
@@ -116,7 +116,7 @@ const Header = ({ className = "" }: { className?: string }) => {
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle menu"
       >
-        <Menu size={20} className="sm:w-6 sm:h-6" />
+        <Menu size={20} strokeWidth={2.5} className="sm:w-6 sm:h-6 text-black" />
       </button>
 
       {/* Mobile Menu */}

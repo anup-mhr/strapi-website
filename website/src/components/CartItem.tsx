@@ -46,7 +46,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
   };
 
   return (
-    <div className="flex items-center gap-4 md:gap-6 border-b border-black/10 py-4">
+    <div className="flex items-center gap-6 border-b border-black/10 py-4">
       {/* Product Image */}
       <div className="relative w-40 md:w-48 h-60 shrink-0">
         <Image
@@ -60,7 +60,7 @@ export default function CartItem({ item, onUpdate }: CartItemProps) {
       {/* Product Info */}
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col md:flex-row justify-between md:items-center md:gap-4">
-          <h3 className="text-sm md:text-base uppercase">{item.title}</h3>
+          <h3 className="text-xs sm:text-sm md:text-base uppercase mb-2">{item.title}</h3>
           <p className="text-sm md:text-base font-semibold">
             {formatPrice(item.price * item.quantity, item.currencyCode)}
           </p>

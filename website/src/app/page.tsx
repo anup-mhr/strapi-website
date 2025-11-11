@@ -79,8 +79,8 @@ export default async function Home() {
           href="/about"
         />
 
-        <div className="grid items-center grid-cols-1 2xl:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-3 mx-auto w-full sm:max-w-2xl 2xl:max-w-full">
-          <Link href="/about" className="flex w-full items-center flex-col custom-sm:flex-row bg-black">
+        {/* <div className="grid items-center grid-cols-1 2xl:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-3 mx-auto w-full sm:max-w-2xl 2xl:max-w-full">
+          <Link href="https://heirloomnagacentre.com/" className="flex w-full items-center flex-col custom-sm:flex-row bg-black">
             <div className="relative aspect-square w-full custom-sm:w-auto custom-sm:h-56 md:h-64 lg:h-72 xl:h-80">
               <Image
                 src="/images/about/heirloom-center.jpeg"
@@ -90,7 +90,7 @@ export default async function Home() {
               />
             </div>
             <div className="flex text-center custom-sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold py-8 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
-              HEIRLOOM <br /> NAGA <br /> CENTER
+              HEIRLOOM <br /> NAGA <br /> CENTRE
             </div>
           </Link>
 
@@ -107,7 +107,41 @@ export default async function Home() {
               MEET <br /> JESMINA <br /> ZELIANG
             </div>
           </Link>
+        </div> */}
+
+
+        <div className="grid items-center grid-cols-1 xl:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-3 mx-auto w-full max-w-[850px] xl:max-w-full">
+          <Link href="https://heirloomnagacentre.com/" className="flex w-full items-center bg-black flex-col custom-sm:flex-row">
+            <div className="relative aspect-square w-full custom-sm:w-auto h-auto custom-sm:h-56 md:h-64 lg:h-72 2xl:h-80">
+              <Image
+                src="/images/about/heirloom-center.jpeg"
+                alt="about-us"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex text-center custom-sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl 2xl:text-4xl text-white font-bold py-8 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
+              HEIRLOOM <br /> NAGA <br /> CENTRE
+            </div>
+          </Link>
+
+          <Link href="/about" className="flex w-full items-center bg-black flex-col custom-sm:flex-row">
+            <div className="relative aspect-square w-full custom-sm:w-auto h-auto custom-sm:h-56 md:h-64 lg:h-72 2xl:h-80">
+              <Image
+                src="/images/about/jesmina.jpeg"
+                alt="about-us"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex text-center custom-sm:text-start justify-center sm:justify-start items-center text-xl sm:text-2xl md:text-3xl 2xl:text-4xl text-white font-bold py-8 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 tracking-widest sm:tracking-[0.12em] md:tracking-[0.15em]">
+              MEET <br /> JESMINA <br /> ZELIANG
+            </div>
+          </Link>
         </div>
+
+
+
       </div>
 
       <Footer />

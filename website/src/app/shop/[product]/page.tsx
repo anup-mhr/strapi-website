@@ -1,17 +1,45 @@
 import ProductDetails from "@/components/ProductDetails";
 import ProductGallery from "@/components/ProductGallery";
 import ProductList from "@/components/sections/ProductList";
-import { generateJournalMetadata } from "@/lib/metadataHelper";
 import { getProductByHandle, getRecommendedProducts } from "@/lib/shopify";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import { getPlainText } from "@/lib/helper";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
-}) {
-  const slug = (await params).id;
-  return await generateJournalMetadata(slug);
+  params: Promise<{ product: string }>;
+}): Promise<Metadata> {
+  const handle = (await params).product;
+  const product = await getProductByHandle(handle);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+  const description = getPlainText(product.descriptionHtml);
+
+  return {
+    title: "Heirloom Naga - " + product.title,
+    description: description || `Buy ${product.title} - High quality product`,
+    openGraph: {
+      title: product.title,
+      description: description || `Buy ${product.title}`,
+      images: product.images?.slice(0, 1).map((img) => ({
+        url: img.src,
+        alt: product.title,
+      })),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: description || `Buy ${product.title}`,
+      images: product.images?.[0]?.src ? [product.images[0].src] : [],
+    },
+  };
 }
 
 export default async function ProductPage({

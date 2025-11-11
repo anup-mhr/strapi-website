@@ -81,7 +81,7 @@ export default function HeroSlider({ slides = [] }: HeroSliderProps) {
 
           {/* Overlay content */}
           <div className="absolute flex flex-col items-center bottom-1/3 -translate-y-1 left-1/2 -translate-x-1/2 z-30 px-4">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-white tracking-wide sm:tracking-wider md:tracking-widest mb-2 sm:mb-2.5 md:mb-3 uppercase text-center">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold sm:font-semibold text-white drop-shadow-sm drop-shadow-black sm:drop-shadow-none tracking-wide sm:tracking-wider md:tracking-widest mb-2 sm:mb-2.5 md:mb-3 uppercase text-center">
               {slide.title}
             </p>
             <LinkButton
