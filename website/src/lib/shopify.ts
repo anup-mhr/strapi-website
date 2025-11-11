@@ -466,11 +466,6 @@ async function getProductsTotalCountAndCursors({
   }
 
   const data = await shopifyFetch<any>(query, variables);
-  const jsonString = JSON.stringify(data);
-  const bytes = Buffer.byteLength(jsonString, "utf8");
-
-  console.log("Shopify response size:", bytes, "bytes");
-  console.log("≈", (bytes / 1024).toFixed(2), "KB");
   const rootData = data.collectionByHandle || data;
 
   const initialCountEdges = rootData.totalCount?.edges || [];

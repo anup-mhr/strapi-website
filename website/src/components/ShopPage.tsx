@@ -124,14 +124,14 @@ export default function ShopClient({ categories }: ShopClientProps) {
     }
   }, [filterKey]);
 
-  // Fetch totalCount and pagination cursors only when filters change
+  // Fetch totalCount and pagination cursors with price filters applied
   useEffect(() => {
     async function fetchTotalCountData() {
       setIsFetchingCount(true);
       const sortingOption = resolveSortOption(urlParams.sortBy);
 
       try {
-        const { totalCount, priceRange: fetchedRange, pageCursors } =
+        const { totalCount, pageCursors } =
           await getProductsTotalCountAndCursors({
             minPrice: urlParams.minPrice,
             maxPrice: urlParams.maxPrice,
@@ -139,16 +139,9 @@ export default function ShopClient({ categories }: ShopClientProps) {
             subcategory: urlParams.subcategory,
             sortBy: sortingOption,
           });
-        console.log("totalCOunt", totalCount)
+
         setTotalCount(totalCount);
         setAllPageCursors(pageCursors);
-
-        // Only update price range if no price filter is applied
-        if (!(urlParams.minPrice || urlParams.maxPrice) &&
-          fetchedRange?.min !== undefined &&
-          fetchedRange?.max !== undefined) {
-          setPriceRange(fetchedRange);
-        }
       } catch (error) {
         console.error("Error fetching total count:", error);
       } finally {
@@ -165,6 +158,34 @@ export default function ShopClient({ categories }: ShopClientProps) {
     urlParams.sortBy,
   ]);
 
+  // Fetch price range boundaries separately (without price filters)
+  // This ensures the slider always shows the true min/max of the category/subcategory
+  useEffect(() => {
+    async function fetchPriceRangeBoundaries() {
+      const sortingOption = resolveSortOption(urlParams.sortBy);
+
+      try {
+        const { priceRange: fetchedRange } =
+          await getProductsTotalCountAndCursors({
+            minPrice: undefined,
+            maxPrice: undefined,
+            collection: urlParams.category,
+            subcategory: urlParams.subcategory,
+            sortBy: sortingOption,
+          });
+
+        if (fetchedRange?.min !== undefined && fetchedRange?.max !== undefined) {
+          setPriceRange(fetchedRange);
+        }
+      } catch (error) {
+        console.error("Error fetching price range:", error);
+      }
+    }
+
+    fetchPriceRangeBoundaries();
+  }, [urlParams.category, urlParams.subcategory, urlParams.sortBy]);
+
+  // Fetch products
   useEffect(() => {
     async function fetchProducts() {
       setIsLoading(true);
@@ -252,12 +273,10 @@ export default function ShopClient({ categories }: ShopClientProps) {
     [currentPage, allPageCursors]
   );
 
-  // Calculate display values
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + products.length, totalCount);
 
-  // Show loading when either count or products are being fetched
   const showLoading = isLoading || isFetchingCount;
 
   return (
@@ -283,7 +302,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
               onClick={() => setIsMobileFilterOpen(false)}
             >
               <div
-                className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white p-6 overflow-y-auto"
+                className="absolute right-0 top-0 bottom-0 w-full max-w-sm p-6 overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 <FilterSidebar
@@ -325,7 +344,7 @@ export default function ShopClient({ categories }: ShopClientProps) {
                   sortOptions={shopSortOptions}
                 />
                 <Filter
-                  className="w-5 h-5 ml-2 sm:hidden cursor-pointer"
+                  className="w-5 h-5 ml-2 md:hidden cursor-pointer"
                   onClick={() => setIsMobileFilterOpen(true)}
                 />
               </div>

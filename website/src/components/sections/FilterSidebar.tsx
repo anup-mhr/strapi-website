@@ -25,7 +25,7 @@ interface FilterSidebarProps {
   categories: CategoryItem[];
 }
 
-const PRICE_GAP = 50; // Prevents slider thumbs from overlapping
+const PRICE_GAP = 50;
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   filters,
@@ -33,7 +33,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onApplyPriceFilter,
   isMobile = false,
   priceRange,
-  onClose = () => { },
+  onClose = () => {},
   isLoading,
   categories,
 }) => {
@@ -44,19 +44,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [localMaxPrice, setLocalMaxPrice] = useState<number | undefined>(
     filters.maxPrice
   );
-  const [displayRange, setDisplayRange] = useState(priceRange);
 
-  useEffect(() => {
-    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-      onApplyPriceFilter(undefined, undefined);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setDisplayRange(priceRange);
-    }
-  }, [priceRange, isLoading]);
   useEffect(() => {
     if (isMobile) {
       document.body.style.overflow = "hidden";
@@ -72,11 +60,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   }, [filters.minPrice, filters.maxPrice]);
 
   useEffect(() => {
-    if (priceRange.min !== undefined && priceRange.max !== undefined) {
+    if (
+      priceRange.min !== undefined &&
+      priceRange.max !== undefined &&
+      filters.minPrice === undefined &&
+      filters.maxPrice === undefined
+    ) {
       setLocalMinPrice(priceRange.min);
       setLocalMaxPrice(priceRange.max);
     }
-  }, [priceRange.min, priceRange.max]);
+  }, [priceRange.min, priceRange.max, filters.minPrice, filters.maxPrice]);
 
   useEffect(() => {
     if (filters.category) {
@@ -165,7 +158,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       priceRange.min + percentage * (priceRange.max - priceRange.min)
     );
 
-    // Determine which thumb is closer to the clicked position
     const distanceToMin = Math.abs(clickedValue - safeMin);
     const distanceToMax = Math.abs(clickedValue - safeMax);
 
@@ -192,14 +184,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <div
           className="absolute top-1/2 h-1 bg-primary-pink rounded-full transform -translate-y-1/2 pointer-events-none"
           style={{
-            left: `${((safeMin - (displayRange.min ?? 0)) /
-                ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
+            left: `${
+              ((safeMin - (priceRange.min ?? 0)) /
+                ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
               100
-              }%`,
-            width: `${((safeMax - safeMin) /
-                ((displayRange.max ?? 1) - (displayRange.min ?? 0))) *
+            }%`,
+            width: `${
+              ((safeMax - safeMin) /
+                ((priceRange.max ?? 1) - (priceRange.min ?? 0))) *
               100
-              }%`,
+            }%`,
           }}
         />
 
@@ -251,9 +245,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <div className="flex justify-between items-center">
               <span
                 onClick={() => handleCategoryClick(category)}
-                className={`text-sm sm:text-base cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle &&
+                className={`text-sm sm:text-base cursor-pointer hover:text-primary-pink transition-colors ${
+                  filters.category === category.handle &&
                   "text-primary-pink font-semibold"
-                  }`}
+                }`}
               >
                 {category.title}
               </span>
@@ -274,10 +269,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     <li
                       key={sub.title}
                       onClick={() => handleSubcategoryClick(category, sub)}
-                      className={`text-xs sm:text-sm cursor-pointer hover:text-primary-pink transition-colors ${filters.category === category.handle &&
+                      className={`text-xs sm:text-sm cursor-pointer hover:text-primary-pink transition-colors ${
+                        filters.category === category.handle &&
                         filters.subcategory === sub.title &&
                         "text-primary-pink font-semibold"
-                        }`}
+                      }`}
                     >
                       {sub.title}
                     </li>
