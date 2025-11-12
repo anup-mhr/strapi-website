@@ -1,21 +1,27 @@
 export default {
   config: {
-    // locales: ['en'],
+    translations: {
+      en: {
+        "Auth.form.welcome.title": "Welcome to Heirloom!",
+        "Auth.form.welcome.subtitle": "Log in to your Heirloom account",
+      },
+    },
   },
+
   bootstrap(app: any) {
+    document.title = "Heirloom Admin";
+
+    // CLEAN PASTE HANDLER
     const cleanElement = (element: HTMLElement) => {
-      // Remove all attributes from all elements
       element.querySelectorAll("*").forEach((el: any) => {
         const tagName = el.tagName.toLowerCase();
 
-        // Keep href for links only
         if (tagName === "a" && el.hasAttribute("href")) {
           const href = el.getAttribute("href");
           const attrs = Array.from(el.attributes);
           attrs.forEach((attr: any) => el.removeAttribute(attr.name));
           el.setAttribute("href", href);
         } else {
-          // Remove ALL attributes
           const attrs = Array.from(el.attributes);
           attrs.forEach((attr: any) => el.removeAttribute(attr.name));
         }
@@ -29,15 +35,13 @@ export default {
         if (!editor.dataset.pasteFixed) {
           editor.dataset.pasteFixed = "true";
 
-          // Let paste happen normally, then clean it
           editor.addEventListener("paste", () => {
             setTimeout(() => {
               cleanElement(editor);
               editor.dispatchEvent(new Event("input", { bubbles: true }));
-            }, 100); // Give CKEditor time to process the paste
+            }, 100);
           });
 
-          // Also clean on input (as backup)
           editor.addEventListener("input", () => {
             setTimeout(() => {
               cleanElement(editor);
@@ -50,8 +54,24 @@ export default {
     // Run periodically to catch new editors
     setInterval(addPasteHandler, 500);
 
-    // Also observe DOM changes
+    // BODY OBSERVER (for editors)
     const observer = new MutationObserver(addPasteHandler);
     observer.observe(document.body, { childList: true, subtree: true });
+
+    // OBSERVER for <title> changes (fix "Homepage | Strapi")
+    const titleEl = document.querySelector("title");
+    if (titleEl) {
+      const titleObserver = new MutationObserver(() => {
+        if (document.title.includes("| Strapi")) {
+          document.title = document.title.replace("| Strapi", "| Heirloom");
+        }
+      });
+
+      titleObserver.observe(titleEl, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    }
   },
 };
